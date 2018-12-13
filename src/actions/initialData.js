@@ -39,11 +39,11 @@ export const handleInitialData = () => {
                 dispatch(addTags(tags));
                 dispatch(initialDataSuccess());
             } else {
-                dispatch(initialDataError());
+                dispatch(initialDataError('Uh oh...something went wrong. Please reload.'));
             }
         }
         catch {
-            dispatch(initialDataError());
+            dispatch(initialDataError('Uh oh...something went wrong. Please reload.'));
         }
     }
 }
