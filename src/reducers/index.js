@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import initialData from './shared';
+import initialData from './initialData';
 
 export default combineReducers({
     initialData,
