@@ -3,8 +3,8 @@ import thunk from 'redux-thunk';
 import { 
     INITIAL_DATA_LOADING,
     INITIAL_DATA_SUCCESS,
+    INITIAL_DATA_ERROR,
     handleInitialData,
-    INITIAL_DATA_ERROR
 } from './initialData';
 import { ADD_TAGS } from './tags';
 
@@ -46,7 +46,8 @@ describe('handleInitialData action creator', () => {
         fetch.mockResponseOnce(JSON.stringify({}), { status: 400 });
         await store.dispatch(handleInitialData());
         const actions = store.getActions();
-        expect(actions[1]).toEqual({ type: INITIAL_DATA_ERROR });
+        const error = 'Uh oh...something went wrong. Please reload.';
+        expect(actions[1]).toEqual({ type: INITIAL_DATA_ERROR, error, });
     });
 
     it('should dispatch INITIAL_DATA_ERROR when fetch fails', async () => {
@@ -54,7 +55,8 @@ describe('handleInitialData action creator', () => {
         fetch.mockRejectOnce();
         await store.dispatch(handleInitialData());
         const actions = store.getActions();
-        expect(actions[1]).toEqual({ type: INITIAL_DATA_ERROR });
+        const error = 'Uh oh...something went wrong. Please reload.';
+        expect(actions[1]).toEqual({ type: INITIAL_DATA_ERROR, error, });
     });
 
     it('should dispatch INITIAL_DATA_SUCCESS', async () => {

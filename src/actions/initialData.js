@@ -16,9 +16,10 @@ const initialDataSuccess = () => {
     }
 };
 
-const initialDataError = () => {
+const initialDataError = (error) => {
     return {
         type: INITIAL_DATA_ERROR,
+        error,
     }
 }
 

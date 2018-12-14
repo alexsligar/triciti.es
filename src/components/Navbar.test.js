@@ -1,0 +1,19 @@
+import React from 'react';
+import { shallow } from 'enzyme';
+import { Menu } from 'semantic-ui-react';
+import Navbar from './Navbar';
+
+const setup = (props = {}) => {
+    const wrapper = shallow(<Navbar {...props} />);
+    return wrapper;
+}
+
+describe('render', () => {
+
+    it('should render component without error', () => {
+
+        const wrapper = setup();
+        const menu = wrapper.find(Menu);
+        expect(menu.length).toBe(1);
+    });
+});
