@@ -42,6 +42,21 @@ describe('render', () => {
             expect(registerLink.length).toBe(0);
             
         });
+
+        it('should not render a register link when at /login', () => {
+
+            const props = {
+                location: {
+                    pathname: '/login',
+                },
+            }
+            const wrapper = setup(props);
+            const menu = wrapper.find(Menu.Menu);
+            expect(menu.length).toBe(1);
+            const registerLink = wrapper.find('Link[to="/login"]');
+            expect(registerLink.length).toBe(0);
+            
+        });
     });
 
     

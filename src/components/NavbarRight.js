@@ -19,9 +19,9 @@ export class NavbarRight extends Component {
                 </Menu.Item>
             )
         }
-        return (
-            <Menu.Menu position='right'>
-                {registerButton}
+        let loginButton;
+        if (this.props.location.pathname !== '/login') {
+            loginButton = (
                 <Menu.Item>
                     <Link to='/login'>
                         <Button>
@@ -29,6 +29,12 @@ export class NavbarRight extends Component {
                         </Button>
                     </Link>
                 </Menu.Item>
+            )
+        }
+        return (
+            <Menu.Menu position='right'>
+                {registerButton}
+                {loginButton}
             </Menu.Menu>
         )
     }
