@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import Homepage from './Homepage';
 import Register from './users/Register';
-
+import Login from './Login';
 
 export class Routes extends Component {
   render() {
@@ -12,6 +12,7 @@ export class Routes extends Component {
         <Switch>
             <Route exact path='/' component={Homepage} />
             <Route path='/register' component={Register} />
+            <Route path='/login' component={Login} />
         </Switch>
     );
   }
