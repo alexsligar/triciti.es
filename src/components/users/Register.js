@@ -4,19 +4,15 @@ import RegisterForm from './RegisterForm';
 
 export default function Register() {
     return (
-        <Container className='greyBackground' fluid>
-            <Container>
-                <Grid>
-                    <Grid.Row centered>
-                        <Grid.Column width={8} className='outlineBox'>
-                            <Header as='h3' textAlign='center'>
-                                REGISTER FOR AN ACCOUNT
+                <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle' className='greyBackground'>
+                    <Grid.Row>
+                        <Grid.Column width={6}>
+                            <Header as='h2' textAlign='center'>
+                                Register for an Account
                             </Header>
                             <RegisterForm />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Container>
-        </Container>
     );
 } 
