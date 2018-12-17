@@ -1,3 +1,5 @@
+import { decode } from 'jsonwebtoken';
+import { setAuthedUser } from './authUser';
 import { addTags } from './tags';
 
 export const INITIAL_DATA_LOADING = 'INITIAL_DATA_LOADING';
@@ -26,6 +28,11 @@ const initialDataError = (error) => {
 export const handleInitialData = () => {
     return async (dispatch) => {
         dispatch(initialDataLoading());
+        const token = localStorage.getItem('authedUser');
+        if (token) {
+            const {id } = decode(token);
+            dispatch(setAuthedUser(id));
+        }
         try {
             const response = await fetch('http://localhost:8080/tags', {
                 method: 'GET',
