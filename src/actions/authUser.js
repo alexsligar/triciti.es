@@ -86,10 +86,9 @@ export const handleLogoutUser = () => {
     return async (dispatch) => {
         dispatch(removeAuthedUser());
         const token = localStorage.getItem('authedUser');
-        const { id } = decode(token);
         try {
             const response = await fetch('http://localhost:8080/logout', {
-                method: 'DELETE',
+                method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -98,11 +97,13 @@ export const handleLogoutUser = () => {
             });
             if (response.status === 204) {
                 localStorage.removeItem('authedUser');
+                history.push('/');
             } else {
                 throw new Error();
             }
         }
         catch (err) {
+            const { id } = decode(token);
             dispatch(setAuthedUser(id));
         }
     }
