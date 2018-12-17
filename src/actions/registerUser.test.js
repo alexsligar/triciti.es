@@ -37,8 +37,8 @@ describe('handleRegisterUser action creator', () => {
 
     it('should dispatch REGISTER_USER_ERROR when account taken', async () => {
 
-        const message = 'Username or email taken. Please try again.';
-        fetch.mockResponseOnce(JSON.stringify({ message: 'Item exists.' }), { status: 400 });
+        const message = 'Username taken. Please try again.';
+        fetch.mockResponseOnce(JSON.stringify({ message }), { status: 409 });
         await store.dispatch(handleRegisterUser({}));
         const actions = store.getActions();
         expect(actions[1]).toEqual({ 
@@ -49,7 +49,7 @@ describe('handleRegisterUser action creator', () => {
 
     it('should dispatch REGISTER_USER_ERROR when any other status code occurs', async () => {
 
-        fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
+        fetch.mockResponseOnce(JSON.stringify({}), { status: 400 });
         await store.dispatch(handleRegisterUser({}));
         const actions = store.getActions();
         expect(actions[1]).toEqual({ 

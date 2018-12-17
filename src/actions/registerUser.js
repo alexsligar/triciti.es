@@ -1,4 +1,4 @@
-import { history } from '../history';
+import history from '../history';
 
 export const REGISTER_USER_ERROR = 'REGISTER_USER_ERROR';
 export const REGISTER_USER_PROCESSING = 'REGISTER_USER_PROCESSING';
@@ -27,6 +27,7 @@ export const handleRegisterUser = (userInput) => {
     return async (dispatch) => {
         dispatch(registerUserProcessing());
         try {
+            delete userInput.passwordConfirmation
             const response = await fetch('http://localhost:8080/create_account', {
                 method: 'POST',
                 headers: {
@@ -38,8 +39,9 @@ export const handleRegisterUser = (userInput) => {
             if (response.status === 200) {
                 dispatch(registerUserSuccess());
                 history.push('/login');
-            } else if (response.status === 400) {
-                dispatch(registerUserError('Username or email taken. Please try again.'));
+            } else if (response.status === 409) {
+                const decResponse = await response.json();
+                dispatch(registerUserError(decResponse.message));
             } else {
                 throw new Error();
             }
