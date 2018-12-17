@@ -7,8 +7,9 @@ import { Menu, Button } from 'semantic-ui-react';
 export class NavbarRight extends Component {
 
     render() {
-        return (
-            <Menu.Menu position='right'>
+        let registerButton;
+        if (this.props.location.pathname !== '/register') {
+            registerButton = (
                 <Menu.Item>
                     <Link to='/register'>
                         <Button>
@@ -16,6 +17,11 @@ export class NavbarRight extends Component {
                         </Button>
                     </Link>
                 </Menu.Item>
+            )
+        }
+        return (
+            <Menu.Menu position='right'>
+                {registerButton}
                 <Menu.Item>
                     <Link to='/login'>
                         <Button>
@@ -28,6 +34,10 @@ export class NavbarRight extends Component {
     }
 }
 
-NavbarRight.propTypes = {};
+NavbarRight.propTypes = {
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    })
+};
 
 export default withRouter(connect()(NavbarRight));

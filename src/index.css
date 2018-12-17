@@ -1,0 +1,16 @@
+body, #root {
+  height: 100%;
+}
+
+.outlineBox {
+  margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  padding: 10px;
+}
+
+.greyBackground {
+  background-color: lightgray;
+  height: 100vh;
+}

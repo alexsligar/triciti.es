@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import Homepage from './Homepage';
+import Register from './users/Register';
 
 
 export class Routes extends Component {
@@ -10,6 +11,7 @@ export class Routes extends Component {
     return (
         <Switch>
             <Route exact path='/' component={Homepage} />
+            <Route path='/register' component={Register} />
         </Switch>
     );
   }

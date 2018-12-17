@@ -10,10 +10,23 @@ const setup = (props = {}) => {
 
 describe('render', () => {
 
-    it('should render component without error', () => {
+    describe('when path is /register', () => {
 
-        const wrapper = setup();
-        const menu = wrapper.find(Menu.Menu);
-        expect(menu.length).toBe(1);
+        it('should not render a register link', () => {
+
+            const props = {
+                location: {
+                    pathname: '/register',
+                },
+            }
+            const wrapper = setup(props);
+            const menu = wrapper.find(Menu.Menu);
+            expect(menu.length).toBe(1);
+            const registerLink = wrapper.find('Link[to="/register"]');
+            expect(registerLink.length).toBe(0);
+            
+        });
     });
+
+    
 });
