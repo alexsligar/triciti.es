@@ -1,24 +1,45 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter, Route, Switch } from 'react-router-dom';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Homepage from './Homepage';
 import Register from './users/Register';
 import Login from './Login';
 
 export class Routes extends Component {
   render() {
-    return (
+    let routes = (
+      <Switch>
+        <Route exact path='/' component={Homepage} />
+        <Route path='/register' component={Register} />
+        <Route path='/login' component={Login} />
+        {/* <Route path='/tags/:tag' component={Tags} />       */}
+      </Switch>
+    );
+    if (this.props.authedUser) {
+      routes = (
         <Switch>
-            <Route exact path='/' component={Homepage} />
-            <Route path='/register' component={Register} />
-            <Route path='/login' component={Login} />
+          <Route exact path='/' component={Homepage} />
+          <Route path='/login' render={() => (<Redirect to='/' />)} />
+          <Route path='/register' render={() => (<Redirect to='/' />)} />
         </Switch>
+      )
+    }
+
+    return (
+      <Fragment>
+        {routes}
+      </Fragment>
     );
   }
 }
 
 Routes.propTypes = {
+  authedUser: PropTypes.string,
 };
 
-export default withRouter(connect()(Routes));
+const mapStateToProps = ({ authedUser }) => {
+  return { authedUser }
+}
+
+export default withRouter(connect(mapStateToProps)(Routes));
