@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 import NavbarRight from './NavbarRight';
 import NavbarRightAuthed from './NavbarRightAuthed';
+import TagSearch from './tags/TagSearch';
 
 export class Navbar extends Component {
 
@@ -20,6 +21,7 @@ export class Navbar extends Component {
                         TriCiti.es
                     </Link>
                 </Menu.Item>
+                <TagSearch />
                 {right}
             </Menu>
         )
