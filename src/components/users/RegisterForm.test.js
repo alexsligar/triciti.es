@@ -1,7 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Form, FormButton, Dimmer, Message } from 'semantic-ui-react';
-import { RegisterForm } from './RegisterForm';
+import { Provider } from 'react-redux';
+import ConnectedRegisterForm, { RegisterForm } from './RegisterForm';
+import { storeFactory } from '../../../test/testUtils';
+
 
 const setup = (props={}) => {
     const wrapper = shallow(<RegisterForm {...props} />);
@@ -224,5 +227,24 @@ describe('input field changes should update state', () => {
         const usernameInput = wrapper.find('[name="username"]');
         usernameInput.simulate('change', { target: { name: 'username', value: username } });
         expect(wrapper.state().fields.username).toBe(username);
+    });
+});
+
+describe('connect', () => {
+
+    it('should connect to the store with the correct props', () => {
+
+        const initialState = {
+            registerUser: {
+                error: 'Uh oh...',
+                processing: false,
+            }
+        };
+        const store = storeFactory(initialState);
+        const wrapper = mount(<Provider store={store}><ConnectedRegisterForm /></Provider>);
+        const registerFormProps = wrapper.find(RegisterForm).props();
+        expect(registerFormProps.registerUserError).toBe('Uh oh...');
+        expect(registerFormProps.registerUserProcessing).toBe(false);
+        expect(registerFormProps.handleRegisterUser).toBeInstanceOf(Function);
     });
 });

@@ -152,7 +152,7 @@ export class RegisterForm extends Component {
                             onChange={this.handleInputChange}
                         />
                         <Form.TextArea
-                            fluid
+                            fluid='true'
                             label='Bio'
                             placeholder='Bio'
                             name='bio'
