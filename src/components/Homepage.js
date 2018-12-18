@@ -11,7 +11,7 @@ export class Homepage extends Component {
                 <ul>
                     {this.props.tags.map((tag) => {
                         return (
-                            <li key={tag}>{tag}</li>
+                            <li key={tag.title}>{tag.title}</li>
                         );
                     })}
                 </ul>

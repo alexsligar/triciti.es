@@ -12,7 +12,7 @@ describe('render', () => {
 
     it('should render component without error', () => {
 
-        const tags = ['Test', 'Tag'];
+        const tags = [{title: 'Test'}, {title: 'Tag'}];
         const props = {
             tags,
         }

@@ -14,10 +14,8 @@ const mockStore = configureMockStore(middlewares);
 describe('handleInitialData action creator', () => {
 
     let store;
-    let tags;
     beforeEach(() => {
 
-        tags = ['University', 'Food'];
         store = mockStore();
     });
 
@@ -32,6 +30,7 @@ describe('handleInitialData action creator', () => {
 
     it('should fetch /tags and dispatch ADD_TAGS when response status is 200', async () => {
 
+        const tags = [{title: 'University'}, {title: 'Food'}];
         const data = { data: [{'name': 'University'}, {'name': 'Food'}] };
         fetch.mockResponseOnce(JSON.stringify(data), { status: 200 });
         await store.dispatch(handleInitialData());

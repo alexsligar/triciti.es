@@ -43,7 +43,7 @@ export const handleInitialData = () => {
             });
             if (response.status === 200) {
                 const dataResponse = await response.json();
-                const tags = dataResponse.data.map((tag) => tag.name);
+                const tags = dataResponse.data.map((tag) => ({ 'title': tag.name }));
                 dispatch(addTags(tags));
                 dispatch(initialDataSuccess());
             } else {
