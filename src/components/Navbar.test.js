@@ -5,12 +5,20 @@ import { Router } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 import history from '../history';
 import ConnectedNavbar, { Navbar } from './Navbar';
+import TagSearch from './tags/TagSearch';
 import NavbarRight from './NavbarRight';
 import NavbarRightAuthed from './NavbarRightAuthed';
 import { storeFactory } from '../../test/testUtils';
 
+const defaultProps = {
+    authedUser: null,
+    location: {
+        pathname: '/',
+    },
+}
 const setup = (props = {}) => {
-    const wrapper = shallow(<Navbar {...props} />);
+    const propsPassed = {...defaultProps, ...props};
+    const wrapper = shallow(<Navbar {...propsPassed} />);
     return wrapper;
 }
 
@@ -18,8 +26,7 @@ describe('render', () => {
 
     it('should render correct child components when no authedUser', () => {
 
-        const props = { authedUser: null };
-        const wrapper = setup(props);
+        const wrapper = setup();
         const menu = wrapper.find(Menu);
         expect(menu.length).toBe(1);
         const navbarRight = wrapper.find(NavbarRight);
@@ -39,6 +46,22 @@ describe('render', () => {
         const navbarRightAuthed = wrapper.find(NavbarRightAuthed);
         expect(navbarRightAuthed.length).toBe(1);
     });
+
+    it('should not render the TagSearch when pathname is /tags(/:tag)', () => {
+
+        const props = { location: { pathname: '/tags' } };
+        const wrapper = setup(props);
+        const tagSearch = wrapper.find(TagSearch);
+        expect(tagSearch.length).toBe(0);
+    });
+
+    it('should render the TagSearch when pathname is not /tags(/:tag)', () => {
+
+        const props = { location: { pathname: '/login' } };
+        const wrapper = setup(props);
+        const tagSearch = wrapper.find(TagSearch);
+        expect(tagSearch.length).toBe(1);
+    });
 });
 
 describe('connect', () => {
@@ -52,5 +75,6 @@ describe('connect', () => {
         const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedNavbar /></Provider></Router>);
         const componentProps = wrapper.find(Navbar).props();
         expect(componentProps.authedUser).toBe('1abc');
+        expect(componentProps.location.pathname).toBeDefined();
     });
 });

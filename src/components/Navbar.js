@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 import NavbarRight from './NavbarRight';
 import NavbarRightAuthed from './NavbarRightAuthed';
@@ -14,6 +14,11 @@ export class Navbar extends Component {
         if (this.props.authedUser) {
             right = <NavbarRightAuthed />;
         }
+        let tagSearchContent;
+        const path = this.props.location.pathname;
+        if (path.substring(0,5) !== '/tags') {
+            tagSearchContent = (<Menu.Item><TagSearch initialValue='' /></Menu.Item>);
+        }
         return (
             <Menu>
                 <Menu.Item header>
@@ -21,7 +26,7 @@ export class Navbar extends Component {
                         TriCiti.es
                     </Link>
                 </Menu.Item>
-                <TagSearch />
+                {tagSearchContent}
                 {right}
             </Menu>
         )
@@ -30,6 +35,9 @@ export class Navbar extends Component {
 
 Navbar.propTypes = {
     authedUser: PropTypes.string,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    })
 }
 
 function mapStateToProps ({ authedUser }) {
@@ -38,4 +46,4 @@ function mapStateToProps ({ authedUser }) {
     }
 }
 
-export default connect(mapStateToProps)(Navbar);
+export default withRouter(connect(mapStateToProps)(Navbar));
