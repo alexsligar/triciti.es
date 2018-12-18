@@ -1,4 +1,5 @@
 import configureMockStore from 'redux-mock-store';
+import { sign } from 'jsonwebtoken';
 import thunk from 'redux-thunk';
 import { 
     INITIAL_DATA_LOADING,
@@ -7,6 +8,7 @@ import {
     handleInitialData,
 } from './initialData';
 import { ADD_TAGS } from './tags';
+import { SET_AUTHED_USER } from './authUser';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -38,6 +40,18 @@ describe('handleInitialData action creator', () => {
         const expected = { type: ADD_TAGS, tags }
         expect(actions[1]).toEqual(expected);
 
+    });
+
+    it('should dispatch setAuthedUser if there is a token stored', async () => {
+
+        const token = sign({ id: 1 }, 'abcd');
+        const mock = jest.fn().mockImplementationOnce(() => {
+            return token;
+        })
+        Storage.prototype.getItem = mock;
+        store.dispatch(handleInitialData());
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ type: SET_AUTHED_USER, id: 1 });
     });
 
     it('should dispatch INITIAL_DATA_ERROR when response status is not 200', async () => {
