@@ -1,7 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import history from '../history';
 import { Menu } from 'semantic-ui-react';
-import { NavbarRightAuthed } from './NavbarRightAuthed';
+import ConnectedNavbarRightAuthed, { NavbarRightAuthed } from './NavbarRightAuthed';
+import { storeFactory } from '../../test/testUtils';
 
 const defaultProps = {
     authedUser: '1abc',
@@ -43,5 +47,20 @@ describe('logout click', () => {
         const logoutButton = wrapper.find('Button');
         logoutButton.simulate('click');
         expect(handleLogoutUser.mock.calls.length).toBe(1);
+    });
+});
+
+describe('connect', () => {
+
+    it('should connect to the store with the correct props', () => {
+
+        const initialState = {
+            authedUser: '1abc',
+        };
+        const store = storeFactory(initialState);
+        const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedNavbarRightAuthed /></Provider></Router>);
+        const componentProps = wrapper.find(NavbarRightAuthed).props();
+        expect(componentProps.authedUser).toBe('1abc');
+        expect(componentProps.handleLogoutUser).toBeInstanceOf(Function);
     });
 });
