@@ -1,7 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import { Form, Header } from 'semantic-ui-react';
-import { Login } from './Login';
+import ConnectedLogin, { Login } from './Login';
+import { storeFactory } from '../../test/testUtils';
+import history from '../history';
 
 const defaultProps = {
     authUserError: null,
@@ -116,5 +120,25 @@ describe('input field changes should update state', () => {
         const usernameInput = wrapper.find('[name="username"]');
         usernameInput.simulate('change', { target: { name: 'username', value: username } });
         expect(wrapper.state().username).toBe(username);
+    });
+});
+
+describe('connect', () => {
+
+    it('should connect to the store with the correct props', () => {
+
+        const initialState = {
+            authUser: {
+                processing: false,
+                error: 'Uh oh..',
+            },
+        };
+        const store = storeFactory(initialState);
+        const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedLogin /></Provider></Router>);
+        const componentProps = wrapper.find(Login).props();
+        expect(componentProps.authUserProcessing).toBeDefined();
+        expect(componentProps.authUserError).toBeDefined();
+        expect(componentProps.removeAuthUserError).toBeInstanceOf(Function);
+        expect(componentProps.handleAuthUser).toBeInstanceOf(Function);
     });
 });

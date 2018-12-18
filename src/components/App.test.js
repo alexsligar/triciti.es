@@ -1,9 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
 import { Dimmer, Header } from 'semantic-ui-react';
-import { App }  from './App';
+import ConnectedApp, { App }  from './App';
 import Navbar from './Navbar';
 import Routes from './Routes';
+import { storeFactory } from '../../test/testUtils';
 
 const defaultProps = {
     loading: true,
@@ -72,5 +74,24 @@ describe('componentDidMount', () => {
         const wrapper = setup(props);
         wrapper.instance().componentDidMount();
         expect(handleInitialData.mock.calls.length).toBe(1);
+    });
+});
+
+describe('connect', () => {
+
+    it('should connect to the store with the correct props', () => {
+
+        const initialState = {
+            initialData: {
+                loading: false,
+                error: 'Uh oh..',
+            },
+        };
+        const store = storeFactory(initialState);
+        const wrapper = mount(<Provider store={store}><ConnectedApp /></Provider>);
+        const componentProps = wrapper.find(App).props();
+        expect(componentProps.loading).toBeDefined();
+        expect(componentProps.error).toBeDefined();
+        expect(componentProps.handleInitialData).toBeInstanceOf(Function);
     });
 });
