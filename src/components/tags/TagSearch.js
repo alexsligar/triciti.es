@@ -3,18 +3,19 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Menu, Search } from 'semantic-ui-react';
+import { Search } from 'semantic-ui-react';
 
 export class TagSearch extends Component {
     state = {
         isLoading: false,
         results: [],
-        value: '',
+        value: this.props.initialValue,
     }
 
     resetComponent = () => this.setState({ isLoading: false, results: [], value: '' });
 
     handleResultSelect = (e, { result }) => {
+        this.setState({ value: result.title });
         this.props.history.push(`/tags/${result.title}`);
     }
     
@@ -38,16 +39,15 @@ export class TagSearch extends Component {
         const { isLoading, value, results } = this.state;
 
         return (
-            <Menu.Item>
-                <Search
-                    loading={isLoading}
-                    onResultSelect={this.handleResultSelect}
-                    onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-                    results={results}
-                    value={value}
-                    placeholder='Search by tag...'
-                />
-            </Menu.Item>
+            <Search
+                loading={isLoading}
+                onResultSelect={this.handleResultSelect}
+                onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
+                results={results}
+                value={value}
+                placeholder='Search by tag...'
+                className='inlineDisplay'
+            />
         );
     }
 }
@@ -56,7 +56,8 @@ TagSearch.propTypes = {
     tags: PropTypes.array.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
-    })
+    }),
+    initialValue: PropTypes.string,
 }
 
 const mapStateToProps = ({ tags }) => {
