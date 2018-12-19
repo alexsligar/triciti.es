@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { Dimmer, Header } from 'semantic-ui-react';
 import ConnectedTagSearchResults, { TagSearchResults } from './TagSearchResults';
+import ItemCard from '../items/ItemCard';
 import history from '../../history';
 import { storeFactory } from '../../../test/testUtils';
 
@@ -15,7 +16,7 @@ const defaultProps = {
     },
     itemsError: null,
     itemsLoading: false,
-    items: [{ name: 'Test Item' }],
+    items: [{ id: 1, name: 'Test Item', type: 'Activity', location: 'Kennewick' }],
     handleTagSearch: () => {},
 };
 
@@ -45,14 +46,17 @@ describe('render', () => {
         expect(dimmer.props().active).toBe(false);
         const header = wrapper.find(Header);
         expect(header.dive().text()).toBe('1 Item Found');
-        const li = wrapper.find('li');
-        expect(li.text()).toBe(defaultProps.items[0].name);
+        const itemCard = wrapper.find(ItemCard);
+        expect(itemCard.length).toBe(1);
     });
 
     it('should render correct header with multiple items', () => {
 
         const props = {
-            items: [{ name: 'Test Item 1'}, { name: 'Test Item 2'}],
+            items: [
+                { id: 1, name: 'Test Item 1', type: 'Event', location: 'Kennewick' }, 
+                { id: 2, name: 'Test Item 2', type: 'Activity', location: 'Pasco' },
+            ],
         }
         const wrapper = setup(props);
         const header = wrapper.find(Header);
@@ -131,7 +135,7 @@ describe('connect', () => {
             items: {
                 loading: false,
                 error: 'Uh oh..',
-                items: [{ name: 'Test Item' }],
+                items: [{ id: 1, name: 'Test Item', type: 'Place', location: 'Richland', }],
             },
         };
         const store = storeFactory(initialState);

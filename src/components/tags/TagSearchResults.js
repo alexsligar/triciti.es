@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, Icon, Dimmer, Header, Loader } from 'semantic-ui-react';
+import { Grid, Icon, Dimmer, Header, Loader, Card } from 'semantic-ui-react';
 import TagSearch from './TagSearch';
 import { handleTagSearch } from '../../actions/items';
+import ItemCard from '../items/ItemCard';
 
 export class TagSearchResults extends Component {
     componentDidMount() {
@@ -44,13 +45,20 @@ export class TagSearchResults extends Component {
                                 <Header as='h3' textAlign='center'>
                                     {this.props.items.length} Item{this.props.items.length === 1 ? null : 's'} Found
                                 </Header>
-                                <ul>
+                                <Card.Group itemsPerRow={3}>
                                     {this.props.items.map((item) => {
                                         return (
-                                            <li key={item.name}>{item.name}</li>
+                                            <ItemCard
+                                                key={item.id}
+                                                name={item.name}
+                                                type={item.type}
+                                                location={item.location}
+                                                start_date={item.start_date}
+                                                end_date={item.end_date}
+                                            />
                                         );
                                     })}
-                                </ul>
+                                </Card.Group>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
