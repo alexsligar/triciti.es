@@ -5,16 +5,17 @@ import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Homepage from './Homepage';
 import Register from './users/Register';
 import Login from './Login';
-import Tags from './tags/Tags';
+import TagSearchResults from './tags/TagSearchResults';
 
 export class Routes extends Component {
+
   render() {
     let routes = (
       <Switch>
         <Route exact path='/' component={Homepage} />
         <Route path='/register' component={Register} />
         <Route path='/login' component={Login} />
-        <Route path='/tags/:tag?' component={Tags} />
+        <Route path='/tags/:tag' component={TagSearchResults} />
       </Switch>
     );
     if (this.props.authedUser) {
@@ -23,7 +24,7 @@ export class Routes extends Component {
           <Route exact path='/' component={Homepage} />
           <Route path='/login' render={() => (<Redirect to='/' />)} />
           <Route path='/register' render={() => (<Redirect to='/' />)} />
-          <Route path='/tags/:tag?' component={Tags} />
+          <Route path='/tags/:tag' component={TagSearchResults} />
         </Switch>
       )
     }
