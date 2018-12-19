@@ -4,6 +4,7 @@ import registerUser from './registerUser';
 import authUser from './authUser';
 import authedUser from './authedUser';
 import tags from './tags';
+import items from './items';
 
 export default combineReducers({
     initialData,
@@ -11,4 +12,5 @@ export default combineReducers({
     authUser,
     authedUser,
     tags,
+    items,
 })
