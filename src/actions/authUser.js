@@ -92,10 +92,10 @@ export const handleAuthedUser = (token) => {
                 dispatch(authUserSuccess());
                 history.push('/');
             } else {
-                dispatch(authUserError('Uh oh...something went wrong. Please reload.'));
+                dispatch(authUserError('Uh oh...something went wrong. Please try again.'));
             }
         } catch {
-            dispatch(authUserError('Uh oh...something went wrong. Please reload.'));
+            dispatch(authUserError('Uh oh...something went wrong. Please try again.'));
         }
     }
 }

@@ -16,6 +16,7 @@ import {
     removeAuthUserError,
     handleLogoutUser,
     setAuthedUser,
+    handleAuthedUser,
 } from './authUser';
 
 describe('handleAuthUser action creator', () => {
@@ -66,6 +67,31 @@ describe('handleAuthUser action creator', () => {
         await store.dispatch(handleAuthUser({}));
         const actions = store.getActions();
         expect(actions[1]).toEqual({ type: AUTH_USER_ERROR, error: 'Uh oh, something went wrong. Please try again.' });
+    });
+});
+
+describe('handleAuthedUser action creator', () => {
+
+    let store;
+    beforeEach(() => {
+
+        store = mockStore();
+    });
+
+    it('should dispatch authUserError when get profile doesnt return 200', async () => {
+
+        fetch.mockResponseOnce(JSON.stringify({}), { status: 401 });
+        await store.dispatch(handleAuthedUser());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({ type: AUTH_USER_ERROR, error: 'Uh oh...something went wrong. Please try again.' });
+    });
+
+    it('should dispatch authUserError when fetch fails', async () => {
+
+        fetch.mockRejectOnce();
+        await store.dispatch(handleAuthedUser());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({ type: AUTH_USER_ERROR, error: 'Uh oh...something went wrong. Please try again.' });
     });
 });
 
