@@ -14,9 +14,12 @@ describe('authedUser reducer', () => {
 
         const action = {
             type: SET_AUTHED_USER,
-            id: 1,
+            user: {
+                id: 1,
+                name: 'test'
+            },
         };
-        expect(authedUser(undefined, action)).toEqual(action.id);
+        expect(authedUser(undefined, action)).toEqual(action.user);
     });
 
     it('should handle LOGOUT_AUTHED_USER', () => {
