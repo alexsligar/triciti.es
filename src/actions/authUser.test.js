@@ -15,6 +15,7 @@ import {
     handleAuthUser,
     removeAuthUserError,
     handleLogoutUser,
+    setAuthedUser,
 } from './authUser';
 
 describe('handleAuthUser action creator', () => {
@@ -28,20 +29,27 @@ describe('handleAuthUser action creator', () => {
 
     it('should dispatch AUTH_USER_PROCESSING', async () => {
 
-        fetch.mockResponseOnce(JSON.stringify({ token: 'abc' }), { status: 200 });
         await store.dispatch(handleAuthUser({}));
         const actions = store.getActions();
         expect(actions[0]).toEqual({ type: AUTH_USER_PROCESSING });
     });
 
-    it('should dispatch SET_AUTHED_USER and AUTH_USER_SUCCESS when auth succeeds', async () => {
+    it('should dispatch expected actions and save token when auth succeeds', async () => {
 
         const token = sign({ id: '1a' }, 'abcd');
-        fetch.mockResponseOnce(JSON.stringify({ data: { token } }), { status: 200 });
+        const user = { id: 1, username: 'test' };
+        fetch.mockResponses(
+            [JSON.stringify({ data: { token } }), { status: 200 }],
+            [JSON.stringify({ data: user }), { status: 200 }]
+        );
+        const mock = jest.fn();
+        Storage.prototype.setItem = mock;
         await store.dispatch(handleAuthUser({}));
         const actions  = store.getActions();
-        expect(actions[1]).toEqual({ type: SET_AUTHED_USER, id: '1a' });
+        expect(actions[1]).toEqual({ type: SET_AUTHED_USER, user });
         expect(actions[2]).toEqual({ type: AUTH_USER_SUCCESS });
+        expect(mock.mock.calls[0][0]).toBe('authedUser');
+        expect(mock.mock.calls[0][1]).toEqual(token);
     });
 
     it('should dispatch AUTH_USER_ERROR with specific message when auth fails due to credentials', async () => {
@@ -79,10 +87,11 @@ describe('handleRemoveAuthUserError action creator', () => {
 
 describe('handleLogoutUser action creator', () => {
 
+    const user = { id: 1, username: 'test' };
     let store;
-    beforeEach(() => {
+    beforeEach(async () => {
 
-        store = mockStore();
+        store = mockStore({ authedUser: user });
         fetch.resetMocks();
     });
 
@@ -91,17 +100,16 @@ describe('handleLogoutUser action creator', () => {
         const spy = jest.spyOn(Storage.prototype, 'removeItem');
         fetch.mockResponseOnce({}, { status: 204 });
         await store.dispatch(handleLogoutUser());
+        expect(spy).toHaveBeenCalledWith('authedUser');
         const actions = store.getActions();
         expect(actions[0]).toEqual({ type: REMOVE_AUTHED_USER });
-        expect(spy).toHaveBeenCalledWith('authedUser');
     });
 
     it('should call SET_AUTHED_USER if logout fails on server',async () => {
 
-        jsonwebtoken.decode = jest.fn().mockReturnValueOnce({ id: 1 });
         fetch.mockResponseOnce({}, { status: 401 });
         await store.dispatch(handleLogoutUser());
         const actions = store.getActions();
-        expect(actions[1]).toEqual({ type: SET_AUTHED_USER, id: 1 })
+        expect(actions[1]).toEqual({ type: SET_AUTHED_USER, user })
     });
 });

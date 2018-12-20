@@ -1,4 +1,3 @@
-import { decode } from 'jsonwebtoken';
 import history from '../history';
 
 export const AUTH_USER_PROCESSING = 'AUTH_USER_PROCESSING';
@@ -33,10 +32,10 @@ export const removeAuthUserError = () => {
     }
 };
 
-export const setAuthedUser = (id) => {
+export const setAuthedUser = (user) => {
     return {
         type: SET_AUTHED_USER,
-        id,
+        user,
     };
 };
 
@@ -61,9 +60,7 @@ export const handleAuthUser = (credentials) => {
             if (response.status === 200) {
                 const dataRes = await response.json();
                 const { token } = dataRes.data;
-                dispatch(handleAuthedUser(token));
-                dispatch(authUserSuccess());
-                history.push(`/`);
+                await dispatch(handleAuthedUser(token));
             } else if (response.status === 401) {
                 dispatch(authUserError('Invalid username/password'));
             } else {
@@ -77,13 +74,35 @@ export const handleAuthUser = (credentials) => {
 }
 
 export const handleAuthedUser = (token) => {
-    localStorage.setItem('authedUser', token);
-    const { id } = decode(token);
-    return setAuthedUser(id);
+    return async (dispatch) => {
+        try {
+            localStorage.setItem('authedUser', token);
+            const response = await fetch('http://localhost:8080/users/profile', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                }
+            });
+            if (response.status === 200) {
+                const dataResponse = await response.json();
+                const user = dataResponse.data;
+                dispatch(setAuthedUser(user));
+                dispatch(authUserSuccess());
+                history.push('/');
+            } else {
+                dispatch(authUserError('Uh oh...something went wrong. Please reload.'));
+            }
+        } catch {
+            dispatch(authUserError('Uh oh...something went wrong. Please reload.'));
+        }
+    }
 }
 
 export const handleLogoutUser = () => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
+        const user = getState().authedUser;
         dispatch(removeAuthedUser());
         const token = localStorage.getItem('authedUser');
         try {
@@ -103,8 +122,7 @@ export const handleLogoutUser = () => {
             }
         }
         catch (err) {
-            const { id } = decode(token);
-            dispatch(setAuthedUser(id));
+            dispatch(setAuthedUser(user));
         }
     }
 }
