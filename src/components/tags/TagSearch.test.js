@@ -9,7 +9,10 @@ const defaultProps = {
     tags: [{title: 'university'}, {title: 'kid-friendly'}],
     history: {
         push: () => {},
-    }
+    },
+    loading: false,
+    error: null,
+    handleGetTags: () => {},
 };
 
 const setup = (props = {}) => {
@@ -25,6 +28,39 @@ describe('render', () => {
         const wrapper = setup();
         const search = wrapper.find(Search);
         expect(search.length).toBe(1);
+    });
+
+    it('should render a spinner icon when loading', () => {
+
+        const props = {
+            loading: true,
+        }
+        const wrapper = setup(props);
+        const icon = wrapper.find('Icon[name="spinner"]');
+        expect(icon.length).toBe(1);
+    });
+
+    it('should display the error message when error is present', () => {
+
+        const props = {
+            error: 'Uh oh...'
+        };
+        const wrapper = setup(props);
+        expect(wrapper.text()).toBe(props.error);
+    });
+});
+
+describe('componentDidMount', () => {
+
+    it('should call handleGetTags', () => {
+
+        const handleGetTags = jest.fn();
+        const props = {
+            handleGetTags,
+        }
+        const wrapper = setup(props);
+        wrapper.instance().componentDidMount();
+        expect(handleGetTags.mock.calls.length).toBe(1);
     });
 });
 
@@ -85,8 +121,18 @@ describe('connect', () => {
 
     it('should connect to the store with the correct props', () => {
 
-        const store = storeFactory({ tags: defaultProps.tags });
+        const initialState = {
+            tags: {
+                loading: false,
+                error: null,
+                tags: defaultProps.tags,
+            }
+        }
+        const store = storeFactory(initialState);
         const wrapper = mount(<Provider store={store}><ConnectedTagSearch /></Provider>);
-        expect(wrapper.find(TagSearch).props().tags).toEqual(defaultProps.tags);
+        const tagSearchProps = wrapper.find(TagSearch).props();
+        expect(tagSearchProps.tags).toEqual(defaultProps.tags);
+        expect(tagSearchProps.loading).toBeDefined();
+        expect(tagSearchProps.error).toBeDefined();
     });
 });
