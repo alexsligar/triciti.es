@@ -1,6 +1,4 @@
-import { decode } from 'jsonwebtoken';
 import { setAuthedUser } from './authUser';
-import { addTags } from './tags';
 
 export const INITIAL_DATA_LOADING = 'INITIAL_DATA_LOADING';
 export const INITIAL_DATA_SUCCESS = 'INITIAL_DATA_SUCCESS';
@@ -30,28 +28,29 @@ export const handleInitialData = () => {
         dispatch(initialDataLoading());
         const token = localStorage.getItem('authedUser');
         if (token) {
-            const {id } = decode(token);
-            dispatch(setAuthedUser(id));
-        }
-        try {
-            const response = await fetch('http://localhost:8080/tags', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+            try {
+                const response = await fetch('http://localhost:8080/users/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                if (response.status === 200) {
+                    const dataResponse = await response.json();
+                    const user = dataResponse.data;
+                    dispatch(setAuthedUser(user));
+                    dispatch(initialDataSuccess());
+                } else {
+                    dispatch(initialDataError('Uh oh...something went wrong. Please reload.'));
                 }
-            });
-            if (response.status === 200) {
-                const dataResponse = await response.json();
-                const tags = dataResponse.data.map((tag) => ({ 'title': tag.name }));
-                dispatch(addTags(tags));
-                dispatch(initialDataSuccess());
-            } else {
+            }
+            catch {
                 dispatch(initialDataError('Uh oh...something went wrong. Please reload.'));
             }
-        }
-        catch {
-            dispatch(initialDataError('Uh oh...something went wrong. Please reload.'));
+        } else {
+            dispatch(initialDataSuccess());
         }
     }
 }
