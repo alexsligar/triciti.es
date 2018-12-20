@@ -12,11 +12,7 @@ describe('render', () => {
 
     it('should render component without error', () => {
 
-        const tags = [{title: 'Test'}, {title: 'Tag'}];
-        const props = {
-            tags,
-        }
-        const wrapper = setup(props);
+        const wrapper = setup();
         const container = wrapper.find(Container);
         expect(container.length).toBe(1);
     });
