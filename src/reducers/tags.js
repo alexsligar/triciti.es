@@ -1,12 +1,37 @@
 import {
-    ADD_TAGS
+    TAGS_ERROR,
+    TAGS_LOADING,
+    TAGS_SUCCESS,
 } from '../actions/tags';
 
-export default function initialData (state = [], action) {
+const initial = {
+    loading: false,
+    error: null,
+    tags: [],
+}
+
+export default function initialData (state = initial, action) {
 
     switch (action.type) {
-        case ADD_TAGS :
-            return state.concat(action.tags)
+        case TAGS_LOADING :
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            }
+        case TAGS_ERROR :
+            return {
+                ...state,
+                loading: false,
+                error: action.error,
+            }
+        case TAGS_SUCCESS :
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                tags: action.tags,
+            }
         default :
             return state;
     }
