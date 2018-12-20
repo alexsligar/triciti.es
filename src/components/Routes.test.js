@@ -7,7 +7,7 @@ import { storeFactory } from '../../test/testUtils';
 import history from '../history';
 
 const defaultProps = {
-    authedUser: '1abc',
+    authedUser: { id: '1', username: '1abc' },
 }
 const setup = (props = {}) => {
     const propsPassed = {...defaultProps, ...props}
@@ -40,13 +40,14 @@ describe('connect', () => {
 
     it('should connect to the store with the correct props', () => {
 
+        const authedUser = { id: '1', username: 'test' };
         const initialState = {
-            authedUser: '1abc',
+            authedUser,
         };
         const store = storeFactory(initialState);
         const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedRoutes /></Provider></Router>);
         const componentProps = wrapper.find(Routes).props();
-        expect(componentProps.authedUser).toBe('1abc');
+        expect(componentProps.authedUser).toEqual(authedUser);
     });
 });
 
@@ -54,8 +55,9 @@ describe('redirect routes', () => {
 
     it('should redirect for certain routes when authedUser is present', () => {
 
+        const authedUser = { id: '1', username: 'test' };
         const initialState = {
-            authedUser: '1abc',
+            authedUser,
         };
         const store = storeFactory(initialState);
         const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedRoutes /></Provider></Router>);

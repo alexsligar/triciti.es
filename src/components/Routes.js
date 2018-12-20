@@ -6,6 +6,7 @@ import Homepage from './Homepage';
 import Register from './users/Register';
 import Login from './Login';
 import TagSearchResults from './tags/TagSearchResults';
+import Tags from './tags/Tags';
 
 export class Routes extends Component {
 
@@ -16,6 +17,7 @@ export class Routes extends Component {
         <Route path='/register' component={Register} />
         <Route path='/login' component={Login} />
         <Route path='/tags/:tag' component={TagSearchResults} />
+        <Route path='/tags' component={Tags} />
       </Switch>
     );
     if (this.props.authedUser) {
@@ -25,6 +27,7 @@ export class Routes extends Component {
           <Route path='/login' render={() => (<Redirect to='/' />)} />
           <Route path='/register' render={() => (<Redirect to='/' />)} />
           <Route path='/tags/:tag' component={TagSearchResults} />
+          <Route path='/tags' component={Tags} />
         </Switch>
       )
     }
@@ -38,7 +41,7 @@ export class Routes extends Component {
 }
 
 Routes.propTypes = {
-  authedUser: PropTypes.string,
+  authedUser: PropTypes.object,
 };
 
 const mapStateToProps = ({ authedUser }) => {

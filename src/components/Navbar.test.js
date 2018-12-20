@@ -37,7 +37,7 @@ describe('render', () => {
 
     it('should render correct child components when authedUser', () => {
 
-        const props = { authedUser: 'test' };
+        const props = { authedUser: { id: '1', username: 'test' } };
         const wrapper = setup(props);
         const menu = wrapper.find(Menu);
         expect(menu.length).toBe(1);
@@ -68,13 +68,14 @@ describe('connect', () => {
 
     it('should connect to the store with the correct props', () => {
 
+        const authedUser = { id: '1', username: '1abc' };
         const initialState = {
-            authedUser: '1abc',
+            authedUser,
         };
         const store = storeFactory(initialState);
         const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedNavbar /></Provider></Router>);
         const componentProps = wrapper.find(Navbar).props();
-        expect(componentProps.authedUser).toBe('1abc');
+        expect(componentProps.authedUser).toBe(authedUser);
         expect(componentProps.location.pathname).toBeDefined();
     });
 });

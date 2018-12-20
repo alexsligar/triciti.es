@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Icon } from 'semantic-ui-react';
 import NavbarRight from './NavbarRight';
 import NavbarRightAuthed from './NavbarRightAuthed';
 import TagSearch from './tags/TagSearch';
@@ -17,7 +17,18 @@ export class Navbar extends Component {
         let tagSearchContent;
         const path = this.props.location.pathname;
         if (path.substring(0,5) !== '/tags') {
-            tagSearchContent = (<Menu.Item><TagSearch initialValue='' /></Menu.Item>);
+            tagSearchContent = (
+                <Fragment>
+                    <Menu.Item>
+                        <Link to='/tags'>
+                            <Icon name='tag' />
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <TagSearch initialValue='' />
+                    </Menu.Item>
+                </Fragment>
+            );
         }
         return (
             <Menu>
@@ -34,7 +45,7 @@ export class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-    authedUser: PropTypes.string,
+    authedUser: PropTypes.object,
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
     })

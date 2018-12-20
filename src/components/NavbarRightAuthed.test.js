@@ -8,11 +8,12 @@ import ConnectedNavbarRightAuthed, { NavbarRightAuthed } from './NavbarRightAuth
 import { storeFactory } from '../../test/testUtils';
 
 const defaultProps = {
-    authedUser: '1abc',
+    authedUserId: '1abc',
     handleLogoutUser: () => {},
 }
-const setup = (props = {...defaultProps}) => {
-    const wrapper = shallow(<NavbarRightAuthed {...props} />);
+const setup = (props = {}) => {
+    const propsPassed = {...defaultProps, ...props}
+    const wrapper = shallow(<NavbarRightAuthed {...propsPassed} />);
     return wrapper;
 }
 
@@ -40,7 +41,6 @@ describe('logout click', () => {
 
         const handleLogoutUser = jest.fn();
         const props = {
-            authedUser: '1abc',
             handleLogoutUser,
         }
         const wrapper = setup(props);
@@ -54,13 +54,14 @@ describe('connect', () => {
 
     it('should connect to the store with the correct props', () => {
 
+        const authedUser = { id: '1', username: '1abc' };
         const initialState = {
-            authedUser: '1abc',
+            authedUser,
         };
         const store = storeFactory(initialState);
         const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedNavbarRightAuthed /></Provider></Router>);
         const componentProps = wrapper.find(NavbarRightAuthed).props();
-        expect(componentProps.authedUser).toBe('1abc');
+        expect(componentProps.authedUserId).toBe('1');
         expect(componentProps.handleLogoutUser).toBeInstanceOf(Function);
     });
 });

@@ -27,7 +27,7 @@ export class NavbarRightAuthed extends Component {
                     </Link>
                 </Menu.Item>
                 <Menu.Item>
-                    <Link to={'/users/' + this.props.authedUser}>
+                    <Link to={'/users/' + this.props.authedUserId}>
                         <Icon name='user' />
                     </Link>
                 </Menu.Item>
@@ -42,13 +42,13 @@ export class NavbarRightAuthed extends Component {
 }
 
 NavbarRightAuthed.propTypes = {
-    authedUser: PropTypes.string.isRequired,
+    authedUserId: PropTypes.string.isRequired,
     handleLogoutUser: PropTypes.func.isRequired,
 }
 
 function mapStateToProps ({ authedUser }) {
     return {
-        authedUser,
+        authedUserId: authedUser.id,
     }
 }
 
