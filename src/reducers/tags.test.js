@@ -3,7 +3,7 @@ import {
     TAGS_ERROR,
     TAGS_LOADING,
     TAGS_SUCCESS,
-} from '../actions/tags';
+} from '../actions/tags/getTags';
 
 describe('tags reducer', () => {
     it('should return the expected initial state', () => {

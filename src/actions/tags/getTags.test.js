@@ -9,7 +9,7 @@ import {
     TAGS_SUCCESS,
     TAGS_ERROR,
     handleGetTags
-} from './tags';
+} from './getTags';
 
 describe('handleGetTags action creator', () => {
 

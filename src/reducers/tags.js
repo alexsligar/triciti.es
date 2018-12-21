@@ -2,7 +2,7 @@ import {
     TAGS_ERROR,
     TAGS_LOADING,
     TAGS_SUCCESS,
-} from '../actions/tags';
+} from '../actions/tags/getTags';
 
 const initial = {
     loading: false,
