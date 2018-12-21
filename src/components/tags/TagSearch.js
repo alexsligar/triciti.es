@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Search, Icon } from 'semantic-ui-react';
-import { handleGetTags } from '../../actions/tags';
+import { handleGetTags } from '../../actions/tags/getTags';
 
 export class TagSearch extends Component {
     state = {
