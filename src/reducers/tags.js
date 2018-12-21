@@ -8,10 +8,19 @@ import {
     UPDATE_TAG_PROCESSING,
     UPDATE_TAG_SUCCESS,
 } from '../actions/tags/updateTag';
+import {
+    ADD_TAG_ERROR,
+    ADD_TAG_PROCESSING,
+    ADD_TAG_SUCCESS,
+} from '../actions/tags/addTag';
 
 const initial = {
     getTags: {
         loading: false,
+        error: null,
+    },
+    addTag: {
+        processing: false,
         error: null,
     },
     updateTag: {
@@ -48,6 +57,31 @@ export default function initialData (state = initial, action) {
                     error: null,
                 },
                 tags: action.tags,
+            }
+        case ADD_TAG_PROCESSING :
+            return {
+                ...state,
+                addTag: {
+                    processing: true,
+                    error: null,
+                }
+            }
+        case ADD_TAG_ERROR :
+            return {
+                ...state,
+                addTag: {
+                    processing: false,
+                    error: action.error,
+                }
+            }
+        case ADD_TAG_SUCCESS :
+            return {
+                ...state,
+                addTag: {
+                    processing: false,
+                    error: null,
+                },
+                tags: state.tags.concat([{ title: action.tag }]),
             }
         case UPDATE_TAG_PROCESSING :
             return {
