@@ -9,8 +9,10 @@ describe('tags reducer', () => {
     it('should return the expected initial state', () => {
 
         const expected = {
-            loading: false,
-            error: null,
+            getTags: {
+                loading: false,
+                error: null,
+            },
             tags: [],
         }
         expect(tags(undefined, {})).toEqual(expected);
@@ -19,13 +21,17 @@ describe('tags reducer', () => {
     it('should handle TAGS_LOADING', () => {
 
         const initial = {
-            loading: false,
-            error: 'Uh oh..',
+            getTags: {
+                loading: false,
+                error: 'Uh oh..',
+            },
             tags: [],
         }
         const expected = {
-            loading: true,
-            error: null,
+            getTags: {
+                loading: true,
+                error: null,
+            },
             tags: [],
         }
         const action = {
@@ -37,13 +43,17 @@ describe('tags reducer', () => {
     it('should handle TAGS_ERROR', () => {
 
         const initial = {
-            loading: true,
-            error: null,
+            getTags: {
+                loading: true,
+                error: null,
+            },
             tags: [],
         }
         const expected = {
-            loading: false,
-            error: 'Uh oh...',
+            getTags: {    
+                loading: false,
+                error: 'Uh oh...',
+            },
             tags: [],
         }
         const action = {
@@ -56,13 +66,17 @@ describe('tags reducer', () => {
     it('should handle TAGS_SUCCESS', () => {
 
         const initial = {
-            loading: true,
-            error: null,
+            getTags: {
+                loading: true,
+                error: null,
+            },
             tags: [],
         }
         const expected = {
-            loading: false,
-            error: null,
+            getTags: {
+                loading: false,
+                error: null,
+            },
             tags: [{ title: 'test' }],
         }
         const action = {
@@ -71,4 +85,5 @@ describe('tags reducer', () => {
         };
         expect(tags(initial, action)).toEqual(expected);
     });
+
 });

@@ -123,8 +123,10 @@ describe('connect', () => {
 
         const initialState = {
             tags: {
-                loading: false,
-                error: null,
+                getTags: {
+                    loading: false,
+                    error: null,
+                },
                 tags: defaultProps.tags,
             }
         }

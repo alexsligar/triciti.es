@@ -81,8 +81,8 @@ TagSearch.propTypes = {
 
 const mapStateToProps = ({ tags }) => {
     return {
-        loading: tags.loading,
-        error: tags.error,
+        loading: tags.getTags.loading,
+        error: tags.getTags.error,
         tags: tags.tags,
     }
 }
