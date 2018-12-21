@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import jsonwebtoken, { sign } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -15,7 +15,6 @@ import {
     handleAuthUser,
     removeAuthUserError,
     handleLogoutUser,
-    setAuthedUser,
     handleAuthedUser,
 } from './authUser';
 
