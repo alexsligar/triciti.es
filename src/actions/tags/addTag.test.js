@@ -46,4 +46,15 @@ describe('handleAddTag action creator', () => {
         });
     });
 
+    it('should dispatch ADD_TAG_ERROR when fetch fails', async () => {
+
+        fetch.mockRejectOnce();
+        await store.dispatch(handleAddTag('test'));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ 
+            type: ADD_TAG_ERROR, 
+            error: 'Error adding tag.',
+        });
+    });
+
 });
