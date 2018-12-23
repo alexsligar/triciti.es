@@ -27,7 +27,7 @@ export const handleAddTag = (tag) => {
         dispatch(addTagProcessing());
         try {
             const token = localStorage.getItem('authedUser');
-            const response = await fetch(`http://localhost:8080/tags/`, {
+            const response = await fetch(`http://localhost:8080/tags`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
