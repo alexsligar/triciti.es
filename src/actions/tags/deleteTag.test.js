@@ -1,0 +1,60 @@
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+import { 
+    DELETE_TAG_PROCESSING,
+    DELETE_TAG_ERROR,
+    DELETE_TAG_SUCCESS,
+    handleDeleteTag
+} from './deleteTag';
+
+describe('handleDeleteTag action creator', () => {
+
+    let store;
+    beforeEach(() => {
+
+        store = mockStore();
+        fetch.resetMocks();
+    });
+
+    it('should dispatch DELETE_TAG_PROCESSING', async () => {
+
+        await store.dispatch(handleDeleteTag('test'));
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({ type: DELETE_TAG_PROCESSING });
+    });
+
+    it('should dispatch DELETE_TAG_SUCCESS when fetch responds with 204 status', async () => {
+
+        fetch.mockResponseOnce(JSON.stringify({}), { status: 204 });
+        await store.dispatch(handleDeleteTag('test'));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ type: DELETE_TAG_SUCCESS, tag: 'test' });
+    });
+
+    it('should dispatch DELETE_TAG_ERROR when any other status code occurs', async () => {
+
+        fetch.mockResponseOnce(JSON.stringify({}), { status: 400 });
+        await store.dispatch(handleDeleteTag('test'));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ 
+            type: DELETE_TAG_ERROR, 
+            error: 'Error deleting tag.',
+        });
+    });
+
+    it('should dispatch DELETE_TAG_ERROR when fetch fails', async () => {
+
+        fetch.mockRejectOnce();
+        await store.dispatch(handleDeleteTag('test'));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ 
+            type: DELETE_TAG_ERROR, 
+            error: 'Error deleting tag.',
+        });
+    });
+
+});

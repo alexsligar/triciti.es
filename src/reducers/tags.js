@@ -13,6 +13,11 @@ import {
     ADD_TAG_PROCESSING,
     ADD_TAG_SUCCESS,
 } from '../actions/tags/addTag';
+import {
+    DELETE_TAG_ERROR,
+    DELETE_TAG_PROCESSING,
+    DELETE_TAG_SUCCESS,
+} from '../actions/tags/deleteTag';
 
 const initial = {
     getTags: {
@@ -24,6 +29,10 @@ const initial = {
         error: null,
     },
     updateTag: {
+        processing: false,
+        error: null,
+    },
+    deleteTag: {
         processing: false,
         error: null,
     },
@@ -113,6 +122,31 @@ export default function initialData (state = initial, action) {
                         return { title: action.newTag };
                     }
                 }),
+            }
+        case DELETE_TAG_PROCESSING :
+            return {
+                ...state,
+                deleteTag: {
+                    processing: true,
+                    error: null,
+                },
+            }
+        case DELETE_TAG_ERROR :
+            return {
+                ...state,
+                deleteTag: {
+                    processing: false,
+                    error: action.error,
+                },
+            }
+        case DELETE_TAG_SUCCESS :
+            return {
+                ...state,
+                deleteTag: {
+                    processing: false,
+                    error: null,
+                },
+                tags: state.tags.filter((tag) => tag.title !== action.tag),
             }
         default :
             return state;

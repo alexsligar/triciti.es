@@ -14,6 +14,11 @@ import {
     ADD_TAG_ERROR,
     ADD_TAG_SUCCESS,
 } from '../actions/tags/addTag';
+import {
+    DELETE_TAG_PROCESSING,
+    DELETE_TAG_ERROR,
+    DELETE_TAG_SUCCESS,
+} from '../actions/tags/deleteTag';
 
 const initialState = {
     getTags: {
@@ -25,6 +30,10 @@ const initialState = {
         error: null,
     },
     updateTag: {
+        processing: false,
+        error: null,
+    },
+    deleteTag: {
         processing: false,
         error: null,
     },
@@ -236,6 +245,73 @@ describe('tags reducer', () => {
         }
         const action = {
             type: ADD_TAG_SUCCESS,
+            tag: 'two'
+        };
+        expect(tags(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_TAG_PROCESSING', () => {
+        const initial = {
+            ...initialState,
+            deleteTag: {
+                processing: false,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteTag: {
+                processing: true,
+                error: null,
+            },
+        }
+        const action = {
+            type: DELETE_TAG_PROCESSING,
+        };
+        expect(tags(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_TAG_ERROR', () => {
+        const initial = {
+            ...initialState,
+            deleteTag: {
+                processing: true,
+                error: null,
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteTag: {
+                processing: false,
+                error: 'Uh oh',
+            },
+        }
+        const action = {
+            type: DELETE_TAG_ERROR,
+            error: 'Uh oh',
+        };
+        expect(tags(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_TAG_SUCCESS', () => {
+        const initial = {
+            ...initialState,
+            deleteTag: {
+                processing: true,
+                error: 'Uh oh',
+            },
+            tags: [{ title: 'test' }, { title: 'two' }],
+        }
+        const expected = {
+            ...initialState,
+            deleteTag: {
+                processing: false,
+                error: null,
+            },
+            tags: [{ title: 'test' }],
+        }
+        const action = {
+            type: DELETE_TAG_SUCCESS,
             tag: 'two'
         };
         expect(tags(initial, action)).toEqual(expected);
