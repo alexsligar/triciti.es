@@ -1,5 +1,6 @@
 export const ADD_TAG_PROCESSING = 'ADD_TAG_PROCESSING';
 export const ADD_TAG_ERROR = 'ADD_TAG_ERROR';
+export const REMOVE_ADD_TAG_ERROR = 'REMOVE_ADD_TAG_ERROR';
 export const ADD_TAG_SUCCESS = 'ADD_TAG_SUCCESS';
 
 const addTagProcessing = () => {
@@ -20,6 +21,12 @@ const addTagSuccess = (tag) => {
         type: ADD_TAG_SUCCESS,
         tag
     };
+}
+
+export const removeAddTagError = () => {
+    return {
+        type: REMOVE_ADD_TAG_ERROR,
+    }
 }
 
 export const handleAddTag = (tag) => {

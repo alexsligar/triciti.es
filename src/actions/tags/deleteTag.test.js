@@ -7,8 +7,10 @@ const mockStore = configureMockStore(middlewares);
 import { 
     DELETE_TAG_PROCESSING,
     DELETE_TAG_ERROR,
+    REMOVE_DELETE_TAG_ERROR,
     DELETE_TAG_SUCCESS,
-    handleDeleteTag
+    handleDeleteTag,
+    removeDeleteTagError,
 } from './deleteTag';
 
 describe('handleDeleteTag action creator', () => {
@@ -57,4 +59,17 @@ describe('handleDeleteTag action creator', () => {
         });
     });
 
+});
+
+describe('removeDeleteTagError action creator', () => {
+    
+    it('should dispatch REMOVE_DELETE_TAG_ERROR', () => {
+
+        const store = mockStore();
+        store.dispatch(removeDeleteTagError());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: REMOVE_DELETE_TAG_ERROR,
+        })
+    })
 });

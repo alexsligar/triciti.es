@@ -7,8 +7,10 @@ const mockStore = configureMockStore(middlewares);
 import { 
     ADD_TAG_PROCESSING,
     ADD_TAG_ERROR,
+    REMOVE_ADD_TAG_ERROR,
     ADD_TAG_SUCCESS,
-    handleAddTag
+    handleAddTag,
+    removeAddTagError,
 } from './addTag';
 
 describe('handleAddTag action creator', () => {
@@ -57,4 +59,17 @@ describe('handleAddTag action creator', () => {
         });
     });
 
+});
+
+describe('removeAddTagError action creator', () => {
+    
+    it('should dispatch REMOVE_ADD_TAG_ERROR', () => {
+
+        const store = mockStore();
+        store.dispatch(removeAddTagError());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: REMOVE_ADD_TAG_ERROR,
+        })
+    })
 });

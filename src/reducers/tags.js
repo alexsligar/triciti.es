@@ -5,16 +5,19 @@ import {
 } from '../actions/tags/getTags';
 import {
     UPDATE_TAG_ERROR,
+    REMOVE_UPDATE_TAG_ERROR,
     UPDATE_TAG_PROCESSING,
     UPDATE_TAG_SUCCESS,
 } from '../actions/tags/updateTag';
 import {
     ADD_TAG_ERROR,
+    REMOVE_ADD_TAG_ERROR,
     ADD_TAG_PROCESSING,
     ADD_TAG_SUCCESS,
 } from '../actions/tags/addTag';
 import {
     DELETE_TAG_ERROR,
+    REMOVE_DELETE_TAG_ERROR,
     DELETE_TAG_PROCESSING,
     DELETE_TAG_SUCCESS,
 } from '../actions/tags/deleteTag';
@@ -46,8 +49,8 @@ export default function initialData (state = initial, action) {
             return {
                 ...state,
                 getTags: {
+                    ...state.getTags,
                     loading: true,
-                    error: null,
                 },
             }
         case TAGS_ERROR :
@@ -71,8 +74,8 @@ export default function initialData (state = initial, action) {
             return {
                 ...state,
                 addTag: {
+                    ...state.addTag,
                     processing: true,
-                    error: null,
                 }
             }
         case ADD_TAG_ERROR :
@@ -81,6 +84,14 @@ export default function initialData (state = initial, action) {
                 addTag: {
                     processing: false,
                     error: action.error,
+                }
+            }
+        case REMOVE_ADD_TAG_ERROR :
+            return {
+                ...state,
+                addTag: {
+                    ...state.addTag,
+                    error: null,
                 }
             }
         case ADD_TAG_SUCCESS :
@@ -96,8 +107,8 @@ export default function initialData (state = initial, action) {
             return {
                 ...state,
                 updateTag: {
+                    ...state.updateTag,
                     processing: true,
-                    error: null,
                 },
             }
         case UPDATE_TAG_ERROR :
@@ -107,6 +118,14 @@ export default function initialData (state = initial, action) {
                     processing: false,
                     error: action.error,
                 },
+            }
+        case REMOVE_UPDATE_TAG_ERROR :
+            return {
+                ...state,
+                updateTag: {
+                    ...state.updateTag,
+                    error: null,
+                }
             }
         case UPDATE_TAG_SUCCESS :
             return {
@@ -127,8 +146,8 @@ export default function initialData (state = initial, action) {
             return {
                 ...state,
                 deleteTag: {
+                    ...state.deleteTag,
                     processing: true,
-                    error: null,
                 },
             }
         case DELETE_TAG_ERROR :
@@ -138,6 +157,14 @@ export default function initialData (state = initial, action) {
                     processing: false,
                     error: action.error,
                 },
+            }
+        case REMOVE_DELETE_TAG_ERROR :
+            return {
+                ...state,
+                deleteTag: {
+                    ...state.deleteTag,
+                    error: null,
+                }
             }
         case DELETE_TAG_SUCCESS :
             return {

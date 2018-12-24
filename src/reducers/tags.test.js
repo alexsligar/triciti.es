@@ -7,16 +7,19 @@ import {
 import {
     UPDATE_TAG_PROCESSING,
     UPDATE_TAG_ERROR,
+    REMOVE_UPDATE_TAG_ERROR,
     UPDATE_TAG_SUCCESS,
 } from '../actions/tags/updateTag';
 import {
     ADD_TAG_PROCESSING,
     ADD_TAG_ERROR,
+    REMOVE_ADD_TAG_ERROR,
     ADD_TAG_SUCCESS,
 } from '../actions/tags/addTag';
 import {
     DELETE_TAG_PROCESSING,
     DELETE_TAG_ERROR,
+    REMOVE_DELETE_TAG_ERROR,
     DELETE_TAG_SUCCESS,
 } from '../actions/tags/deleteTag';
 
@@ -59,7 +62,7 @@ describe('tags reducer', () => {
             ...initialState,
             getTags: {
                 loading: true,
-                error: null,
+                error: 'Uh oh..',
             },
         }
         const action = {
@@ -119,15 +122,15 @@ describe('tags reducer', () => {
         const initial = {
             ...initialState,
             updateTag: {
+                ...initialState.updateTag,
                 processing: false,
-                error: 'Uh oh',
             },
         }
         const expected = {
             ...initialState,
             updateTag: {
+                ...initialState.updateTag,
                 processing: true,
-                error: null,
             },
         }
         const action = {
@@ -158,6 +161,27 @@ describe('tags reducer', () => {
         expect(tags(initial, action)).toEqual(expected);
     });
 
+    it('should handle REMOVE_UPDATE_TAG_ERROR', () => {
+        const initial = {
+            ...initialState,
+            updateTag: {
+                ...initialState.updateTag,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            updateTag: {
+                ...initialState.updateTag,
+                error: null,
+            },
+        }
+        const action = {
+            type: REMOVE_UPDATE_TAG_ERROR,
+        };
+        expect(tags(initial, action)).toEqual(expected);
+    });
+
     it('should handle UPDATE_TAG_SUCCESS', () => {
         const initial = {
             ...initialState,
@@ -165,7 +189,7 @@ describe('tags reducer', () => {
                 processing: true,
                 error: 'Uh oh',
             },
-            tags: [{ title: 'test' }],
+            tags: [{ title: 'test' }, { title: 'two' }],
         }
         const expected = {
             ...initialState,
@@ -173,7 +197,7 @@ describe('tags reducer', () => {
                 processing: false,
                 error: null,
             },
-            tags: [{ title: 'newTest' }],
+            tags: [{ title: 'newTest' }, { title: 'two' }],
         }
         const action = {
             type: UPDATE_TAG_SUCCESS,
@@ -187,15 +211,15 @@ describe('tags reducer', () => {
         const initial = {
             ...initialState,
             addTag: {
+                ...initialState.addTag,
                 processing: false,
-                error: 'Uh oh',
             },
         }
         const expected = {
             ...initialState,
             addTag: {
+                ...initialState.addTag,
                 processing: true,
-                error: null,
             },
         }
         const action = {
@@ -222,6 +246,27 @@ describe('tags reducer', () => {
         const action = {
             type: ADD_TAG_ERROR,
             error: 'Uh oh',
+        };
+        expect(tags(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_ADD_TAG_ERROR', () => {
+        const initial = {
+            ...initialState,
+            addTag: {
+                ...initialState.addTag,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            addTag: {
+                ...initialState.addTag,
+                error: null,
+            },
+        }
+        const action = {
+            type: REMOVE_ADD_TAG_ERROR,
         };
         expect(tags(initial, action)).toEqual(expected);
     });
@@ -254,15 +299,15 @@ describe('tags reducer', () => {
         const initial = {
             ...initialState,
             deleteTag: {
+                ...initialState.deleteTag,
                 processing: false,
-                error: 'Uh oh',
             },
         }
         const expected = {
             ...initialState,
             deleteTag: {
+                ...initialState.deleteTag,
                 processing: true,
-                error: null,
             },
         }
         const action = {
@@ -289,6 +334,27 @@ describe('tags reducer', () => {
         const action = {
             type: DELETE_TAG_ERROR,
             error: 'Uh oh',
+        };
+        expect(tags(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_DELETE_TAG_ERROR', () => {
+        const initial = {
+            ...initialState,
+            deleteTag: {
+                ...initialState.deleteTag,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteTag: {
+                ...initialState.deleteTag,
+                error: null,
+            },
+        }
+        const action = {
+            type: REMOVE_DELETE_TAG_ERROR,
         };
         expect(tags(initial, action)).toEqual(expected);
     });

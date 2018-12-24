@@ -7,8 +7,10 @@ const mockStore = configureMockStore(middlewares);
 import { 
     UPDATE_TAG_PROCESSING,
     UPDATE_TAG_ERROR,
+    REMOVE_UPDATE_TAG_ERROR,
     UPDATE_TAG_SUCCESS,
-    handleUpdateTag
+    handleUpdateTag,
+    removeUpdateTagError,
 } from './updateTag';
 
 describe('handleUpdateTag action creator', () => {
@@ -46,4 +48,17 @@ describe('handleUpdateTag action creator', () => {
         });
     });
 
+});
+
+describe('removeUpdateTagError action creator', () => {
+    
+    it('should dispatch REMOVE_UPDATE_TAG_ERROR', () => {
+
+        const store = mockStore();
+        store.dispatch(removeUpdateTagError());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: REMOVE_UPDATE_TAG_ERROR,
+        })
+    })
 });
