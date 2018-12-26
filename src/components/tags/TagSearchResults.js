@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, Icon, Dimmer, Header, Loader, Card } from 'semantic-ui-react';
 import TagSearch from './TagSearch';
-import { handleTagSearch } from '../../actions/items';
+import { handleTagSearch } from '../../actions/items/getItems';
 import ItemCard from '../items/ItemCard';
 
 export class TagSearchResults extends Component {

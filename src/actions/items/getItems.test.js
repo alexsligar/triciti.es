@@ -9,7 +9,7 @@ import {
     ITEMS_SUCCESS,
     ITEMS_ERROR,
     handleTagSearch
-} from './items';
+} from './getItems';
 
 describe('handleTagSearch action creator', () => {
 

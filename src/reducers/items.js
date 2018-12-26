@@ -2,7 +2,7 @@ import {
     ITEMS_ERROR,
     ITEMS_LOADING,
     ITEMS_SUCCESS,
-} from '../actions/items';
+} from '../actions/items/getItems';
 
 import {
     ADD_ITEM_PROCESSING,
