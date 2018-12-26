@@ -18,4 +18,16 @@ describe('render', () => {
         const card = wrapper.find(Card);
         expect(card.length).toBe(1);
     });
+
+    it('should render without error when start_date is null', () => {
+
+        const props = {
+            name: 'Test Item',
+            type: 'Activity',
+            location: '1500 W. 1st Ave., Kennewick, WA 99336',
+        };
+        const wrapper = shallow(<ItemCard {...props} />);
+        const card = wrapper.find(Card);
+        expect(card.length).toBe(1);
+    });
 });
