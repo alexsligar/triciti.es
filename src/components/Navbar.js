@@ -14,22 +14,25 @@ export class Navbar extends Component {
         if (this.props.authedUser) {
             right = <NavbarRightAuthed />;
         }
-        let tagSearchContent;
         const path = this.props.location.pathname;
-        if (path.substring(0,5) !== '/tags') {
-            tagSearchContent = (
-                <Fragment>
+        const tagSearchContent = (
+            <Fragment>
+                {path !== '/tags' ?
                     <Menu.Item>
                         <Link to='/tags'>
                             <Icon name='tag' />
                         </Link>
                     </Menu.Item>
+                    : null
+                }
+                {path.substring(0,5) !== '/tags' ?
                     <Menu.Item>
                         <TagSearch initialValue='' />
                     </Menu.Item>
-                </Fragment>
-            );
-        }
+                    : null
+                }                
+            </Fragment>
+        );
         return (
             <Menu>
                 <Menu.Item header>
