@@ -5,16 +5,18 @@ import {
     ITEMS_SUCCESS
 } from '../actions/items';
 
+const initialState = {
+    getItems: {
+        loading: false,
+        error: null,
+    },
+    items: [],
+};
+
 describe('items reducer', () => {
     it('should return the correct initial state', () => {
 
-        const expected = {
-            loading: false,
-            error: null,
-            items: [],
-        }
-
-        expect(items(undefined, {})).toEqual(expected);
+        expect(items(undefined, {})).toEqual(initialState);
     });
 
     it('should handle ITEMS_LOADING', () => {
@@ -23,15 +25,19 @@ describe('items reducer', () => {
             type: ITEMS_LOADING,
         };
         const initial = {
-            loading: false,
-            error: null,
-            items: [],
-        }
+            ...initialState,
+            getItems: {
+                loading: false,
+                error: 'Uh oh',
+            },
+        };
         const expected = {
-            loading: true,
-            error: null,
-            items: [],
-        }
+            ...initialState,
+            getItems: {
+                loading: true,
+                error: 'Uh oh',
+            },
+        };
         expect(items(initial, action)).toEqual(expected);
     });
 
@@ -42,14 +48,18 @@ describe('items reducer', () => {
             error: 'test'
         };
         const initial = {
-            loading: true,
-            error: null,
-            items: [],
+            ...initialState,
+            getItems: {
+                loading: true,
+                error: null,
+            },
         };
         const expected = {
-            loading: false,
-            error: 'test',
-            items: [],
+            ...initialState,
+            getItems: {
+                loading: false,
+                error: action.error,
+            },
         };
         expect(items(initial, action)).toEqual(expected);
     });
@@ -62,13 +72,18 @@ describe('items reducer', () => {
             items: itemsExample,
         };
         const initial = {
-            loading: true,
-            error: 'test',
-            items: [],
-        }
+            ...initialState,
+            getItems: {
+                ...initialState.getItems,
+                loading: true,
+            },
+        };
         const expected = {
-            loading: false,
-            error: null,
+            ...initialState,
+            getItems: {
+                ...initialState.getItems,
+                loading: false,
+            },
             items: itemsExample,
         };
         expect(items(initial, action)).toEqual(expected);

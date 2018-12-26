@@ -4,9 +4,12 @@ import {
     ITEMS_SUCCESS,
 } from '../actions/items';
 
+
 const initialState = {
-    loading: false,
-    error: null,
+    getItems: {
+        loading: false,
+        error: null,
+    },
     items: [],
 };
 
@@ -15,20 +18,28 @@ export default function registerUser (state = initialState, action) {
         case ITEMS_ERROR :
             return {
                 ...state,
-                error: action.error,
-                loading: false,
+                getItems: {
+                    ...state.getItems,
+                    error: action.error,
+                    loading: false,
+                },
             };
         case ITEMS_LOADING :
             return {
                 ...state,
-                error: null,
-                loading: true,
+                getItems: {
+                    ...state.getItems,
+                    loading: true,
+                },
             }
         case ITEMS_SUCCESS :
             return {
                 ...state,
-                error: null,
-                loading: false,
+                getItems: {
+                    ...state.getItems,
+                    loading: false,
+                    error: null,
+                },
                 items: action.items,
             }
         default :
