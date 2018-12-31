@@ -133,8 +133,10 @@ describe('connect', () => {
 
         const initialState = {
             items: {
-                loading: false,
-                error: 'Uh oh..',
+                getItems: {
+                    loading: false,
+                    error: 'Uh oh..',
+                },
                 items: [{ id: 1, name: 'Test Item', type: 'Place', location: 'Richland', }],
             },
         };
