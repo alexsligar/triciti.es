@@ -1,3 +1,5 @@
+import history from '../../history';
+
 export const ADD_ITEM_PROCESSING = 'ADD_ITEM_PROCESSING';
 export const ADD_ITEM_ERROR = 'ADD_ITEM_ERROR';
 export const ADD_ITEM_SUCCESS = 'ADD_ITEM_SUCCESS';
@@ -46,6 +48,7 @@ export const handleAddItem = (item) => {
             if (response.status === 200) {
                 const { data } = await response.json();
                 dispatch(addItemSuccess(data));
+                history.push('/');
             } else {
                 throw new Error();
             }
