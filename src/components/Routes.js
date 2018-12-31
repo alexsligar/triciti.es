@@ -7,6 +7,7 @@ import Register from './users/Register';
 import Login from './Login';
 import TagSearchResults from './tags/TagSearchResults';
 import Tags from './tags/Tags';
+import AddItem from './items/AddItem';
 
 export class Routes extends Component {
 
@@ -28,6 +29,7 @@ export class Routes extends Component {
           <Route path='/register' render={() => (<Redirect to='/' />)} />
           <Route path='/tags/:tag' component={TagSearchResults} />
           <Route path='/tags' component={Tags} />
+          <Route path='/items/add' component={AddItem} />
         </Switch>
       )
     }
