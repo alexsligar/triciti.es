@@ -50,6 +50,7 @@ export class TagSearchResults extends Component {
                                         return (
                                             <ItemCard
                                                 key={item.id}
+                                                id={item.id}
                                                 name={item.name}
                                                 type={item.type}
                                                 location={item.location}
