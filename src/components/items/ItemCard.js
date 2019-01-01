@@ -1,34 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { Card, Icon } from 'semantic-ui-react';
+import DateString from './DateString';
 
 moment.locale('en');
 
 export default function ItemCard (props) {
-    let dateString;
-    if(props.start_date) {
-        dateString = moment(props.start_date).format('lll');
-    }
-    if(props.end_date) {
-        dateString += '-'
-        if(moment(props.start_date).format('l') === moment(props.end_date).format('l')) {
-            dateString += moment(props.end_date).format('h:mm A');
-        } else {
-            dateString += moment(props.end_date).format('lll');
-        }
-    }
-
+    
     return (
         <Card>
             <Card.Content>
-                <Card.Header>{props.name}</Card.Header>
+                <Card.Header>
+                    <Link to={'/items/' + props.id}>
+                        {props.name}
+                    </Link>
+                </Card.Header>
                 <Card.Meta>{props.type}</Card.Meta>
                 <Card.Meta><Icon name='map marker alternate' />{props.location}</Card.Meta>
-                {dateString && 
+                {props.type === 'event' && 
                     (
                         <Card.Meta><Icon name='calendar' />
-                            {dateString}
+                            <DateString start_date={props.start_date} end_date={props.end_date} />
                         </Card.Meta>
                     )
                 }
@@ -38,6 +32,7 @@ export default function ItemCard (props) {
 }
 
 ItemCard.propTypes = {
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
