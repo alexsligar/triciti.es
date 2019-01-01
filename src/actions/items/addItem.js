@@ -11,10 +11,9 @@ const addItemProcessing = () => {
     }
 }
 
-const addItemSuccess = (item) => {
+const addItemSuccess = () => {
     return {
         type: ADD_ITEM_SUCCESS,
-        item,
     }
 }
 
@@ -47,8 +46,11 @@ export const handleAddItem = (item) => {
             });
             if (response.status === 200) {
                 const { data } = await response.json();
-                dispatch(addItemSuccess(data));
-                history.push('/');
+                dispatch(addItemSuccess());
+                history.push(`/items/${data.id}`);
+            } else if (response.status === 409) {
+                const { message } = await response.json();
+                dispatch(addItemError(message));
             } else {
                 throw new Error();
             }

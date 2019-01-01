@@ -34,7 +34,15 @@ describe('handleAddItem action creator', () => {
         fetch.mockResponseOnce(JSON.stringify({ data: { name: 'Test Item' } }), { status: 200 });
         await store.dispatch(handleAddItem({ name: 'Test Item', type: 'Activity' }));
         const actions = store.getActions();
-        expect(actions[1]).toEqual({ type: ADD_ITEM_SUCCESS, item: { name: 'Test Item' } });
+        expect(actions[1]).toEqual({ type: ADD_ITEM_SUCCESS });
+    });
+
+    it('should dispatch ADD_ITEM_ERROR when fetch responds with 409 status', async () => {
+
+        fetch.mockResponseOnce(JSON.stringify({ message: 'Test Error' }), { status: 409 });
+        await store.dispatch(handleAddItem({ name: 'Test Item', type: 'Activity' }));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ type: ADD_ITEM_ERROR, error: 'Test Error', });
     });
 
     it('should dispatch ADD_ITEM_ERROR when any other status code occurs', async () => {
