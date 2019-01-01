@@ -29,15 +29,27 @@ describe('handleTagSearch action creator', () => {
 
     it('should dispatch ITEMS_SUCCESS when fetch responds with 200 status', async () => {
 
-        fetch.mockResponseOnce(JSON.stringify([{ name: 'Test Item' }]), { status: 200 });
+        const items = [{ name: 'Test Item' }];
+        fetch.mockResponseOnce(JSON.stringify({ data: items }), { status: 200 });
         await store.dispatch(handleTagSearch('test'));
         const actions = store.getActions();
-        expect(actions[1]).toEqual({ type: ITEMS_SUCCESS });
+        expect(actions[1]).toEqual({ type: ITEMS_SUCCESS, items });
     });
 
     it('should dispatch ITEMS_ERROR when any other status code occurs', async () => {
 
         fetch.mockResponseOnce(JSON.stringify({}), { status: 400 });
+        await store.dispatch(handleTagSearch('test'));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({ 
+            type: ITEMS_ERROR, 
+            error: 'Uh oh, something went wrong. Please try again.',
+        });
+    });
+
+    it('should dispatch ITEMS_ERROR when fetch fails', async () => {
+
+        fetch.mockRejectOnce('Fetch failed');
         await store.dispatch(handleTagSearch('test'));
         const actions = store.getActions();
         expect(actions[1]).toEqual({ 
