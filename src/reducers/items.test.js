@@ -5,13 +5,28 @@ import {
     ITEMS_SUCCESS
 } from '../actions/items/getItems';
 import { 
+    ITEM_LOADING, 
+    ITEM_ERROR, 
+    ITEM_SUCCESS
+} from '../actions/items/getItem';
+import { 
     ADD_ITEM_PROCESSING,
     ADD_ITEM_ERROR,
     ADD_ITEM_SUCCESS,
     REMOVE_ADD_ITEM_ERROR,
 } from '../actions/items/addItem';
+import { 
+    UPDATE_ITEM_PROCESSING,
+    UPDATE_ITEM_ERROR,
+    UPDATE_ITEM_SUCCESS,
+    REMOVE_UPDATE_ITEM_ERROR,
+} from '../actions/items/updateItem';
 
 const initialState = {
+    getItem: {
+        loading: true,
+        error: null,
+    },
     getItems: {
         loading: false,
         error: null,
@@ -20,6 +35,11 @@ const initialState = {
         processing: false,
         error: null,
     },
+    updateItem: {
+        processing: false,
+        error: null,
+    },
+    item: {},
     items: [],
 };
 
@@ -99,6 +119,76 @@ describe('items reducer', () => {
         expect(items(initial, action)).toEqual(expected);
     });
 
+    it('should handle ITEM_LOADING', () => {
+
+        const action = {
+            type: ITEM_LOADING,
+        };
+        const initial = {
+            ...initialState,
+            getItem: {
+                loading: false,
+                error: 'Uh oh',
+            },
+        };
+        const expected = {
+            ...initialState,
+            getItem: {
+                loading: true,
+                error: 'Uh oh',
+            },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle ITEM_ERROR', () => {
+
+        const action = {
+            type: ITEM_ERROR,
+            error: 'test'
+        };
+        const initial = {
+            ...initialState,
+            getItem: {
+                loading: true,
+                error: null,
+            },
+        };
+        const expected = {
+            ...initialState,
+            getItem: {
+                loading: false,
+                error: action.error,
+            },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle ITEM_SUCCESS', () => {
+
+        const itemExample = { name: 'test item' };
+        const action = {
+            type: ITEM_SUCCESS,
+            item: itemExample,
+        };
+        const initial = {
+            ...initialState,
+            getItem: {
+                ...initialState.getItems,
+                loading: true,
+            },
+        };
+        const expected = {
+            ...initialState,
+            getItem: {
+                ...initialState.getItems,
+                loading: false,
+            },
+            item: itemExample,
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
     it('should handle ADD_ITEM_PROCESSING', () => {
 
         const action = {
@@ -152,7 +242,6 @@ describe('items reducer', () => {
 
         const action = {
             type: ADD_ITEM_SUCCESS,
-            item: { name: 'Test Item' },
         };
         const initial = {
             ...initialState,
@@ -160,7 +249,6 @@ describe('items reducer', () => {
                 processing: true,
                 error: 'Uh oh',
             },
-            items: [{ name: 'First Test' }],
         };
         const expected = {
             ...initialState,
@@ -168,7 +256,6 @@ describe('items reducer', () => {
                 processing: false,
                 error: null,
             },
-            items: initial.items.concat([action.item]),
         };
         expect(items(initial, action)).toEqual(expected);
     });
@@ -189,6 +276,99 @@ describe('items reducer', () => {
             ...initialState,
             addItem: {
                 ...initialState.addItem,
+                error: null,
+            },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle UPDATE_ITEM_PROCESSING', () => {
+
+        const action = {
+            type: UPDATE_ITEM_PROCESSING,
+        };
+        const initial = {
+            ...initialState,
+            updateItem: {
+                ...initialState.updateItem,
+                processing: false,
+                error: 'Uh oh',
+            }
+        };
+        const expected = {
+            ...initialState,
+            updateItem: {
+                ...initialState.updateItem,
+                processing: true,
+                error: 'Uh oh',
+            },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle UPDATE_ITEM_ERROR', () => {
+
+        const action = {
+            type: UPDATE_ITEM_ERROR,
+            error: 'Uh oh',
+        };
+        const initial = {
+            ...initialState,
+            updateItem: {
+                ...initialState.updateItem,
+                processing: true,
+                error: null,
+            },
+        };
+        const expected = {
+            ...initialState,
+            updateItem: {
+                ...initialState.updateItem,
+                processing: false,
+                error: action.error,
+            },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle UPDATE_ITEM_SUCCESS', () => {
+
+        const action = {
+            type: UPDATE_ITEM_SUCCESS,
+        };
+        const initial = {
+            ...initialState,
+            updateItem: {
+                processing: true,
+                error: 'Uh oh',
+            },
+        };
+        const expected = {
+            ...initialState,
+            updateItem: {
+                processing: false,
+                error: null,
+            },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_UPDATE_ITEM_ERROR', () => {
+
+        const action = {
+            type: REMOVE_UPDATE_ITEM_ERROR,
+        };
+        const initial = {
+            ...initialState,
+            updateItem: {
+                ...initialState.updateItem,
+                error: 'Uh oh',
+            },
+        };
+        const expected = {
+            ...initialState,
+            updateItem: {
+                ...initialState.updateItem,
                 error: null,
             },
         };

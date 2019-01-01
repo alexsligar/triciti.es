@@ -5,14 +5,31 @@ import {
 } from '../actions/items/getItems';
 
 import {
+    ITEM_LOADING,
+    ITEM_ERROR,
+    ITEM_SUCCESS,
+} from '../actions/items/getItem';
+
+import {
     ADD_ITEM_PROCESSING,
     ADD_ITEM_ERROR,
     ADD_ITEM_SUCCESS,
     REMOVE_ADD_ITEM_ERROR,
 } from '../actions/items/addItem';
 
+import {
+    UPDATE_ITEM_PROCESSING,
+    UPDATE_ITEM_ERROR,
+    UPDATE_ITEM_SUCCESS,
+    REMOVE_UPDATE_ITEM_ERROR,
+} from '../actions/items/updateItem';
+
 
 const initialState = {
+    getItem: {
+        loading: true,
+        error: null,
+    },
     getItems: {
         loading: false,
         error: null,
@@ -21,6 +38,11 @@ const initialState = {
         processing: false,
         error: null,
     },
+    updateItem: {
+        processing: false,
+        error: null,
+    },
+    item: {},
     items: [],
 };
 
@@ -53,6 +75,33 @@ export default function registerUser (state = initialState, action) {
                 },
                 items: action.items,
             }
+        case ITEM_LOADING :
+            return {
+                ...state,
+                getItem: {
+                    ...state.getItem,
+                    loading: true,
+                }
+            }
+        case ITEM_ERROR :
+            return {
+                ...state,
+                getItem: {
+                    ...state.getItem,
+                    loading: false,
+                    error: action.error,
+                },
+            }
+        case ITEM_SUCCESS :
+            return {
+                ...state,
+                getItem: {
+                    ...state.getItem,
+                    loading: false,
+                    error: null,
+                },
+                item: action.item,
+            }
         case ADD_ITEM_PROCESSING :
             return {
                 ...state,
@@ -78,13 +127,46 @@ export default function registerUser (state = initialState, action) {
                     processing: false,
                     error: null,
                 },
-                items: state.items.concat([action.item]),
             }
         case REMOVE_ADD_ITEM_ERROR :
             return {
                 ...state,
                 addItem: {
                     ...state.addItem,
+                    error: null,
+                },
+            }
+        case UPDATE_ITEM_PROCESSING :
+            return {
+                ...state,
+                updateItem: {
+                    ...state.updateItem,
+                    processing: true,
+                }
+            }
+        case UPDATE_ITEM_ERROR :
+            return {
+                ...state,
+                updateItem: {
+                    ...state.updateItem,
+                    processing: false,
+                    error: action.error,
+                },
+            }
+        case UPDATE_ITEM_SUCCESS :
+            return {
+                ...state,
+                updateItem: {
+                    ...state.updateItem,
+                    processing: false,
+                    error: null,
+                },
+            }
+        case REMOVE_UPDATE_ITEM_ERROR :
+            return {
+                ...state,
+                updateItem: {
+                    ...state.updateItem,
                     error: null,
                 },
             }
