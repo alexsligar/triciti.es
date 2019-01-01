@@ -8,6 +8,8 @@ import Login from './Login';
 import TagSearchResults from './tags/TagSearchResults';
 import Tags from './tags/Tags';
 import AddItem from './items/AddItem';
+import EditItem from './items/EditItem';
+import ShowItem from './items/ShowItem';
 
 export class Routes extends Component {
 
@@ -19,6 +21,7 @@ export class Routes extends Component {
         <Route path='/login' component={Login} />
         <Route path='/tags/:tag' component={TagSearchResults} />
         <Route path='/tags' component={Tags} />
+        <Route path='/items/:id' component={ShowItem} />
       </Switch>
     );
     if (this.props.authedUser) {
@@ -30,6 +33,8 @@ export class Routes extends Component {
           <Route path='/tags/:tag' component={TagSearchResults} />
           <Route path='/tags' component={Tags} />
           <Route path='/items/add' component={AddItem} />
+          <Route path='/items/:id/edit' component={EditItem} />
+          <Route path='/items/:id' component={ShowItem} />
         </Switch>
       )
     }
