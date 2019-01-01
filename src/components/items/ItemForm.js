@@ -1,28 +1,35 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, Segment, Label, Button, Icon, Container, Input, Select, Message } from 'semantic-ui-react';
-import DateTimePicker from 'react-semantic-datetime';
+import { Form, Segment, Label, Input, Select, Message } from 'semantic-ui-react';
 import moment from 'moment';
 import { isLength } from 'validator';
 import { handleAddItem, removeAddItemError } from '../../actions/items/addItem';
-
-moment.locale('en');
+import { handleUpdateItem, removeUpdateItemError } from '../../actions/items/updateItem';
+import SelectDates from '../universal/SelectDates';
 
 export class ItemForm extends Component {
     state = {
-        fields: {
-            name: '',
-            location: '',
-            type: '',
-            start_date: undefined,
-            end_date: undefined,
-            tags: [],
-        },
+        fields: this.props.item ? 
+            {
+                name: this.props.item.name,
+                location: this.props.item.location,
+                type: this.props.item.type,
+                start_date: this.props.item.start_date || undefined,
+                end_date: this.props.item.end_date || undefined,
+                tags: this.props.item.tags,
+            }
+        :
+            {
+                name: '',
+                location: '',
+                type: '',
+                start_date: undefined,
+                end_date: undefined,
+                tags: [],
+            },
         fieldErrors: {},
         formErrors: false,
-        editStartDate: false,
-        editEndDate: false,
     };
 
     validations = {
@@ -87,7 +94,7 @@ export class ItemForm extends Component {
 
         const errors = Object.keys(fieldErrors).filter((k) => fieldErrors[k])
         const formErrors = errors.length ? true : false;
-        this.setState({fields, fieldErrors, formErrors, editStartDate: false });
+        this.setState({fields, fieldErrors, formErrors });
     }
 
     handleEndDateChange = (value) => {
@@ -95,44 +102,15 @@ export class ItemForm extends Component {
         const fieldErrors = Object.assign({}, this.state.fieldErrors);
         fields['end_date'] = value;
         fieldErrors['end_date'] = this.validations['end_date'](value, fields.start_date);
-        //revalidate the start_date field as it is dependent on end_date
-        fieldErrors['start_date'] = this.validations['start_date'](fields.start_date, value);
+        //need to pass null instead of undefined so default params dont set in
+        let passedValue = value;
+        if (!passedValue) passedValue = null;
+        //revalidate the start_date field as it is dependent on 
+        fieldErrors['start_date'] = this.validations['start_date'](fields.start_date, passedValue);
 
         const errors = Object.keys(fieldErrors).filter((k) => fieldErrors[k])
         const formErrors = errors.length ? true : false;
-        this.setState({fields, fieldErrors, formErrors, editEndDate: false });
-    }
-
-    openStartDate = (e) => {
-        e.preventDefault();
-        this.setState({ editStartDate: true });
-    }
-
-    openEndDate = (e) => {
-        e.preventDefault();
-        this.setState({ editEndDate: true });
-    }
-
-    closeStartDate = (e) => {
-        e.preventDefault();
-        this.setState({ editStartDate: false });
-    }
-
-    closeEndDate = (e) => {
-        e.preventDefault();
-        this.setState({ editEndDate: false });
-    }
-
-    clearStartDate = (e) => {
-        //use stopPropagation to ensure the button doesn't trigger the parent button
-        e.stopPropagation();
-        this.handleStartDateChange(undefined);
-    }
-
-    clearEndDate = (e) => {
-        //use stopPropagation to ensure the button doesn't trigger the parent button
-        e.stopPropagation();
-        this.handleEndDateChange(undefined);
+        this.setState({fields, fieldErrors, formErrors });
     }
 
     validate = () => {
@@ -147,7 +125,11 @@ export class ItemForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         if (this.validate()) return;
-        this.props.handleAddItem(this.state.fields);
+        if (this.props.item) {
+            this.props.handleUpdateItem(this.props.item.id, this.state.fields);
+        } else {
+            this.props.handleAddItem(this.state.fields);
+        }
     }
 
     render() {
@@ -162,8 +144,6 @@ export class ItemForm extends Component {
 
         const {
             fieldErrors,
-            editStartDate,
-            editEndDate,
         } = this.state;
 
         const eventOptions = [
@@ -177,30 +157,27 @@ export class ItemForm extends Component {
             return { key: tag.title, text: tag.title, value: tag.title }
         });
 
-        let dates_error_label;
-        if(fieldErrors.start_date) {
-            dates_error_label = (
-                <Label basic pointing color='red'>
-                    {fieldErrors.start_date}
-                </Label>
-            )
-        } else if(fieldErrors.end_date) {
-            dates_error_label = (
-                <Label basic pointing color='red'>
-                    {fieldErrors.end_date}
-                </Label>
-            )
-        }
+        const { 
+            addItemProcessing, 
+            addItemError, 
+            updateItemProcessing, 
+            updateItemError, 
+            tagsLoading,
+            tagsError 
+        } = this.props;
+
+        const errorMessage = (tagsError || addItemError || updateItemError);
 
         return (
             <Form 
-                loading={this.props.processing || this.props.tagsLoading} 
+                loading={addItemProcessing || updateItemProcessing || tagsLoading} 
                 onSubmit={this.handleSubmit}
+                error={!typeof errorMessage === undefined}
             >
-                {this.props.tagsError &&
+                {errorMessage &&
                     (<Message
                         error
-                        content='Uh oh...there was an error loading the form. Please try again.'
+                        content={errorMessage}
                     />)
                 }
                 <Segment textAlign='left'>
@@ -262,78 +239,14 @@ export class ItemForm extends Component {
                     {type === 'event' &&
                         <Form.Field>
                             <label>Dates</label>
-                            <Button
-                                icon
-                                onClick={this.openStartDate}
-                            >
-                                <Icon name='calendar' />
-                                {start_date ?
-                                    (<Fragment>
-                                        {moment(start_date).format('LLL')}
-                                        <Icon 
-                                            name='times circle'
-                                            color='red'
-                                            onClick={this.clearStartDate}
-                                        />
-                                    </Fragment>)
-                                    : 'Start Date'
-                                }
-                            </Button>
-                            <span> to </span>
-                            <Button
-                                icon
-                                onClick={this.openEndDate}
-                            >
-                                <Icon name='calendar' />
-                                {end_date ?
-                                    (<Fragment>
-                                        {moment(end_date).format('LLL')}
-                                        <Icon 
-                                            name='times circle'
-                                            color='red'
-                                            onClick={this.clearEndDate}
-                                        />
-                                    </Fragment>)
-                                    : 'End Date'
-                                }
-                            </Button>
-                            <Container>
-                                {dates_error_label}
-                            </Container>
-                            {editStartDate && 
-                                (<Container>
-                                    <Button
-                                        icon
-                                        floated='right'
-                                        onClick={this.closeStartDate}
-                                        style={{'zIndex': 1, 'position': 'relative', 'margin': '2px'}}
-                                    >
-                                        <Icon color='red' name='times circle' />
-                                    </Button>
-                                    <DateTimePicker
-                                        color='black'
-                                        onChange={this.handleStartDateChange}
-                                        moment=''
-                                    />
-                                </Container>)
-                            }
-                            {editEndDate && 
-                                (<Container>
-                                    <Button
-                                        icon
-                                        floated='right'
-                                        onClick={this.closeEndDate}
-                                        style={{'zIndex': 1, 'position': 'relative', 'margin': '2px'}}
-                                    >
-                                        <Icon color='red' name='times circle' />
-                                    </Button>
-                                    <DateTimePicker
-                                        color='black'
-                                        onChange={this.handleEndDateChange}
-                                        moment=''
-                                    />
-                                </Container>)
-                            }
+                            <SelectDates
+                                handleStartDateChange={this.handleStartDateChange}
+                                handleEndDateChange={this.handleEndDateChange}
+                                start_date={start_date}
+                                end_date={end_date}
+                                start_date_error={fieldErrors.start_date}
+                                end_date_error={fieldErrors.end_date}
+                            />
                         </Form.Field>
                     }
                     <Form.Field>
@@ -365,27 +278,41 @@ export class ItemForm extends Component {
 }
 
 ItemForm.propTypes = {
-    processing: PropTypes.bool.isRequired,
-    error: PropTypes.string,
+    addItemProcessing: PropTypes.bool.isRequired,
+    addItemError: PropTypes.string,
+    updateItemProcessing: PropTypes.bool.isRequired,
+    updateItemError: PropTypes.string,
     handleAddItem: PropTypes.func.isRequired,
     removeAddItemError: PropTypes.func.isRequired,
-    editItem: PropTypes.bool.isRequired,
+    handleUpdateItem: PropTypes.func.isRequired,
+    removeUpdateItemError: PropTypes.func.isRequired,
     tagsLoading: PropTypes.bool.isRequired,
     tagsError: PropTypes.string,
     tags: PropTypes.array.isRequired,
+    item: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        location: PropTypes.string,
+        type: PropTypes.string,
+        start_date: PropTypes.string,
+        end_date: PropTypes.string,
+        tags: PropTypes.array,
+    }),
 }
 
 const mapStateToProps = ({ items, tags }) => {
 
     return {
-        error: items.addItem.error,
-        processing: items.addItem.processing,
+        addItemError: items.addItem.error,
+        addItemProcessing: items.addItem.processing,
+        updateItemError: items.updateItem.error,
+        updateItemProcessing: items.updateItem.processing,
         tagsLoading: tags.getTags.loading,
         tagsError: tags.getTags.error,
         tags: tags.tags,
     };
 };
 
-const mapDispatchToProps = { handleAddItem, removeAddItemError };
+const mapDispatchToProps = { handleAddItem, removeAddItemError, handleUpdateItem, removeUpdateItemError, };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemForm);

@@ -4,16 +4,19 @@ import { Provider } from 'react-redux';
 import ConnectedItemForm, { ItemForm } from './ItemForm';
 import { Form } from 'semantic-ui-react';
 import moment from 'moment';
-import DateTimePicker from 'react-semantic-datetime';
 import { storeFactory } from '../../../test/testUtils';
+import SelectDates from '../universal/SelectDates';
 
 
 const defaultProps = {
-    processing: false,
-    error: null,
+    addItemProcessing: false,
+    addItemError: null,
+    updateItemProcessing: false,
+    updateItemError: null,
     handleAddItem: () => {},
     removeAddItemError: () => {},
-    editItem: false,
+    handleUpdateItem: () => {},
+    removeUpdateItemError: () => {},
     tagsLoading: false,
     tagsError: null,
     tags: [{ title: 'university' }, { title: 'kid-friendly' }],
@@ -34,9 +37,16 @@ describe('render', () => {
         expect(form.length).toBe(1);
     });
 
-    it('should pass loading=true as a prop to the form when processing', () => {
+    it('should pass loading=true as a prop to the form when addItemProcessing', () => {
 
-        const wrapper = setup({ processing: true });
+        const wrapper = setup({ addItemProcessing: true });
+        const form = wrapper.find(Form);
+        expect(form.props().loading).toBe(true);
+    });
+
+    it('should pass loading=true as a prop to the form when updateItemProcessing', () => {
+
+        const wrapper = setup({ updateItemProcessing: true });
         const form = wrapper.find(Form);
         expect(form.props().loading).toBe(true);
     });
@@ -53,7 +63,23 @@ describe('render', () => {
         const wrapper = setup({ tagsError: 'Uh oh' });
         const message = wrapper.find('Message[error]');
         expect(message.length).toBe(1);
-        expect(message.props().content).toBe('Uh oh...there was an error loading the form. Please try again.');
+        expect(message.props().content).toBe('Uh oh');
+    });
+
+    it('should display an error Message when addItemError isnt null', () => {
+
+        const wrapper = setup({ addItemError: 'Uh oh' });
+        const message = wrapper.find('Message[error]');
+        expect(message.length).toBe(1);
+        expect(message.props().content).toBe('Uh oh');
+    });
+
+    it('should display an error Message when updateItemError isnt null', () => {
+
+        const wrapper = setup({ updateItemError: 'Uh oh' });
+        const message = wrapper.find('Message[error]');
+        expect(message.length).toBe(1);
+        expect(message.props().content).toBe('Uh oh');
     });
 
     it('should display an error label when name error is present', () => {
@@ -80,29 +106,21 @@ describe('render', () => {
         expect(errorLabel.dive().text()).toBe('Type invalid');
     });
 
-    it('should display dates select when type is event', () => {
+    it('should display SelectDates component when type is event', () => {
 
         const wrapper = setup();
         wrapper.setState({ fields: { ...wrapper.state().fields, type: 'event' } });
-        const dateButtons = wrapper.find('Button[icon=true]');
-        expect(dateButtons.length).toBe(2);
+        const selectDates = wrapper.find(SelectDates);
+        expect(selectDates.length).toBe(1);
     });
+});
 
-    it('should display start_date on button when start_date has been selected', () => {
+describe('state', () => {
 
-        const wrapper = setup();
-        const start_date = moment().add(1, 'days');
-        wrapper.setState({ fields: { ...wrapper.state().fields, type: 'event', start_date } });
-        const dateButton = wrapper.find('Button[icon=true]').first();
-        expect(dateButton.dive().text()).toBe('<Icon />' + start_date.format('LLL') + '<Icon />');
-    });
+    it('should use the item as initial state if passed', () => {
 
-    it('should display a DateTimePicker when editStartDate or editEndDate is true', () => {
-
-        const wrapper = setup();
-        wrapper.setState({ fields: { ...wrapper.state().fields, type: 'event' }, editStartDate: true, editEndDate: true });
-        const dateTimePicker = wrapper.find(DateTimePicker);
-        expect(dateTimePicker.length).toBe(2);
+        const wrapper = setup({ item: { name: 'Test Item' } });
+        expect(wrapper.state().fields.name).toBe('Test Item');
     });
 });
 
@@ -262,61 +280,6 @@ describe('handleEndDateChange', () => {
     });
 });
 
-describe('date select functions', () => {
-
-    const preventDefault = jest.fn();
-
-    it('openStartDate should set editStartDate to true', () => {
-
-        const wrapper = setup();
-        wrapper.instance().openStartDate({ preventDefault });
-        expect(wrapper.state().editStartDate).toBe(true);
-    });
-
-    it('openEndDate should set editEndDate to true', () => {
-
-        const wrapper = setup();
-        wrapper.instance().openEndDate({ preventDefault });
-        expect(wrapper.state().editEndDate).toBe(true);
-    });
-
-    it('closeStartDate should set editStartDate to false', () => {
-
-        const wrapper = setup();
-        wrapper.setState({ editStartDate: true });
-        wrapper.instance().closeStartDate({ preventDefault });
-        expect(wrapper.state().editStartDate).toBe(false);
-    });
-
-    it('closeEndDate should set editEndDate to false', () => {
-
-        const wrapper = setup();
-        wrapper.setState({ editEndDate: true });
-        wrapper.instance().closeEndDate({ preventDefault });
-        expect(wrapper.state().editEndDate).toBe(false);
-    });
-
-    it('clearStartDate should remove the start_date start', () => {
-
-        const wrapper = setup();
-        wrapper.setState({ fields: { ...wrapper.state().fields, start_date: moment() } });
-        const stopPropagation = jest.fn();
-        wrapper.instance().clearStartDate({ stopPropagation });
-        expect(wrapper.state().fields.start_date).toBeUndefined();
-        expect(stopPropagation.mock.calls.length).toBe(1);
-    });
-
-    it('clearEndDate should remove the end_date start', () => {
-
-        const wrapper = setup();
-        wrapper.setState({ fields: { ...wrapper.state().fields, end_date: moment() } });
-        const stopPropagation = jest.fn();
-        wrapper.instance().clearEndDate({ stopPropagation });
-        expect(wrapper.state().fields.end_date).toBeUndefined();
-        expect(stopPropagation.mock.calls.length).toBe(1);
-    });
-});
-
 describe('handleSubmit', () => {
 
     it('should not call handleAddItem if validation fails', () => {
@@ -331,10 +294,20 @@ describe('handleSubmit', () => {
 
         const handleAddItem = jest.fn();
         const wrapper = setup({ handleAddItem });
-        wrapper.instance().validate = jest.fn().mockReturnValue(false);
+        wrapper.instance().validate = jest.fn().mockReturnValueOnce(false);
         wrapper.instance().handleSubmit({ preventDefault: jest.fn() });
         expect(handleAddItem.mock.calls.length).toBe(1);
         expect(handleAddItem.mock.calls[0][0]).toEqual(wrapper.state().fields);
+    });
+
+    it('should call handleUpdateItem if an item exists', () => {
+
+        const handleUpdateItem = jest.fn();
+        const wrapper = setup({ handleUpdateItem, item: { id: 1, name: 'Test Item '} });
+        wrapper.instance().validate = jest.fn().mockReturnValueOnce(false);
+        wrapper.instance().handleSubmit({ preventDefault: jest.fn() });
+        expect(handleUpdateItem.mock.calls.length).toBe(1);
+        expect(handleUpdateItem.mock.calls[0][0]).toEqual(1);
     });
 })
 
@@ -348,7 +321,16 @@ describe('connect', () => {
                 addItem: {
                     processing: false,
                     error: null,
-                }
+                },
+                updateItem: {
+                    processing: false,
+                    error: null,
+                },
+                getItem: {
+                    loading: false,
+                    error: null,
+                },
+                item: {},
             },
             tags: {
                 getTags: {
@@ -359,13 +341,15 @@ describe('connect', () => {
             },
         };
         const store = storeFactory(initialState);
-        const wrapper = mount(<Provider store={store}><ConnectedItemForm editItem={false} /></Provider>);
+        const wrapper = mount(<Provider store={store}><ConnectedItemForm item={{}} /></Provider>);
         const componentProps = wrapper.find(ItemForm).props();
-        expect(componentProps.processing).toBeDefined();
-        expect(componentProps.error).toBeDefined();
-        expect(componentProps.editItem).toBeDefined();
+        expect(componentProps.addItemProcessing).toBeDefined();
+        expect(componentProps.addItemError).toBeDefined();
+        expect(componentProps.item).toBeDefined();
         expect(componentProps.handleAddItem).toBeInstanceOf(Function);
         expect(componentProps.removeAddItemError).toBeInstanceOf(Function);
+        expect(componentProps.handleUpdateItem).toBeInstanceOf(Function);
+        expect(componentProps.removeUpdateItemError).toBeInstanceOf(Function);
         expect(componentProps.tagsLoading).toBeDefined();
         expect(componentProps.tagsError).toBeDefined();
         expect(componentProps.tags).toBeInstanceOf(Array);
