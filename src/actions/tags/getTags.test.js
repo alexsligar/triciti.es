@@ -42,7 +42,7 @@ describe('handleGetTags action creator', () => {
         const actions = store.getActions();
         expect(actions[1]).toEqual({ 
             type: TAGS_ERROR, 
-            error: 'Error loading tags.',
+            error: 'Error loading tags. Please refresh to try again.',
         });
     });
 

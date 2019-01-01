@@ -44,7 +44,7 @@ export const handleGetTags = () => {
             }
         }
         catch (err) {
-            dispatch(tagsError('Error loading tags.'));
+            dispatch(tagsError('Error loading tags. Please refresh to try again.'));
         }
     }
 }
