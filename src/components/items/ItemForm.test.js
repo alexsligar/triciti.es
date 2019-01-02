@@ -278,6 +278,20 @@ describe('handleEndDateChange', () => {
         expect(wrapper.state().formErrors).toBe(true);
         expect(wrapper.state().fieldErrors.startDate).toBe('Start date is required');
     });
+
+    it('should revalidate the startDate field', () => {
+
+        const wrapper = setup();
+        wrapper.setState({ 
+            fields: {
+                ...wrapper.state().fields,
+                startDate: moment().add(1, 'hours'),
+            },
+            fieldErrors: { startDate: 'Uh oh' } 
+        });
+        wrapper.instance().handleEndDateChange(undefined);
+        expect(wrapper.state().fieldErrors.startDate).toBeUndefined();
+    });
 });
 
 describe('handleSubmit', () => {
