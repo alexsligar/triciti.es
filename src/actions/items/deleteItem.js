@@ -1,3 +1,5 @@
+import history from '../../history';
+
 export const DELETE_ITEM_PROCESSING = 'DELETE_ITEM_PROCESSING';
 export const DELETE_ITEM_ERROR = 'DELETE_ITEM_ERROR';
 export const REMOVE_DELETE_ITEM_ERROR = 'REMOVE_DELETE_ITEM_ERROR';
@@ -41,8 +43,10 @@ export const handleDeleteItem = (id) => {
                     'Authorization': 'Bearer ' + token,
                 },
             });
-            if (response.status === 200) {
+
+            if (response.status === 204) {
                 dispatch(deleteItemSuccess());
+                history.push('/');
             } else {
                 throw new Error();
             }
