@@ -24,6 +24,12 @@ import {
     REMOVE_UPDATE_ITEM_ERROR,
 } from '../actions/items/updateItem';
 
+import {
+    DELETE_ITEM_PROCESSING,
+    DELETE_ITEM_ERROR,
+    REMOVE_DELETE_ITEM_ERROR,
+    DELETE_ITEM_SUCCESS,
+} from '../actions/items/deleteItem';
 
 const initialState = {
     getItem: {
@@ -39,6 +45,10 @@ const initialState = {
         error: null,
     },
     updateItem: {
+        processing: false,
+        error: null,
+    },
+    deleteItem: {
         processing: false,
         error: null,
     },
@@ -167,6 +177,40 @@ export default function registerUser (state = initialState, action) {
                 ...state,
                 updateItem: {
                     ...state.updateItem,
+                    error: null,
+                },
+            }
+        case DELETE_ITEM_PROCESSING :
+            return {
+                ...state,
+                deleteItem: {
+                    ...state.deleteItem,
+                    processing: true,
+                },
+            }
+        case DELETE_ITEM_ERROR :
+            return {
+                ...state,
+                deleteItem: {
+                    ...state.deleteItem,
+                    processing: false,
+                    error: action.error,
+                },
+            }
+        case REMOVE_DELETE_ITEM_ERROR :
+            return {
+                ...state,
+                deleteItem: {
+                    ...state.deleteItem,
+                    error: null,
+                }
+            }
+        case DELETE_ITEM_SUCCESS :
+            return {
+                ...state,
+                deleteItem: {
+                    ...state.deleteItem,
+                    processing: false,
                     error: null,
                 },
             }

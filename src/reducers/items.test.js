@@ -21,6 +21,12 @@ import {
     UPDATE_ITEM_SUCCESS,
     REMOVE_UPDATE_ITEM_ERROR,
 } from '../actions/items/updateItem';
+import {
+    DELETE_ITEM_PROCESSING,
+    DELETE_ITEM_ERROR,
+    REMOVE_DELETE_ITEM_ERROR,
+    DELETE_ITEM_SUCCESS,
+} from '../actions/items/deleteItem';
 
 const initialState = {
     getItem: {
@@ -36,6 +42,10 @@ const initialState = {
         error: null,
     },
     updateItem: {
+        processing: false,
+        error: null,
+    },
+    deleteItem: {
         processing: false,
         error: null,
     },
@@ -371,6 +381,91 @@ describe('items reducer', () => {
                 ...initialState.updateItem,
                 error: null,
             },
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_ITEM_PROCESSING', () => {
+        const initial = {
+            ...initialState,
+            deleteItem: {
+                ...initialState.deleteItem,
+                processing: false,
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteItem: {
+                ...initialState.deleteItem,
+                processing: true,
+            },
+        }
+        const action = {
+            type: DELETE_ITEM_PROCESSING,
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_ITEM_ERROR', () => {
+        const initial = {
+            ...initialState,
+            deleteItem: {
+                processing: true,
+                error: null,
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteItem: {
+                processing: false,
+                error: 'Uh oh',
+            },
+        }
+        const action = {
+            type: DELETE_ITEM_ERROR,
+            error: 'Uh oh',
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_DELETE_ITEM_ERROR', () => {
+        const initial = {
+            ...initialState,
+            deleteItem: {
+                ...initialState.deleteItem,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteItem: {
+                ...initialState.deleteItem,
+                error: null,
+            },
+        }
+        const action = {
+            type: REMOVE_DELETE_ITEM_ERROR,
+        };
+        expect(items(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_ITEM_SUCCESS', () => {
+        const initial = {
+            ...initialState,
+            deleteItem: {
+                processing: true,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteItem: {
+                processing: false,
+                error: null,
+            },
+        }
+        const action = {
+            type: DELETE_ITEM_SUCCESS,
         };
         expect(items(initial, action)).toEqual(expected);
     });
