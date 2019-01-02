@@ -172,7 +172,7 @@ export class ItemForm extends Component {
             <Form 
                 loading={addItemProcessing || updateItemProcessing || tagsLoading} 
                 onSubmit={this.handleSubmit}
-                error={!typeof errorMessage === undefined}
+                error={typeof errorMessage !== undefined}
             >
                 {errorMessage &&
                     (<Message

@@ -14,7 +14,7 @@ const defaultProps = {
     item: { id: 1, name: 'Test Item', owners: [ 'testuser' ], },
     match: {
         params: {
-            id: 1,
+            id: '1',
         }
     },
     handleGetItem: () => {},
@@ -102,7 +102,7 @@ describe('connect', () => {
             },
         };
         const match = {
-            params: { id: 1 }
+            params: { id: '1' }
         };
         const store = storeFactory(initialState);
         const wrapper = mount(<Router history={history}><Provider store={store}><ConnectedEditItem match={match} /></Provider></Router>);
