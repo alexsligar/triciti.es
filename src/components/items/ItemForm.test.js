@@ -167,25 +167,25 @@ describe('form validations', () => {
         expect(wrapper.state().fieldErrors.type).toBe('Type is required');
     });
 
-    it('should validate startDate', () => {
-
+    it('should validate start_date', () => {
+``
         wrapper.setState({ fields: { type: 'event' } });
-        let valid = wrapper.instance().validations['startDate'](undefined);
+        let valid = wrapper.instance().validations['start_date'](undefined);
         expect(valid).toBe('Start date is required');
         let val = moment().subtract(1, 'days');
-        valid = wrapper.instance().validations['startDate'](val);
+        valid = wrapper.instance().validations['start_date'](val);
         expect(valid).toBe('Start date must be in the future');
         val = moment().add(2, 'days');
-        const endDate = moment().add(1, 'days');
-        valid = wrapper.instance().validations['startDate'](val, endDate);
+        const end_date = moment().add(1, 'days');
+        valid = wrapper.instance().validations['start_date'](val, end_date);
         expect(valid).toBe('End date must be after start date');
     });
 
-    it('should validate endDate', () => {
+    it('should validate end_date', () => {
 
-        const startDate = moment().add(2, 'days');
-        const endDate = moment().add(1, 'days');
-        const valid = wrapper.instance().validations['endDate'](endDate, startDate);
+        const start_date = moment().add(2, 'days');
+        const end_date = moment().add(1, 'days');
+        const valid = wrapper.instance().validations['end_date'](end_date, start_date);
         expect(valid).toBe('End date must be after start date');
     });
 
@@ -227,21 +227,21 @@ describe('handleSelectChange', () => {
         wrapper.setState({ 
             fields: {
                 ...wrapper.state().fields,
-                startDate: moment().add(1, 'days'),
-                endDate: moment().add(2, 'days'),
+                start_date: moment().add(1, 'days'),
+                end_date: moment().add(2, 'days'),
             },
             fieldErrors: {
                 ...wrapper.state().fieldErrors,
-                startDate: 'Invalid start date',
-                endDate: 'Invalid end date',
+                start_date: 'Invalid start date',
+                end_date: 'Invalid end date',
             },
         });
         wrapper.instance().handleSelectChange({}, { name: 'type', value: 'activity' });
         expect(wrapper.state().fields.type).toBe('activity');
-        expect(wrapper.state().fields.startDate).toBeUndefined();
-        expect(wrapper.state().fields.endDate).toBeUndefined();
-        expect(wrapper.state().fieldErrors.startDate).toBeUndefined();
-        expect(wrapper.state().fieldErrors.endDate).toBeUndefined();
+        expect(wrapper.state().fields.start_date).toBeUndefined();
+        expect(wrapper.state().fields.end_date).toBeUndefined();
+        expect(wrapper.state().fieldErrors.start_date).toBeUndefined();
+        expect(wrapper.state().fieldErrors.end_date).toBeUndefined();
     });
 });
 
@@ -250,47 +250,66 @@ describe('handleStartDateChange', () => {
     it('should set the state of fields, fieldErrors, and formErrors', () => {
 
         const wrapper = setup();
-        const startDate = moment().subtract(1, 'days');
-        wrapper.instance().handleStartDateChange(startDate);
-        expect(wrapper.state().fields.startDate).toBe(startDate);
+        const start_date = moment().subtract(1, 'days');
+        wrapper.instance().handleStartDateChange(start_date);
+        expect(wrapper.state().fields.start_date).toBe(start_date);
         expect(wrapper.state().formErrors).toBe(true);
-        expect(wrapper.state().fieldErrors.startDate).toBe('Start date must be in the future');
+        expect(wrapper.state().fieldErrors.start_date).toBe('Start date must be in the future');
     });
 
-    it('should revalidate the endDate field', () => {
+    it('should revalidate the end_date field', () => {
 
         const wrapper = setup();
-        wrapper.setState({ fieldErrors: { endDate: 'Uh oh' } });
+        wrapper.setState({ fieldErrors: { end_date: 'Uh oh' } });
         wrapper.instance().handleStartDateChange(moment().add(1, 'days'));
-        expect(wrapper.state().fieldErrors.endDate).toBeUndefined();
+        expect(wrapper.state().fieldErrors.end_date).toBeUndefined();
     });
 });
 
 describe('handleEndDateChange', () => {
 
-    it('should set the state of fields, fieldErrors, and formErrors and revalidate startDate', () => {
+    it('should set the state of fields, fieldErrors, and formErrors and revalidate start_date', () => {
 
         const wrapper = setup();
         wrapper.setState({ fields: { ...wrapper.state().fields, type: 'event' } });
-        const endDate = moment().add(1, 'days');
-        wrapper.instance().handleEndDateChange(endDate);
-        expect(wrapper.state().fields.endDate).toBe(endDate);
+        const end_date = moment().add(1, 'days');
+        wrapper.instance().handleEndDateChange(end_date);
+        expect(wrapper.state().fields.end_date).toBe(end_date);
         expect(wrapper.state().formErrors).toBe(true);
-        expect(wrapper.state().fieldErrors.startDate).toBe('Start date is required');
+        expect(wrapper.state().fieldErrors.start_date).toBe('Start date is required');
     });
 
-    it('should revalidate the startDate field', () => {
+    it('should revalidate the start_date field', () => {
 
         const wrapper = setup();
         wrapper.setState({ 
             fields: {
                 ...wrapper.state().fields,
-                startDate: moment().add(1, 'hours'),
+                start_date: moment().add(1, 'hours'),
             },
-            fieldErrors: { startDate: 'Uh oh' } 
+            fieldErrors: { start_date: 'Uh oh' } 
         });
         wrapper.instance().handleEndDateChange(undefined);
-        expect(wrapper.state().fieldErrors.startDate).toBeUndefined();
+        expect(wrapper.state().fieldErrors.start_date).toBeUndefined();
+    });
+});
+
+describe('removeReduxErrors', () => {
+
+    it('should call removeAddItemError prop if addItemError is present', () => {
+
+        const removeAddItemError = jest.fn();
+        const wrapper = setup({ addItemError: 'Uh oh', removeAddItemError });
+        wrapper.instance().removeReduxErrors();
+        expect(removeAddItemError.mock.calls.length).toBe(1);
+    });
+
+    it('should call removeUpdateItemError prop if updateItemError is present', () => {
+
+        const removeUpdateItemError = jest.fn();
+        const wrapper = setup({ updateItemError: 'Uh oh', removeUpdateItemError });
+        wrapper.instance().removeReduxErrors();
+        expect(removeUpdateItemError.mock.calls.length).toBe(1);
     });
 });
 

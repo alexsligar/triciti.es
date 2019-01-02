@@ -6,10 +6,10 @@ import DateTimePicker from 'react-semantic-datetime';
 import { Label } from 'semantic-ui-react';
 
 const defaultProps = {
-    startDate: undefined,
-    startDateError: null,
-    endDate: undefined,
-    endDateError: null,
+    start_date: undefined,
+    start_date_error: null,
+    end_date: undefined,
+    end_date_error: null,
     handleStartDateChange: () => {},
     handleEndDateChange: () => {},
 };
@@ -31,34 +31,34 @@ describe('render', () => {
         expect(dateTimePicker.length).toBe(2);
     });
 
-    it('should display startDate on button when startDate has been selected', () => {
+    it('should display start_date on button when start_date has been selected', () => {
 
-        const props = { startDate: moment() };
+        const props = { start_date: moment() };
         const wrapper = setup(props);
         const dateButton = wrapper.find('Button[icon=true]').first();
-        expect(dateButton.dive().text()).toBe('<Icon />' + props.startDate.format('LLL') + '<Icon />');
+        expect(dateButton.dive().text()).toBe('<Icon />' + props.start_date.format('LLL') + '<Icon />');
     });
 
-    it('should display endDate on button when endDate has been selected', () => {
+    it('should display end_date on button when end_date has been selected', () => {
 
-        const props = { endDate: moment() };
+        const props = { end_date: moment() };
         const wrapper = setup(props);
         const dateButton = wrapper.find('Button[icon=true]').last();
-        expect(dateButton.dive().text()).toBe('<Icon />' + props.endDate.format('LLL') + '<Icon />');
+        expect(dateButton.dive().text()).toBe('<Icon />' + props.end_date.format('LLL') + '<Icon />');
     });
 
-    it('should display an error label when startDateError is not null', () => {
+    it('should display an error label when start_date_error is not null', () => {
 
-        const props = { startDateError: 'Uh oh', endDateError: 'Shouldnt render' };
+        const props = { start_date_error: 'Uh oh', end_date_error: 'Shouldnt render' };
         const wrapper = setup(props);
         const label = wrapper.find(Label);
         expect(label.length).toBe(1);
         expect(label.dive().text()).toBe('Uh oh');
     });
 
-    it('should display an error label when endDateError is not null', () => {
+    it('should display an error label when end_date_error is not null', () => {
 
-        const props = { endDateError: 'Uh oh' };
+        const props = { end_date_error: 'Uh oh' };
         const wrapper = setup(props);
         const label = wrapper.find(Label);
         expect(label.length).toBe(1);
@@ -73,10 +73,10 @@ describe('callback functions', () => {
         const handleStartDateChange = jest.fn();
         const wrapper = setup({ handleStartDateChange });
         wrapper.setState({ editStartDate: true });
-        const startDate = moment();
-        wrapper.instance().handleStartDateChange(startDate);
+        const start_date = moment();
+        wrapper.instance().handleStartDateChange(start_date);
         expect(handleStartDateChange.mock.calls.length).toBe(1);
-        expect(handleStartDateChange.mock.calls[0][0]).toBe(startDate);
+        expect(handleStartDateChange.mock.calls[0][0]).toBe(start_date);
         expect(wrapper.state().editStartDate).toBe(false);
     });
 
@@ -85,10 +85,10 @@ describe('callback functions', () => {
         const handleEndDateChange = jest.fn();
         const wrapper = setup({ handleEndDateChange });
         wrapper.setState({ editEndDate: true });
-        const endDate = moment();
-        wrapper.instance().handleEndDateChange(endDate);
+        const end_date = moment();
+        wrapper.instance().handleEndDateChange(end_date);
         expect(handleEndDateChange.mock.calls.length).toBe(1);
-        expect(handleEndDateChange.mock.calls[0][0]).toBe(endDate);
+        expect(handleEndDateChange.mock.calls[0][0]).toBe(end_date);
         expect(wrapper.state().editEndDate).toBe(false);
     });
 });
@@ -97,52 +97,52 @@ describe('control functions', () => {
 
     const preventDefault = jest.fn();
 
-    it('openStartDate should set editStartDate to true', () => {
+    it('openstart_date should set editStartDate to true', () => {
 
         const wrapper = setup();
-        wrapper.instance().openStartDate({ preventDefault });
+        wrapper.instance().openstart_date({ preventDefault });
         expect(wrapper.state().editStartDate).toBe(true);
     });
 
-    it('openEndDate should set editEndDate to true', () => {
+    it('openend_date should set editEndDate to true', () => {
 
         const wrapper = setup();
-        wrapper.instance().openEndDate({ preventDefault });
+        wrapper.instance().openend_date({ preventDefault });
         expect(wrapper.state().editEndDate).toBe(true);
     });
 
-    it('closeStartDate should set editStartDate to false', () => {
+    it('closestart_date should set editStartDate to false', () => {
 
         const wrapper = setup();
         wrapper.setState({ editStartDate: true });
-        wrapper.instance().closeStartDate({ preventDefault });
+        wrapper.instance().closestart_date({ preventDefault });
         expect(wrapper.state().editStartDate).toBe(false);
     });
 
-    it('closeEndDate should set editEndDate to false', () => {
+    it('closeend_date should set editEndDate to false', () => {
 
         const wrapper = setup();
         wrapper.setState({ editEndDate: true });
-        wrapper.instance().closeEndDate({ preventDefault });
+        wrapper.instance().closeend_date({ preventDefault });
         expect(wrapper.state().editEndDate).toBe(false);
     });
 
-    it('clearStartDate should call handleStartDateChange prop', () => {
+    it('clearstart_date should call handleStartDateChange prop', () => {
 
         const handleStartDateChange = jest.fn();
         const wrapper = setup({ handleStartDateChange });
         const stopPropagation = jest.fn();
-        wrapper.instance().clearStartDate({ stopPropagation });
+        wrapper.instance().clearstart_date({ stopPropagation });
         expect(handleStartDateChange.mock.calls.length).toBe(1);
         expect(stopPropagation.mock.calls.length).toBe(1);
     });
 
-    it('clearEndDate should call handleEndDateChange prop', () => {
+    it('clearend_date should call handleEndDateChange prop', () => {
 
         const handleEndDateChange = jest.fn();
         const wrapper = setup({ handleEndDateChange });
         const stopPropagation = jest.fn();
-        wrapper.instance().clearEndDate({ stopPropagation });
+        wrapper.instance().clearend_date({ stopPropagation });
         expect(handleEndDateChange.mock.calls.length).toBe(1);
         expect(stopPropagation.mock.calls.length).toBe(1);
     });

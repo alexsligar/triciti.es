@@ -15,8 +15,8 @@ export class ItemForm extends Component {
                 name: this.props.item.name,
                 location: this.props.item.location,
                 type: this.props.item.type,
-                startDate: this.props.item.startDate || undefined,
-                endDate: this.props.item.endDate || undefined,
+                start_date: this.props.item.start_date || undefined,
+                end_date: this.props.item.end_date || undefined,
                 tags: this.props.item.tags,
             }
         :
@@ -24,8 +24,8 @@ export class ItemForm extends Component {
                 name: '',
                 location: '',
                 type: '',
-                startDate: undefined,
-                endDate: undefined,
+                start_date: undefined,
+                end_date: undefined,
                 tags: [],
             },
         fieldErrors: {},
@@ -44,13 +44,13 @@ export class ItemForm extends Component {
         'type': val => {
             if(!val) return 'Type is required';
         },
-        'startDate': (val, endDate = this.state.fields.endDate) => {
+        'start_date': (val, end_date = this.state.fields.end_date) => {
             if(this.state.fields.type === 'event' && !val) return 'Start date is required';
             if(val && val <= moment()) return 'Start date must be in the future';
-            if(endDate && val > endDate) return 'End date must be after start date';
+            if(end_date && val > end_date) return 'End date must be after start date';
         },
-        'endDate': (val, startDate = this.state.fields.startDate) => {
-            if(val && startDate >= val) return 'End date must be after start date';
+        'end_date': (val, start_date = this.state.fields.start_date) => {
+            if(val && start_date >= val) return 'End date must be after start date';
         },
         'tags': () => null,
     }
@@ -70,47 +70,60 @@ export class ItemForm extends Component {
         const { value, name } = e.target;
         const { fields, fieldErrors, formErrors } = this.computeNextState(name, value);
         this.setState({fields, fieldErrors, formErrors});
+        this.removeReduxErrors();
     };
 
     handleSelectChange = (e, { name, value }) => {
         const { fields, fieldErrors, formErrors } = this.computeNextState(name, value);
         //reset the date fields if not an event
         if (name === 'type' && value !== 'event') {
-            fields['startDate'] = undefined;
-            fields['endDate'] = undefined;
-            fieldErrors['startDate'] = undefined;
-            fieldErrors['endDate'] = undefined;
+            fields['start_date'] = undefined;
+            fields['end_date'] = undefined;
+            fieldErrors['start_date'] = undefined;
+            fieldErrors['end_date'] = undefined;
         }
         this.setState({fields, fieldErrors, formErrors});
+        this.removeReduxErrors();
     };
 
     handleStartDateChange = (value) => {
         const fields = Object.assign({}, this.state.fields);
         const fieldErrors = Object.assign({}, this.state.fieldErrors);
-        fields['startDate'] = value;
-        fieldErrors['startDate'] = this.validations['startDate'](value, fields.endDate);
-        //revalidate the endDate field as it is dependent on startDate
-        fieldErrors['endDate'] = this.validations['endDate'](fields.endDate, value);
+        fields['start_date'] = value;
+        fieldErrors['start_date'] = this.validations['start_date'](value, fields.end_date);
+        //revalidate the end_date field as it is dependent on start_date
+        fieldErrors['end_date'] = this.validations['end_date'](fields.end_date, value);
 
         const errors = Object.keys(fieldErrors).filter((k) => fieldErrors[k])
         const formErrors = errors.length ? true : false;
         this.setState({fields, fieldErrors, formErrors });
+        this.removeReduxErrors();
     }
 
     handleEndDateChange = (value) => {
         const fields = Object.assign({}, this.state.fields);
         const fieldErrors = Object.assign({}, this.state.fieldErrors);
-        fields['endDate'] = value;
-        fieldErrors['endDate'] = this.validations['endDate'](value, fields.startDate);
+        fields['end_date'] = value;
+        fieldErrors['end_date'] = this.validations['end_date'](value, fields.start_date);
         //need to pass null instead of undefined so default params dont set in
         let passedValue = value;
         if (!passedValue) passedValue = null;
-        //revalidate the startDate field as it is dependent on 
-        fieldErrors['startDate'] = this.validations['startDate'](fields.startDate, passedValue);
+        //revalidate the start_date field as it is dependent on 
+        fieldErrors['start_date'] = this.validations['start_date'](fields.start_date, passedValue);
 
         const errors = Object.keys(fieldErrors).filter((k) => fieldErrors[k])
         const formErrors = errors.length ? true : false;
         this.setState({fields, fieldErrors, formErrors });
+        this.removeReduxErrors();
+    }
+
+    removeReduxErrors = () => {
+        if(this.props.addItemError) {
+            this.props.removeAddItemError();
+        }
+        if(this.props.updateItemError) {
+            this.props.removeUpdateItemError();
+        }
     }
 
     validate = () => {
@@ -137,8 +150,8 @@ export class ItemForm extends Component {
             name,
             location,
             type,
-            startDate,
-            endDate,
+            start_date,
+            end_date,
             tags,
         } = this.state.fields;
 
@@ -242,10 +255,10 @@ export class ItemForm extends Component {
                             <SelectDates
                                 handleStartDateChange={this.handleStartDateChange}
                                 handleEndDateChange={this.handleEndDateChange}
-                                startDate={startDate}
-                                endDate={endDate}
-                                startDateError={fieldErrors.startDate}
-                                endDateError={fieldErrors.endDate}
+                                start_date={start_date}
+                                end_date={end_date}
+                                start_date_error={fieldErrors.start_date}
+                                end_date_error={fieldErrors.end_date}
                             />
                         </Form.Field>
                     }
@@ -294,8 +307,8 @@ ItemForm.propTypes = {
         name: PropTypes.string,
         location: PropTypes.string,
         type: PropTypes.string,
-        startDate: PropTypes.string,
-        endDate: PropTypes.string,
+        start_date: PropTypes.string,
+        end_date: PropTypes.string,
         tags: PropTypes.array,
     }),
 }

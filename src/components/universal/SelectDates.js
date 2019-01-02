@@ -10,33 +10,33 @@ export default class SelectDates extends Component {
         editEndDate: false,
     }
 
-    openStartDate = (e) => {
+    openstart_date = (e) => {
         e.preventDefault();
         this.setState({ editStartDate: true });
     }
 
-    openEndDate = (e) => {
+    openend_date = (e) => {
         e.preventDefault();
         this.setState({ editEndDate: true });
     }
 
-    closeStartDate = (e) => {
+    closestart_date = (e) => {
         e.preventDefault();
         this.setState({ editStartDate: false });
     }
 
-    closeEndDate = (e) => {
+    closeend_date = (e) => {
         e.preventDefault();
         this.setState({ editEndDate: false });
     }
 
-    clearStartDate = (e) => {
+    clearstart_date = (e) => {
         //use stopPropagation to ensure the button doesn't trigger the parent button
         e.stopPropagation();
         this.props.handleStartDateChange(undefined);
     }
 
-    clearEndDate = (e) => {
+    clearend_date = (e) => {
         //use stopPropagation to ensure the button doesn't trigger the parent button
         e.stopPropagation();
         this.props.handleEndDateChange(undefined);
@@ -53,20 +53,20 @@ export default class SelectDates extends Component {
     }
 
     render() {
-        const { startDate, endDate, startDateError, endDateError } = this.props;
+        const { start_date, end_date, start_date_error, end_date_error } = this.props;
         const { editStartDate, editEndDate } = this.state;
 
         let datesErrorLabel;
-        if(startDateError) {
+        if(start_date_error) {
             datesErrorLabel = (
                 <Label basic pointing color='red'>
-                    {startDateError}
+                    {start_date_error}
                 </Label>
             )
-        } else if(endDateError) {
+        } else if(end_date_error) {
             datesErrorLabel = (
                 <Label basic pointing color='red'>
-                    {endDateError}
+                    {end_date_error}
                 </Label>
             )
         }
@@ -75,16 +75,16 @@ export default class SelectDates extends Component {
             <Fragment>
                 <Button
                     icon
-                    onClick={this.openStartDate}
+                    onClick={this.openstart_date}
                 >
                     <Icon name='calendar' />
-                    {startDate ?
+                    {start_date ?
                         (<Fragment>
-                            {moment(startDate).format('LLL')}
+                            {moment(start_date).format('LLL')}
                             <Icon 
                                 name='times circle'
                                 color='red'
-                                onClick={this.clearStartDate}
+                                onClick={this.clearstart_date}
                             />
                         </Fragment>)
                         : 'Start Date'
@@ -93,16 +93,16 @@ export default class SelectDates extends Component {
                 <span> to </span>
                 <Button
                     icon
-                    onClick={this.openEndDate}
+                    onClick={this.openend_date}
                 >
                     <Icon name='calendar' />
-                    {endDate ?
+                    {end_date ?
                         (<Fragment>
-                            {moment(endDate).format('LLL')}
+                            {moment(end_date).format('LLL')}
                             <Icon 
                                 name='times circle'
                                 color='red'
-                                onClick={this.clearEndDate}
+                                onClick={this.clearend_date}
                             />
                         </Fragment>)
                         : 'End Date'
@@ -116,7 +116,7 @@ export default class SelectDates extends Component {
                         <Button
                             icon
                             floated='right'
-                            onClick={this.closeStartDate}
+                            onClick={this.closestart_date}
                             style={{'zIndex': 1, 'position': 'relative', 'margin': '2px'}}
                         >
                             <Icon color='red' name='times circle' />
@@ -133,7 +133,7 @@ export default class SelectDates extends Component {
                         <Button
                             icon
                             floated='right'
-                            onClick={this.closeEndDate}
+                            onClick={this.closeend_date}
                             style={{'zIndex': 1, 'position': 'relative', 'margin': '2px'}}
                         >
                             <Icon color='red' name='times circle' />
@@ -151,16 +151,16 @@ export default class SelectDates extends Component {
 }
 
 SelectDates.propTypes = {
-    startDate: PropTypes.oneOfType([
+    start_date: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.object
     ]),
-    startDateError: PropTypes.string,
-    endDate: PropTypes.oneOfType([
+    start_date_error: PropTypes.string,
+    end_date: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.object
     ]),
-    endDateError: PropTypes.string,
+    end_date_error: PropTypes.string,
     handleStartDateChange: PropTypes.func.isRequired,
     handleEndDateChange: PropTypes.func.isRequired,
 }
