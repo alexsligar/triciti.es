@@ -86,6 +86,10 @@ describe('connect', () => {
                     loading: false,
                     error: null,
                 },
+                deleteItem: {
+                    processing: false,
+                    error: null,
+                },
                 item: { 
                     id: 1, 
                     name: 'Test Item', 
