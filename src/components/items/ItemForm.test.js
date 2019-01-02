@@ -167,25 +167,25 @@ describe('form validations', () => {
         expect(wrapper.state().fieldErrors.type).toBe('Type is required');
     });
 
-    it('should validate start_date', () => {
+    it('should validate startDate', () => {
 
         wrapper.setState({ fields: { type: 'event' } });
-        let valid = wrapper.instance().validations['start_date'](undefined);
+        let valid = wrapper.instance().validations['startDate'](undefined);
         expect(valid).toBe('Start date is required');
         let val = moment().subtract(1, 'days');
-        valid = wrapper.instance().validations['start_date'](val);
+        valid = wrapper.instance().validations['startDate'](val);
         expect(valid).toBe('Start date must be in the future');
         val = moment().add(2, 'days');
-        const end_date = moment().add(1, 'days');
-        valid = wrapper.instance().validations['start_date'](val, end_date);
+        const endDate = moment().add(1, 'days');
+        valid = wrapper.instance().validations['startDate'](val, endDate);
         expect(valid).toBe('End date must be after start date');
     });
 
-    it('should validate end_date', () => {
+    it('should validate endDate', () => {
 
-        const start_date = moment().add(2, 'days');
-        const end_date = moment().add(1, 'days');
-        const valid = wrapper.instance().validations['end_date'](end_date, start_date);
+        const startDate = moment().add(2, 'days');
+        const endDate = moment().add(1, 'days');
+        const valid = wrapper.instance().validations['endDate'](endDate, startDate);
         expect(valid).toBe('End date must be after start date');
     });
 
@@ -227,21 +227,21 @@ describe('handleSelectChange', () => {
         wrapper.setState({ 
             fields: {
                 ...wrapper.state().fields,
-                start_date: moment().add(1, 'days'),
-                end_date: moment().add(2, 'days'),
+                startDate: moment().add(1, 'days'),
+                endDate: moment().add(2, 'days'),
             },
             fieldErrors: {
                 ...wrapper.state().fieldErrors,
-                start_date: 'Invalid start date',
-                end_date: 'Invalid end date',
+                startDate: 'Invalid start date',
+                endDate: 'Invalid end date',
             },
         });
         wrapper.instance().handleSelectChange({}, { name: 'type', value: 'activity' });
         expect(wrapper.state().fields.type).toBe('activity');
-        expect(wrapper.state().fields.start_date).toBeUndefined();
-        expect(wrapper.state().fields.end_date).toBeUndefined();
-        expect(wrapper.state().fieldErrors.start_date).toBeUndefined();
-        expect(wrapper.state().fieldErrors.end_date).toBeUndefined();
+        expect(wrapper.state().fields.startDate).toBeUndefined();
+        expect(wrapper.state().fields.endDate).toBeUndefined();
+        expect(wrapper.state().fieldErrors.startDate).toBeUndefined();
+        expect(wrapper.state().fieldErrors.endDate).toBeUndefined();
     });
 });
 
@@ -250,33 +250,33 @@ describe('handleStartDateChange', () => {
     it('should set the state of fields, fieldErrors, and formErrors', () => {
 
         const wrapper = setup();
-        const start_date = moment().subtract(1, 'days');
-        wrapper.instance().handleStartDateChange(start_date);
-        expect(wrapper.state().fields.start_date).toBe(start_date);
+        const startDate = moment().subtract(1, 'days');
+        wrapper.instance().handleStartDateChange(startDate);
+        expect(wrapper.state().fields.startDate).toBe(startDate);
         expect(wrapper.state().formErrors).toBe(true);
-        expect(wrapper.state().fieldErrors.start_date).toBe('Start date must be in the future');
+        expect(wrapper.state().fieldErrors.startDate).toBe('Start date must be in the future');
     });
 
-    it('should revalidate the end_date field', () => {
+    it('should revalidate the endDate field', () => {
 
         const wrapper = setup();
-        wrapper.setState({ fieldErrors: { end_date: 'Uh oh' } });
+        wrapper.setState({ fieldErrors: { endDate: 'Uh oh' } });
         wrapper.instance().handleStartDateChange(moment().add(1, 'days'));
-        expect(wrapper.state().fieldErrors.end_date).toBeUndefined();
+        expect(wrapper.state().fieldErrors.endDate).toBeUndefined();
     });
 });
 
 describe('handleEndDateChange', () => {
 
-    it('should set the state of fields, fieldErrors, and formErrors and revalidate start_date', () => {
+    it('should set the state of fields, fieldErrors, and formErrors and revalidate startDate', () => {
 
         const wrapper = setup();
         wrapper.setState({ fields: { ...wrapper.state().fields, type: 'event' } });
-        const end_date = moment().add(1, 'days');
-        wrapper.instance().handleEndDateChange(end_date);
-        expect(wrapper.state().fields.end_date).toBe(end_date);
+        const endDate = moment().add(1, 'days');
+        wrapper.instance().handleEndDateChange(endDate);
+        expect(wrapper.state().fields.endDate).toBe(endDate);
         expect(wrapper.state().formErrors).toBe(true);
-        expect(wrapper.state().fieldErrors.start_date).toBe('Start date is required');
+        expect(wrapper.state().fieldErrors.startDate).toBe('Start date is required');
     });
 });
 
