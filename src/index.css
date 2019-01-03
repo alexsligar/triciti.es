@@ -10,3 +10,8 @@ body, #root {
 .inlineDisplay {
   display: inline !important;
 }
+
+.asLink {
+  cursor: pointer;
+  color: #4183c4;
+}
