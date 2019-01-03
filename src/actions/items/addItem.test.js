@@ -56,7 +56,7 @@ describe('handleAddItem action creator', () => {
         });
     });
 
-    it('should dispatch ADD_TAG_ERROR when fetch fails', async () => {
+    it('should dispatch ADD_ITEM_ERROR when fetch fails', async () => {
 
         fetch.mockRejectOnce();
         await store.dispatch(handleAddItem({ name: 'Test Item', type: 'Activity' }));
