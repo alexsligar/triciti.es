@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isLength } from 'validator';
 import { Form, Message, TextArea, Label, Input } from 'semantic-ui-react';
-import { handleAddList } from '../../actions/lists/addList';
+import { handleAddList, removeAddListError } from '../../actions/lists/addList';
 
 export class ListForm extends Component {
     state = {
@@ -24,6 +24,10 @@ export class ListForm extends Component {
         const errors = Object.keys(fieldErrors).filter((k) => fieldErrors[k])
         const formErrors = errors.length ? true : false;
         this.setState({fields, fieldErrors, formErrors});
+
+        if(this.props.addListError) {
+            this.props.removeAddListError();
+        }
     }
 
     validations = {
@@ -119,6 +123,7 @@ ListForm.propTypes = {
     addListProcessing: PropTypes.bool.isRequired,
     addListError: PropTypes.string,
     handleAddList: PropTypes.func.isRequired,
+    removeAddListError: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ lists }) => {
@@ -128,6 +133,6 @@ const mapStateToProps = ({ lists }) => {
     }
 }
 
-const mapDispatchToProps = { handleAddList };
+const mapDispatchToProps = { handleAddList, removeAddListError };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListForm);

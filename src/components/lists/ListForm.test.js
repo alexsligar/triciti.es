@@ -9,6 +9,7 @@ const defaultProps = {
     addListProcessing: false,
     addListError: null,
     handleAddList: () => {},
+    removeAddListError: () => {},
 };
 const setup = (props = {}) => {
     const propsPassed = { ...defaultProps, ...props };
@@ -68,6 +69,14 @@ describe('handleInputChange', () => {
         expect(wrapper.state().fieldErrors.name).toBe('Name must be between 4 and 60 characters');
         expect(wrapper.state().formErrors).toBe(true);
     });
+
+    it('should call removeAddListError if addListError prop is not null', () => {
+
+        const removeAddListError = jest.fn();
+        const wrapper = setup({ addListError: 'Uh oh', removeAddListError });
+        wrapper.instance().handleInputChange({ target: { name: 'name', value: 'tes' } });
+        expect(removeAddListError.mock.calls.length).toBe(1);
+    });
 });
 
 describe('form validations', () => {
@@ -97,10 +106,12 @@ describe('form validations', () => {
         const descriptionInput = wrapper.find('[name="description"]');
         descriptionInput.simulate('change', { target: { name: 'description', value: '' }});
         expect(wrapper.state().fieldErrors.description).toBe('Description is required');
-        descriptionInput.simulate('change', { target: { name: 'description', value: 'abcde'.repeat(51) }});
+        descriptionInput.simulate('change', { target: { name: 'description', value: 'abcde' }});
         expect(wrapper.state().fieldErrors.description).toBe('Description must be between 10 and 250 characters');
         descriptionInput.simulate('change', { target: { name: 'description', value: 'abcde'.repeat(51) }});
         expect(wrapper.state().fieldErrors.description).toBe('Description must be between 10 and 250 characters');
+        descriptionInput.simulate('change', { target: { name: 'description', value: 'This is my list' }});
+        expect(wrapper.state().fieldErrors.description).toBeUndefined();
     });
 });
 
