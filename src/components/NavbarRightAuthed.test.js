@@ -6,6 +6,7 @@ import history from '../history';
 import { Menu } from 'semantic-ui-react';
 import ConnectedNavbarRightAuthed, { NavbarRightAuthed } from './NavbarRightAuthed';
 import { storeFactory } from '../../test/testUtils';
+import ListModal from './lists/ListModal';
 
 const defaultProps = {
     authedUserId: '1abc',
@@ -26,8 +27,8 @@ describe('render', () => {
         expect(menu.length).toBe(1);
         const itemsAddLink = wrapper.find('Link[to="/items/add"]');
         expect(itemsAddLink.length).toBe(1);
-        const listAddLink = wrapper.find('Link[to="/lists/add"]');
-        expect(listAddLink.length).toBe(1);
+        const listAddModal = wrapper.find(ListModal);
+        expect(listAddModal.length).toBe(1);
         const settingsLink = wrapper.find('Link[to="/settings"]');
         expect(settingsLink.length).toBe(1);
         const profileLink = wrapper.find('Link[to="/users/1abc"]');

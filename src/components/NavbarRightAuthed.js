@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Button } from 'semantic-ui-react';
+import ListModal from './lists/ListModal';
 import { handleLogoutUser } from '../actions/authUser';
 
 export class NavbarRightAuthed extends Component {
@@ -17,9 +18,7 @@ export class NavbarRightAuthed extends Component {
                     </Link>
                 </Menu.Item>
                 <Menu.Item>
-                    <Link to='/lists/add'>
-                        <Icon name='list' />
-                    </Link>
+                    <ListModal />
                 </Menu.Item>
                 <Menu.Item>
                     <Link to='/settings'>
