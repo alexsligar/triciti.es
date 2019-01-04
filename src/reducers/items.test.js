@@ -184,14 +184,14 @@ describe('items reducer', () => {
         const initial = {
             ...initialState,
             getItem: {
-                ...initialState.getItems,
+                ...initialState.getItem,
                 loading: true,
             },
         };
         const expected = {
             ...initialState,
             getItem: {
-                ...initialState.getItems,
+                ...initialState.getItem,
                 loading: false,
             },
             item: itemExample,

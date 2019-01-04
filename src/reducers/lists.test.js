@@ -1,4 +1,9 @@
 import lists from './lists';
+import {
+    LIST_LOADING,
+    LIST_ERROR,
+    LIST_SUCCESS
+} from '../actions/lists/getList';
 import { 
     ADD_LIST_PROCESSING,
     ADD_LIST_ERROR,
@@ -11,12 +16,87 @@ const initialState = {
         processing: false,
         error: null,
     },
+    getList: {
+        loading: false,
+        error: null,
+    },
+    item: {},
 };
 
 describe('lists reducer', () => {
     it('should return the correct initial state', () => {
 
         expect(lists(undefined, {})).toEqual(initialState);
+    });
+
+    it('should handle LIST_LOADING', () => {
+
+        const action = {
+            type: LIST_LOADING,
+        };
+        const initial = {
+            ...initialState,
+            getList: {
+                loading: false,
+                error: 'Uh oh',
+            },
+        };
+        const expected = {
+            ...initialState,
+            getList: {
+                loading: true,
+                error: 'Uh oh',
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle LIST_ERROR', () => {
+
+        const action = {
+            type: LIST_ERROR,
+            error: 'test'
+        };
+        const initial = {
+            ...initialState,
+            getList: {
+                loading: true,
+                error: null,
+            },
+        };
+        const expected = {
+            ...initialState,
+            getList: {
+                loading: false,
+                error: action.error,
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle LIST_SUCCESS', () => {
+
+        const itemExample = { name: 'test item' };
+        const action = {
+            type: LIST_SUCCESS,
+            item: itemExample,
+        };
+        const initial = {
+            ...initialState,
+            getList: {
+                ...initialState.getList,
+                loading: true,
+            },
+        };
+        const expected = {
+            ...initialState,
+            getList: {
+                ...initialState.getList,
+                loading: false,
+            },
+            item: itemExample,
+        };
+        expect(lists(initial, action)).toEqual(expected);
     });
 
     it('should handle ADD_LIST_PROCESSING', () => {
