@@ -9,6 +9,18 @@ import {
     REMOVE_ADD_LIST_ERROR,
     ADD_LIST_SUCCESS,
 } from '../actions/lists/addList';
+import {
+    UPDATE_LIST_PROCESSING,
+    UPDATE_LIST_ERROR,
+    REMOVE_UPDATE_LIST_ERROR,
+    UPDATE_LIST_SUCCESS,
+} from '../actions/lists/updateList';
+import {
+    DELETE_LIST_PROCESSING,
+    DELETE_LIST_ERROR,
+    REMOVE_DELETE_LIST_ERROR,
+    DELETE_LIST_SUCCESS,
+} from '../actions/lists/deleteList';
 
 const initialState = {
     getList: {
@@ -19,7 +31,15 @@ const initialState = {
         processing: false,
         error: null,
     },
-    item: {},
+    updateList: {
+        processing: false,
+        error: null,
+    },
+    deleteList: {
+        processing: false,
+        error: null,
+    },
+    list: {},
 };
 
 export default function lists(state = initialState, action) {
@@ -49,7 +69,7 @@ export default function lists(state = initialState, action) {
                     loading: false,
                     error: null,
                 },
-                item: action.item,
+                list: action.list,
             }
         case ADD_LIST_PROCESSING :
             return {
@@ -82,6 +102,74 @@ export default function lists(state = initialState, action) {
                 ...state,
                 addList: {
                     ...state.addList,
+                    error: null,
+                },
+            }
+        case UPDATE_LIST_PROCESSING :
+            return {
+                ...state,
+                updateList: {
+                    ...state.updateList,
+                    processing: true,
+                },
+            }
+        case UPDATE_LIST_ERROR :
+            return {
+                ...state,
+                updateList: {
+                    ...state.updateList,
+                    processing: false,
+                    error: action.error,
+                },
+            }
+        case UPDATE_LIST_SUCCESS :
+            return {
+                ...state,
+                updateList: {
+                    ...state.updateList,
+                    processing: false,
+                    error: null,
+                },
+            }
+        case REMOVE_UPDATE_LIST_ERROR :
+            return {
+                ...state,
+                updateList: {
+                    ...state.updateList,
+                    error: null,
+                },
+            }
+        case DELETE_LIST_PROCESSING :
+            return {
+                ...state,
+                deleteList: {
+                    ...state.deleteList,
+                    processing: true,
+                },
+            }
+        case DELETE_LIST_ERROR :
+            return {
+                ...state,
+                deleteList: {
+                    ...state.deleteList,
+                    processing: false,
+                    error: action.error,
+                },
+            }
+        case DELETE_LIST_SUCCESS :
+            return {
+                ...state,
+                deleteList: {
+                    ...state.deleteList,
+                    processing: false,
+                    error: null,
+                },
+            }
+        case REMOVE_DELETE_LIST_ERROR :
+            return {
+                ...state,
+                deleteList: {
+                    ...state.deleteList,
                     error: null,
                 },
             }

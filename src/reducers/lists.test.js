@@ -10,6 +10,18 @@ import {
     ADD_LIST_SUCCESS,
     REMOVE_ADD_LIST_ERROR,
 } from '../actions/lists/addList';
+import { 
+    UPDATE_LIST_PROCESSING,
+    UPDATE_LIST_ERROR,
+    UPDATE_LIST_SUCCESS,
+    REMOVE_UPDATE_LIST_ERROR,
+} from '../actions/lists/updateList';
+import { 
+    DELETE_LIST_PROCESSING,
+    DELETE_LIST_ERROR,
+    DELETE_LIST_SUCCESS,
+    REMOVE_DELETE_LIST_ERROR,
+} from '../actions/lists/deleteList';
 
 const initialState = {
     addList: {
@@ -20,7 +32,15 @@ const initialState = {
         loading: false,
         error: null,
     },
-    item: {},
+    updateList: {
+        processing: false,
+        error: null,
+    },
+    deleteList: {
+        processing: false,
+        error: null,
+    },
+    list: {},
 };
 
 describe('lists reducer', () => {
@@ -76,10 +96,10 @@ describe('lists reducer', () => {
 
     it('should handle LIST_SUCCESS', () => {
 
-        const itemExample = { name: 'test item' };
+        const listExample = { name: 'test list' };
         const action = {
             type: LIST_SUCCESS,
-            item: itemExample,
+            list: listExample,
         };
         const initial = {
             ...initialState,
@@ -94,7 +114,7 @@ describe('lists reducer', () => {
                 ...initialState.getList,
                 loading: false,
             },
-            item: itemExample,
+            list: listExample,
         };
         expect(lists(initial, action)).toEqual(expected);
     });
@@ -188,6 +208,184 @@ describe('lists reducer', () => {
                 ...initialState.addList,
                 error: null,
             },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle UPDATE_LIST_PROCESSING', () => {
+
+        const action = {
+            type: UPDATE_LIST_PROCESSING,
+        };
+        const initial = {
+            ...initialState,
+            updateList: {
+                ...initialState.updateList,
+                processing: false,
+                error: 'Uh oh',
+            }
+        };
+        const expected = {
+            ...initialState,
+            updateList: {
+                ...initialState.updateList,
+                processing: true,
+                error: 'Uh oh',
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle UPDATE_LIST_ERROR', () => {
+
+        const action = {
+            type: UPDATE_LIST_ERROR,
+            error: 'Uh oh',
+        };
+        const initial = {
+            ...initialState,
+            updateList: {
+                ...initialState.updateList,
+                processing: true,
+                error: null,
+            },
+        };
+        const expected = {
+            ...initialState,
+            updateList: {
+                ...initialState.updateList,
+                processing: false,
+                error: action.error,
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle UPDATE_LIST_SUCCESS', () => {
+
+        const action = {
+            type: UPDATE_LIST_SUCCESS,
+        };
+        const initial = {
+            ...initialState,
+            updateList: {
+                processing: true,
+                error: 'Uh oh',
+            },
+        };
+        const expected = {
+            ...initialState,
+            updateList: {
+                processing: false,
+                error: null,
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_UPDATE_LIST_ERROR', () => {
+
+        const action = {
+            type: REMOVE_UPDATE_LIST_ERROR,
+        };
+        const initial = {
+            ...initialState,
+            updateList: {
+                ...initialState.updateList,
+                error: 'Uh oh',
+            },
+        };
+        const expected = {
+            ...initialState,
+            updateList: {
+                ...initialState.updateList,
+                error: null,
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_LIST_PROCESSING', () => {
+        const initial = {
+            ...initialState,
+            deleteList: {
+                ...initialState.deleteList,
+                processing: false,
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteList: {
+                ...initialState.deleteList,
+                processing: true,
+            },
+        }
+        const action = {
+            type: DELETE_LIST_PROCESSING,
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_LIST_ERROR', () => {
+        const initial = {
+            ...initialState,
+            deleteList: {
+                processing: true,
+                error: null,
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteList: {
+                processing: false,
+                error: 'Uh oh',
+            },
+        }
+        const action = {
+            type: DELETE_LIST_ERROR,
+            error: 'Uh oh',
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_DELETE_LIST_ERROR', () => {
+        const initial = {
+            ...initialState,
+            deleteList: {
+                ...initialState.deleteList,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteList: {
+                ...initialState.deleteList,
+                error: null,
+            },
+        }
+        const action = {
+            type: REMOVE_DELETE_LIST_ERROR,
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle DELETE_LIST_SUCCESS', () => {
+        const initial = {
+            ...initialState,
+            deleteList: {
+                processing: true,
+                error: 'Uh oh',
+            },
+        }
+        const expected = {
+            ...initialState,
+            deleteList: {
+                processing: false,
+                error: null,
+            },
+        }
+        const action = {
+            type: DELETE_LIST_SUCCESS,
         };
         expect(lists(initial, action)).toEqual(expected);
     });

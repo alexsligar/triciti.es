@@ -29,7 +29,7 @@ describe('handleDeleteItem action creator', () => {
         expect(actions[0]).toEqual({ type: DELETE_ITEM_PROCESSING });
     });
 
-    it('should dispatch DELETE_ITEM_SUCCESS when fetch responds with 200 status', async () => {
+    it('should dispatch DELETE_ITEM_SUCCESS when fetch responds with 204 status', async () => {
 
         fetch.mockResponseOnce(JSON.stringify({}), { status: 204 });
         await store.dispatch(handleDeleteItem(1));
