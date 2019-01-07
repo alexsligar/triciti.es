@@ -1,57 +1,31 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Container, Confirm, Button, Icon } from 'semantic-ui-react';
+import { Container, Button, Icon } from 'semantic-ui-react';
 import { handleDeleteItem, removeDeleteItemError } from '../../actions/items/deleteItem';
+import ConfirmDelete from '../universal/ConfirmDelete';
 
 export class ItemOptions extends Component {
-    state = {
-        deleteMode: false,
-    }
-
-    enterDeleteMode = () => {
-        this.setState({ deleteMode: true });
-    }
-
-    handleCanceledDelete = () => {
-        this.setState({ deleteMode: false });
-        if(this.props.deleteError) {
-            this.props.removeDeleteItemError();
-        }
-    }
-
-    handleConfirmedDelete = () => {
-        this.props.handleDeleteItem(this.props.item.id);
-    }
 
     render() {
         const { item, deleteProcessing, deleteError, } = this.props;
-        const { deleteMode } = this.state;
         return (
-            <Fragment>
-                <Container style={{ margin: '10px' }} textAlign='center'>
-                    <Link to={'/items/' + item.id + '/edit'}>
-                        <Button icon>
-                            <Icon name='pencil' />
-                        </Button>
-                    </Link>
-                    <Button
-                        onClick={this.enterDeleteMode}
-                        icon
-                    >
-                        <Icon color='red' name='times circle' />
+            <Container style={{ margin: '10px' }} textAlign='center'>
+                <Link to={'/items/' + item.id + '/edit'}>
+                    <Button icon>
+                        <Icon name='pencil' />
                     </Button>
-                </Container>
-                <Confirm 
-                    open={deleteMode}
-                    onCancel={this.handleCanceledDelete}
-                    onConfirm={this.handleConfirmedDelete}
-                    confirmButton={deleteProcessing ? <Button primary loading>Loading</Button> : 'Yes'}
-                    cancelButton={deleteProcessing ? null : 'Cancel'}
-                    content={deleteError ? 'Error deleting item. Try again?' : 'Are you sure you want to delete this item?'}
+                </Link>
+                <ConfirmDelete
+                    entityId={item.id}
+                    entityType='item'
+                    handleDelete={this.props.handleDeleteItem}
+                    removeDeleteError={this.props.removeDeleteItemError}
+                    deleteProcessing={deleteProcessing}
+                    deleteError={deleteError}
                 />
-            </Fragment>
+            </Container>
         );
     }
 }
