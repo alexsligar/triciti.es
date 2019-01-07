@@ -10,6 +10,7 @@ import Tags from './tags/Tags';
 import AddItem from './items/AddItem';
 import EditItem from './items/EditItem';
 import ShowItem from './items/ShowItem';
+import ShowList from './lists/ShowList'
 
 export class Routes extends Component {
 
@@ -22,6 +23,7 @@ export class Routes extends Component {
         <Route path='/tags/:tag' component={TagSearchResults} />
         <Route path='/tags' component={Tags} />
         <Route path='/items/:id' component={ShowItem} />
+        <Route path='/lists/:id' component={ShowList} />
       </Switch>
     );
     if (this.props.authedUser) {
@@ -35,6 +37,7 @@ export class Routes extends Component {
           <Route path='/items/add' component={AddItem} />
           <Route path='/items/:id/edit' component={EditItem} />
           <Route path='/items/:id' component={ShowItem} />
+          <Route path='/lists/:id' component={ShowList} />
         </Switch>
       )
     }
