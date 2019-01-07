@@ -8,13 +8,28 @@ import { storeFactory } from '../../../test/testUtils';
 const defaultProps = {
     addListProcessing: false,
     addListError: null,
+    updateListProcessing: false,
+    updateListError: null,
     handleAddList: () => {},
     removeAddListError: () => {},
+    handleUpdateList: () => {},
+    removeUpdateListError: () => {},
 };
 const setup = (props = {}) => {
     const propsPassed = { ...defaultProps, ...props };
     return shallow(<ListForm {...propsPassed} />);
 }
+
+describe('state', () => {
+
+    it('should set the state to the list data if props list is provided', () => {
+
+        const list = { name: 'Test List', description: 'A description' };
+        const wrapper = setup({ list });
+        expect(wrapper.state().fields.name).toBe(list.name);
+        expect(wrapper.state().fields.description).toBe(list.description);
+    });
+});
 
 describe('render', () => {
 
@@ -23,6 +38,7 @@ describe('render', () => {
         const wrapper = setup();
         const form = wrapper.find(Form);
         expect(form.length).toBe(1);
+        expect(wrapper.state().formErrors).toBe(false);
     });
 
     it('should render a Form with props loading when addListProcessing is true', () => {
@@ -40,6 +56,16 @@ describe('render', () => {
         const message = wrapper.find(Message);
         expect(message.props().error).toBe(true);
         expect(message.props().content).toBe('Uh oh');
+    });
+
+    it('should render a Message with the error as content when updateListError is not null', () => {
+
+        const wrapper = setup({ updateListError: 'Update Uh oh' });
+        const form = wrapper.find(Form);
+        expect(form.props().error).toBe(true);
+        const message = wrapper.find(Message);
+        expect(message.props().error).toBe(true);
+        expect(message.props().content).toBe('Update Uh oh');
     });
 
     it('should display an error label when name error is present', () => {
@@ -76,6 +102,14 @@ describe('handleInputChange', () => {
         const wrapper = setup({ addListError: 'Uh oh', removeAddListError });
         wrapper.instance().handleInputChange({ target: { name: 'name', value: 'tes' } });
         expect(removeAddListError.mock.calls.length).toBe(1);
+    });
+
+    it('should call removeUpdateListError if updateListError prop is not null', () => {
+
+        const removeUpdateListError = jest.fn();
+        const wrapper = setup({ updateListError: 'Uh oh', removeUpdateListError });
+        wrapper.instance().handleInputChange({ target: { name: 'name', value: 'tes' } });
+        expect(removeUpdateListError.mock.calls.length).toBe(1);
     });
 });
 
@@ -142,13 +176,22 @@ describe('handleSubmit', () => {
         expect(handleAddList.mock.calls.length).toBe(1);
     });
 
-    it('should ot ncall handleAddList if validation fails', () => {
+    it('should not call handleAddList if validation fails', () => {
 
         const handleAddList = jest.fn();
         const wrapper = setup({ handleAddList });
         wrapper.instance().validate = jest.fn().mockReturnValue(true);
         wrapper.instance().handleSubmit({ preventDefault: () => {} });
         expect(handleAddList.mock.calls.length).toBe(0);
+    });
+
+    it('should call handleUpdateList if a list prop was provided', () => {
+
+        const handleUpdateList = jest.fn();
+        const wrapper = setup({ list: { id: '1', name: 'Test List' }, handleUpdateList });
+        wrapper.instance().validate = jest.fn().mockReturnValue(false);
+        wrapper.instance().handleSubmit({ preventDefault: () => {} });
+        expect(handleUpdateList.mock.calls.length).toBe(1);
     });
 });
 
@@ -162,13 +205,24 @@ describe('connect', () => {
                     processing: false,
                     error: null,
                 },
+                updateList: {
+                    processing: false,
+                    error: null,
+                },
             },
         };
+        const list = { id: '1', name: 'Test List' };
         const store = storeFactory(initialState);
-        const wrapper = mount(<Provider store={store}><ConnectedListForm /></Provider>);
+        const wrapper = mount(<Provider store={store}><ConnectedListForm list={list} /></Provider>);
         const componentProps = wrapper.find(ListForm).props();
         expect(componentProps.addListProcessing).toBeDefined();
         expect(componentProps.addListError).toBeDefined();
         expect(componentProps.handleAddList).toBeInstanceOf(Function);
+        expect(componentProps.removeAddListError).toBeInstanceOf(Function);
+        expect(componentProps.updateListProcessing).toBeDefined();
+        expect(componentProps.updateListError).toBeDefined();
+        expect(componentProps.handleUpdateList).toBeInstanceOf(Function);
+        expect(componentProps.removeUpdateListError).toBeInstanceOf(Function);
+        expect(componentProps.list).toBeDefined();
     });
 });

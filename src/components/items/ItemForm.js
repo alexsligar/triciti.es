@@ -120,8 +120,7 @@ export class ItemForm extends Component {
     removeReduxErrors = () => {
         if(this.props.addItemError) {
             this.props.removeAddItemError();
-        }
-        if(this.props.updateItemError) {
+        } else if(this.props.updateItemError) {
             this.props.removeUpdateItemError();
         }
     }
@@ -185,7 +184,7 @@ export class ItemForm extends Component {
             <Form 
                 loading={addItemProcessing || updateItemProcessing || tagsLoading} 
                 onSubmit={this.handleSubmit}
-                error={typeof errorMessage !== undefined}
+                error={errorMessage !== null}
             >
                 {errorMessage &&
                     (<Message
