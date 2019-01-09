@@ -52,7 +52,7 @@ describe('handleGetUserLists action creator', () => {
         const actions = store.getActions();
         expect(actions[1]).toEqual({ 
             type: USER_LISTS_ERROR, 
-            error: 'Uh oh, something went wrong. Please try again.',
+            error: 'Uh oh, something went wrong loading your lists. Please try again.',
         });
     });
 
@@ -63,7 +63,7 @@ describe('handleGetUserLists action creator', () => {
         const actions = store.getActions();
         expect(actions[1]).toEqual({ 
             type: USER_LISTS_ERROR, 
-            error: 'Uh oh, something went wrong. Please try again.',
+            error: 'Uh oh, something went wrong loading your lists. Please try again.',
         });
     });
 

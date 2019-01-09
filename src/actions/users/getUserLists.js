@@ -44,7 +44,7 @@ export const handleGetUserLists = (username) => {
             }
         }
         catch {
-            dispatch(userListsError('Uh oh, something went wrong. Please try again.'));
+            dispatch(userListsError('Uh oh, something went wrong loading your lists. Please try again.'));
         }
     }
 }
