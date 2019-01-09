@@ -6,6 +6,7 @@ import { handleGetItem } from '../../actions/items/getItem';
 import ItemHeader from './ItemHeader';
 import ItemOptions from './ItemOptions';
 import ItemDetails from './ItemDetails';
+import AddListItem from '../listItems/AddListItem';
 
 export class ShowItem extends Component {
 
@@ -35,10 +36,11 @@ export class ShowItem extends Component {
             );
         } else {
             content = (
-                <Container>
+                <Container textAlign='center'>
                     <ItemHeader item={item} />
                     {authedUser && item.owners.includes(authedUser.username) && <ItemOptions item={item} />}
                     <ItemDetails item={item} />
+                    {authedUser && <AddListItem />}
                 </Container>
             );
         }
