@@ -9,6 +9,7 @@ import { storeFactory } from '../../../test/testUtils';
 import ItemHeader from './ItemHeader';
 import ItemDetails from './ItemDetails';
 import ItemOptions from './ItemOptions';
+import AddListItem from '../listItems/AddListItem';
 
 const defaultProps = {
     loading: false,
@@ -61,6 +62,7 @@ describe('render', () => {
         expect(wrapper.find(ItemHeader).length).toBe(1);
         expect(wrapper.find(ItemOptions).length).toBe(1);
         expect(wrapper.find(ItemDetails).length).toBe(1);
+        expect(wrapper.find(AddListItem).length).toBe(1);
     });
 
     it('should not render the ItemOptions component if authedUser is null', () => {
