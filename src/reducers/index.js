@@ -7,6 +7,7 @@ import tags from './tags';
 import items from './items';
 import lists from './lists';
 import users from './users';
+import listItems from'./listItems';
 
 export default combineReducers({
     initialData,
@@ -17,4 +18,5 @@ export default combineReducers({
     items,
     lists,
     users,
+    listItems,
 })
