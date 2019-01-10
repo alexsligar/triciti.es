@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Segment, Message, Header, Button, Icon } from 'semantic-ui-react';
 import { handleGetUserLists } from '../../actions/users/getUserLists';
+import AddListItemModal from './AddListItemModal';
 
 export class AddListItem extends Component {
 
@@ -40,10 +41,7 @@ export class AddListItem extends Component {
             );
         } else {
             content = (
-                <Button icon>
-                    <Icon name='plus' />
-                    Add to a List
-                </Button>
+                <AddListItemModal itemId={this.props.itemId} />
             );
         }
         return content;
@@ -59,6 +57,7 @@ AddListItem.propTypes = {
         lists: PropTypes.array,
     }),
     handleGetUserLists: PropTypes.func.isRequired,
+    itemId: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = ({ authedUser, users }) => {

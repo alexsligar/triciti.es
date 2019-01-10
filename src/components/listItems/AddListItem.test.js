@@ -1,9 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import { Header, Button } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import ConnectedAddListItem, { AddListItem } from './AddListItem';
 import { storeFactory } from '../../../test/testUtils';
+import AddListItemModal from './AddListItemModal';
 
 const defaultProps = {
     authedUser: 'testuser',
@@ -11,9 +12,10 @@ const defaultProps = {
     userListsError: null,
     userLists: {
         username: 'testuser',
-        lists: [{ id: 'abcd', name: 'Test List' }],
+        lists: [{ id: 'abcd', name: 'Test List', items: [], }],
     },
     handleGetUserLists: () => {},
+    itemId: 2,
 }
 const setup = (props = {}) => {
     const propsPassed = { ...defaultProps, ...props };
@@ -52,11 +54,12 @@ describe('render', () => {
         expect(header.dive().text()).toBe('<Icon />You don\'t have any lists to add this item to.');
     });
 
-    it('should render a Button if the authedUser has lists', () => {
+    it('should render an AddListItemModal if the authedUser has lists', () => {
 
         const wrapper = setup();
-        const button = wrapper.find(Button);
-        expect(button.dive().text()).toBe('<Icon />Add to a List');
+        const addListItemModal = wrapper.find(AddListItemModal);
+        expect(addListItemModal.length).toBe(1);
+        expect(addListItemModal.props().itemId).toBe(defaultProps.itemId);
     })
 });
 
@@ -87,17 +90,18 @@ describe('connect', () => {
                 },
                 userLists: {
                     username: 'testuser',
-                    lists: [{ id: 1, name: 'Test List' }],
+                    lists: [{ id: 1, name: 'Test List', items: [3] }],
                 },
             }
         };
         const store = storeFactory(initialState);
-        const wrapper = mount(<Provider store={store}><ConnectedAddListItem /></Provider>);
+        const wrapper = mount(<Provider store={store}><ConnectedAddListItem itemId={2} /></Provider>);
         const componentProps = wrapper.find(AddListItem).props();
         expect(componentProps.authedUser).toBeDefined();
         expect(componentProps.userListsLoading).toBeDefined();
         expect(componentProps.userListsError).toBeDefined();
         expect(componentProps.userLists).toBeDefined();
         expect(componentProps.handleGetUserLists).toBeInstanceOf(Function);
+        expect(componentProps.itemId).toBeDefined();
     });
 })
