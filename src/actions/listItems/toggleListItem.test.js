@@ -128,7 +128,7 @@ describe('handleRemoveListItem action creator', () => {
         const actions = store.getActions();
         expect(actions[2]).toEqual({ 
             type: TOGGLE_LIST_ITEM_ERROR, 
-            error: 'Failed to add item to list. Please try again.',
+            error: 'Failed to remove item from list. Please try again.',
         });
     });
 
@@ -139,7 +139,7 @@ describe('handleRemoveListItem action creator', () => {
         const actions = store.getActions();
         expect(actions[2]).toEqual({ 
             type: TOGGLE_LIST_ITEM_ERROR, 
-            error: 'Failed to add item to list. Please try again.',
+            error: 'Failed to remove item from list. Please try again.',
         });
     });
 

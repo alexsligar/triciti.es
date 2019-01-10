@@ -91,7 +91,7 @@ export const handleRemoveListItem = (listId, itemId) => {
         }
         catch (err) {
             dispatch(addItemToList(listId, itemId));
-            dispatch(toggleListItemError('Failed to add item to list. Please try again.'));
+            dispatch(toggleListItemError('Failed to remove item from list. Please try again.'));
         }
     }
 }
