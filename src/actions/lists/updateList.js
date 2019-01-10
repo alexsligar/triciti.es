@@ -1,3 +1,5 @@
+import { handleGetList } from './getList';
+
 export const UPDATE_LIST_PROCESSING = 'UPDATE_LIST_PROCESSING';
 export const UPDATE_LIST_ERROR = 'UPDATE_LIST_ERROR';
 export const UPDATE_LIST_SUCCESS = 'UPDATE_LIST_SUCCESS';
@@ -44,6 +46,8 @@ export const handleUpdateList = (id, list) => {
             });
             if (response.status === 200) {
                 dispatch(updateListSuccess());
+                const { data } = await response.json();
+                dispatch(handleGetList(data.id));
             } else if (response.status === 409) {
                 const { message } = await response.json();
                 dispatch(updateListError(message));

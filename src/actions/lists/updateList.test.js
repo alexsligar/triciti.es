@@ -12,6 +12,9 @@ import {
     handleUpdateList,
     removeUpdateListError,
 } from './updateList';
+import {
+    LIST_LOADING,
+} from './getList';
 
 describe('handleUpdateList action creator', () => {
 
@@ -35,6 +38,14 @@ describe('handleUpdateList action creator', () => {
         await store.dispatch(handleUpdateList(1, { name: 'Test List', description: 'This is a description' }));
         const actions = store.getActions();
         expect(actions[1]).toEqual({ type: UPDATE_LIST_SUCCESS });
+    });
+
+    it('should dispatch LIST_LOADING when fetch responds with 200 status', async () => {
+
+        fetch.mockResponseOnce(JSON.stringify({ data: { id: 'abcd', name: 'Test List' } }), { status: 200 });
+        await store.dispatch(handleUpdateList('abcd', { name: 'Test List', description: 'This is a description' }));
+        const actions = store.getActions();
+        expect(actions[2]).toEqual({ type: LIST_LOADING });
     });
 
     it('should dispatch UPDATE_LIST_ERROR when fetch responds with 409 status', async () => {
