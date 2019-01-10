@@ -1,3 +1,3 @@
 #TriCiti.es
 
-A front-end for [villager.io](https://villager.io)
+A front-end for [villager.io](http://villager.io)
