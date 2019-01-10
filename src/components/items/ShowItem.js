@@ -40,7 +40,7 @@ export class ShowItem extends Component {
                     <ItemHeader item={item} />
                     {authedUser && item.owners.includes(authedUser.username) && <ItemOptions item={item} />}
                     <ItemDetails item={item} />
-                    {authedUser && <AddListItem />}
+                    {authedUser && <AddListItem itemId={item.id} />}
                 </Container>
             );
         }
