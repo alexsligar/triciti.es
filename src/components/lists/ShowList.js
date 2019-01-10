@@ -5,6 +5,7 @@ import { Dimmer, Loader, Container, Message } from 'semantic-ui-react';
 import { handleGetList } from '../../actions/lists/getList';
 import ListHeader from './ListHeader';
 import ListOptions from './ListOptions';
+import ListItems from './ListItems';
 
 export class ShowList extends Component {
 
@@ -14,8 +15,7 @@ export class ShowList extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if((prevProps.updateProcessing && !this.props.updateProcessing && !this.props.updateError) || 
-            (this.props.list.id !== this.props.match.params.id)) {
+        if(prevProps.match.params.id !== this.props.match.params.id) {
             const { id } = this.props.match.params;
             this.props.handleGetList(id);
         }
@@ -45,6 +45,7 @@ export class ShowList extends Component {
                 <Container>
                     <ListHeader list={list} />
                     {authedUser && list.owner === authedUser.username && <ListOptions list={list} />}
+                    {list.items.length > 0 && <ListItems items={list.items} />}
                 </Container>
             )
         }
@@ -55,7 +56,7 @@ export class ShowList extends Component {
 ShowList.propTypes = {
     loading: PropTypes.bool.isRequired,
     error: PropTypes.string,
-    list: PropTypes.object,
+    list: PropTypes.object.isRequired,
     handleGetList: PropTypes.func.isRequired,
     authedUser: PropTypes.shape({
         username: PropTypes.string,

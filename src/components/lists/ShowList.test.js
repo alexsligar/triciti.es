@@ -16,6 +16,7 @@ const defaultProps = {
         id: 'abcd',
         name: 'Test List',
         owner: 'testuser',
+        items: [{ id: 2, name: 'Test Item', type: 'Activity', location: 'Here', }],
     },
     updateProcessing: false,
     updateError: null,
@@ -102,20 +103,11 @@ describe('componentDidMount', () => {
 
 describe('componentDidUpdate', () => {
 
-    it('should call handleGetList if the list was updated', () => {
-
-        const handleGetList = jest.fn();
-        const wrapper = setup({ handleGetList });
-        wrapper.instance().componentDidUpdate({ updateProcessing: true });
-        expect(handleGetList.mock.calls.length).toBe(1);
-        expect(handleGetList.mock.calls[0][0]).toBe(defaultProps.match.params.id);
-    });
-
-    it('should call handleGetList if the url id doesnt match current redux list', () => {
+    it('should call handleGetList if the url id changes', () => {
 
         const handleGetList = jest.fn();
         const wrapper = setup({ handleGetList, match: { params: { id: 'efgh' } } });
-        wrapper.instance().componentDidUpdate({});
+        wrapper.instance().componentDidUpdate({ match: { params: { id: 'abcd' } } });
         expect(handleGetList.mock.calls.length).toBe(1);
         expect(handleGetList.mock.calls[0][0]).toBe('efgh');
     });
@@ -139,6 +131,7 @@ describe('connect', () => {
                     id: 'abcd',
                     name: 'Test List',
                     owner: 'testuser',
+                    items: [],
                 },
             },
         };
