@@ -8,6 +8,8 @@ import {
     ADD_LIST_ERROR,
     REMOVE_ADD_LIST_ERROR,
     ADD_LIST_SUCCESS,
+    SHOW_NEW_LIST_MODAL,
+    CLOSE_NEW_LIST_MODAL,
 } from '../actions/lists/addList';
 import {
     UPDATE_LIST_PROCESSING,
@@ -30,6 +32,7 @@ const initialState = {
     addList: {
         processing: false,
         error: null,
+        showModal: false,
     },
     updateList: {
         processing: false,
@@ -95,6 +98,7 @@ export default function lists(state = initialState, action) {
                     ...state.addList,
                     processing: false,
                     error: null,
+                    showModal: false,
                 },
             }
         case REMOVE_ADD_LIST_ERROR :
@@ -104,6 +108,22 @@ export default function lists(state = initialState, action) {
                     ...state.addList,
                     error: null,
                 },
+            }
+        case SHOW_NEW_LIST_MODAL :
+            return {
+                ...state,
+                addList: {
+                    ...state.addList,
+                    showModal: true,
+                },
+            }
+        case CLOSE_NEW_LIST_MODAL :
+            return {
+                ...state,
+                addList: {
+                    ...state.addList,
+                    showModal: false,
+                }
             }
         case UPDATE_LIST_PROCESSING :
             return {

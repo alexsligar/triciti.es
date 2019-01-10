@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Segment, Message, Header, Button, Icon } from 'semantic-ui-react';
 import { handleGetUserLists } from '../../actions/users/getUserLists';
 import AddListItemModal from './AddListItemModal';
+import { showNewListModal } from '../../actions/lists/addList';
 
 export class AddListItem extends Component {
 
@@ -34,9 +35,11 @@ export class AddListItem extends Component {
                         <Icon name='list' />
                         You don&apos;t have any lists to add this item to.
                     </Header>
-                    <Button primary>
-                        Add a New List
-                    </Button>
+                    <div>
+                        <Button primary onClick={this.props.showNewListModal}>
+                            Add a New List
+                        </Button>
+                    </div>
                 </Segment>
             );
         } else {
@@ -58,6 +61,7 @@ AddListItem.propTypes = {
     }),
     handleGetUserLists: PropTypes.func.isRequired,
     itemId: PropTypes.number.isRequired,
+    showNewListModal: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ authedUser, users }) => {
@@ -69,6 +73,6 @@ const mapStateToProps = ({ authedUser, users }) => {
     }
 }
 
-const mapDispatchToProps = { handleGetUserLists };
+const mapDispatchToProps = { handleGetUserLists, showNewListModal };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddListItem);

@@ -9,6 +9,8 @@ import {
     ADD_LIST_ERROR,
     ADD_LIST_SUCCESS,
     REMOVE_ADD_LIST_ERROR,
+    SHOW_NEW_LIST_MODAL,
+    CLOSE_NEW_LIST_MODAL,
 } from '../actions/lists/addList';
 import { 
     UPDATE_LIST_PROCESSING,
@@ -27,6 +29,7 @@ const initialState = {
     addList: {
         processing: false,
         error: null,
+        showModal: false,
     },
     getList: {
         loading: false,
@@ -178,6 +181,7 @@ describe('lists reducer', () => {
             addList: {
                 processing: true,
                 error: 'Uh oh',
+                showModal: true,
             },
         };
         const expected = {
@@ -185,6 +189,51 @@ describe('lists reducer', () => {
             addList: {
                 processing: false,
                 error: null,
+                showModal: false,
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle SHOW_NEW_LIST_MODAL', () => {
+
+        const action = {
+            type: SHOW_NEW_LIST_MODAL,
+        };
+        const initial = {
+            ...initialState,
+            addList: {
+                ...initialState.addList,
+                showModal: false,
+            },
+        };
+        const expected = {
+            ...initialState,
+            addList: {
+                ...initialState.addList,
+                showModal: true,
+            },
+        };
+        expect(lists(initial, action)).toEqual(expected);
+    });
+
+    it('should handle CLOSE_NEW_LIST_MODAL', () => {
+
+        const action = {
+            type: CLOSE_NEW_LIST_MODAL,
+        };
+        const initial = {
+            ...initialState,
+            addList: {
+                ...initialState.addList,
+                showModal: true,
+            },
+        };
+        const expected = {
+            ...initialState,
+            addList: {
+                ...initialState.addList,
+                showModal: false,
             },
         };
         expect(lists(initial, action)).toEqual(expected);

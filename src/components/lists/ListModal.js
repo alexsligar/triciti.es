@@ -1,36 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Modal, Icon } from 'semantic-ui-react';
 import ListForm from './ListForm';
+import { showNewListModal, closeNewListModal } from '../../actions/lists/addList'
 
 export class ListModal extends Component {
-    state = {
-        open: false,
-    }
-    
-    handleOpen = () => {
-        this.setState({ open: true });
-    }
-
-    handleClose = () => {
-        this.setState({ open: false });
-    }
-
-    componentDidUpdate(prevProps) {
-        if(prevProps.location.pathname !== this.props.location.pathname) {
-            this.handleClose();
-        }
-    }
 
     render() {
         return (
             <Modal 
                 dimmer='inverted' 
                 size='tiny' 
-                trigger={<Icon onClick={this.handleOpen} name='list' className='asLink' />}
-                open={this.state.open}
-                onClose={this.handleClose}    
+                trigger={<Icon onClick={this.props.showNewListModal} name='list' className='asLink' />}
+                open={this.props.showModal}
+                onClose={this.props.closeNewListModal}    
             >
                 <Modal.Header>Make a list</Modal.Header>
                 <Modal.Content>
@@ -42,9 +27,17 @@ export class ListModal extends Component {
 }
 
 ListModal.propTypes = {
-    location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    })
+    showModal: PropTypes.bool.isRequired,
+    showNewListModal: PropTypes.func.isRequired,
+    closeNewListModal: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = ({ lists }) => {
+    return {
+        showModal: lists.addList.showModal,
+    };
 }
 
-export default withRouter(ListModal)
+const mapDispatchToProps = { showNewListModal, closeNewListModal };
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListModal))

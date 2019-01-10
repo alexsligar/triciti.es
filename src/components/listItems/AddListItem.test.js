@@ -15,6 +15,7 @@ const defaultProps = {
         lists: [{ id: 'abcd', name: 'Test List', items: [], }],
     },
     handleGetUserLists: () => {},
+    showNewListModal: () => {},
     itemId: 2,
 }
 const setup = (props = {}) => {
@@ -102,6 +103,7 @@ describe('connect', () => {
         expect(componentProps.userListsError).toBeDefined();
         expect(componentProps.userLists).toBeDefined();
         expect(componentProps.handleGetUserLists).toBeInstanceOf(Function);
+        expect(componentProps.showNewListModal).toBeInstanceOf(Function);
         expect(componentProps.itemId).toBeDefined();
     });
 });

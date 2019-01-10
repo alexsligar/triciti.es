@@ -9,8 +9,12 @@ import {
     ADD_LIST_ERROR,
     REMOVE_ADD_LIST_ERROR,
     ADD_LIST_SUCCESS,
+    SHOW_NEW_LIST_MODAL,
+    CLOSE_NEW_LIST_MODAL,
     handleAddList,
     removeAddListError,
+    showNewListModal,
+    closeNewListModal,
 } from './addList';
 
 describe('handleAddList action creator', () => {
@@ -80,4 +84,30 @@ describe('removeAddListError action creator', () => {
             type: REMOVE_ADD_LIST_ERROR,
         })
     })
+});
+
+describe('showNewListModal action creator', () => {
+
+    it('should dispatch SHOW_NEW_LIST_MODAL', () => {
+
+        const store = mockStore();
+        store.dispatch(showNewListModal());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: SHOW_NEW_LIST_MODAL,
+        })
+    });
+});
+
+describe('closeNewListModal action creator', () => {
+
+    it('should dispatch CLOSE_NEW_LIST_MODAL', () => {
+
+        const store = mockStore();
+        store.dispatch(closeNewListModal());
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: CLOSE_NEW_LIST_MODAL,
+        })
+    });
 });

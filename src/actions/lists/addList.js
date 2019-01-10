@@ -4,6 +4,8 @@ export const ADD_LIST_PROCESSING = 'ADD_LIST_PROCESSING';
 export const ADD_LIST_ERROR = 'ADD_LIST_ERROR';
 export const ADD_LIST_SUCCESS = 'ADD_LIST_SUCCESS';
 export const REMOVE_ADD_LIST_ERROR = 'REMOVE_ADD_LIST_ERROR';
+export const SHOW_NEW_LIST_MODAL = 'SHOW_NEW_LIST_MODAL';
+export const CLOSE_NEW_LIST_MODAL = 'CLOSE_NEW_LIST_MODAL';
 
 const addListProcessing = () => {
     return {
@@ -21,6 +23,18 @@ const addListError = (error) => {
     return {
         type: ADD_LIST_ERROR,
         error,
+    }
+}
+
+export const showNewListModal = () => {
+    return {
+        type: SHOW_NEW_LIST_MODAL,
+    }
+}
+
+export const closeNewListModal = () => {
+    return {
+        type: CLOSE_NEW_LIST_MODAL,
     }
 }
 

@@ -52,7 +52,7 @@ describe('handleToggleListItem', () => {
         expect(handleAddListItem.mock.calls[0][0]).toBe(defaultProps.listId);
         expect(handleAddListItem.mock.calls[0][1]).toBe(defaultProps.itemId);
     });
-})
+});
 
 describe('connect', () => {
 
