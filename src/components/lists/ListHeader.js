@@ -10,7 +10,7 @@ export default function ListHeader(props) {
                 {props.list.name}
             </Header>
             <p>
-                by 
+                by<span> </span>
                 <Link to={'/users/' + props.list.owner}>
                     {props.list.owner}
                 </Link>
