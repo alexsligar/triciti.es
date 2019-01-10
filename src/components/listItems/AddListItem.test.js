@@ -104,4 +104,4 @@ describe('connect', () => {
         expect(componentProps.handleGetUserLists).toBeInstanceOf(Function);
         expect(componentProps.itemId).toBeDefined();
     });
-})
+});
