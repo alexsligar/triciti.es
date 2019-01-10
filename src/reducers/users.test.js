@@ -12,7 +12,7 @@ import {
 import {
     ADD_ITEM_TO_LIST,
     REMOVE_ITEM_FROM_LIST,
-} from '../actions/listItems/addListItem';
+} from '../actions/listItems/toggleListItem';
 
 const initialState = {
     getUser: {

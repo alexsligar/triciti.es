@@ -1,29 +1,29 @@
 import {
-    ADD_LIST_ITEM_ERROR,
-    ADD_LIST_ITEM_SUCCESS,
-} from '../actions/listItems/addListItem';
+    TOGGLE_LIST_ITEM_ERROR,
+    TOGGLE_LIST_ITEM_SUCCESS,
+} from '../actions/listItems/toggleListItem';
 
 const initialState = {
-    addListItem: {
+    toggleListItem: {
         error: null,
     }
 };
 
 export default function registerUser (state = initialState, action) {
     switch(action.type) {
-        case ADD_LIST_ITEM_ERROR :
+        case TOGGLE_LIST_ITEM_ERROR :
             return {
                 ...state,
-                addListItem: {
-                    ...state.addListItem,
+                toggleListItem: {
+                    ...state.toggleListItem,
                     error: action.error,
                 },
             }
-        case ADD_LIST_ITEM_SUCCESS :
+        case TOGGLE_LIST_ITEM_SUCCESS :
             return {
                 ...state,
-                addListItem: {
-                    ...state.addListItem,
+                toggleListItem: {
+                    ...state.toggleListItem,
                     error: null,
                 }
             }

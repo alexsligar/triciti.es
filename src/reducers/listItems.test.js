@@ -1,11 +1,11 @@
 import listItems from './listItems';
 import {
-    ADD_LIST_ITEM_ERROR,
-    ADD_LIST_ITEM_SUCCESS,
-} from '../actions/listItems/addListItem';
+    TOGGLE_LIST_ITEM_ERROR,
+    TOGGLE_LIST_ITEM_SUCCESS,
+} from '../actions/listItems/toggleListItem';
 
 const initialState = {
-    addListItem: {
+    toggleListItem: {
         error: null,
     },
 };
@@ -17,41 +17,41 @@ describe('listItems reducer', () => {
         expect(listItems(undefined, {})).toEqual(initialState);
     });
 
-    it('should handle ADD_LIST_ITEM_ERROR', () => {
+    it('should handle TOGGLE_LIST_ITEM_ERROR', () => {
 
         const action = {
-            type: ADD_LIST_ITEM_ERROR,
+            type: TOGGLE_LIST_ITEM_ERROR,
             error: 'Uh oh',
         };
         const initial = {
             ...initialState,
-            addListItem: {
+            toggleListItem: {
                 error: null,
             }
         };
         const expected = {
             ...initialState,
-            addListItem: {
+            toggleListItem: {
                 error: 'Uh oh',
             },
         };
         expect(listItems(initial, action)).toEqual(expected);
     });
 
-    it('should handle ADD_LIST_ITEM_SUCCESS', () => {
+    it('should handle TOGGLE_LIST_ITEM_SUCCESS', () => {
 
         const action = {
-            type: ADD_LIST_ITEM_SUCCESS,
+            type: TOGGLE_LIST_ITEM_SUCCESS,
         };
         const initial = {
             ...initialState,
-            addListItem: {
+            toggleListItem: {
                 error: 'Uh oh',
             }
         };
         const expected = {
             ...initialState,
-            addListItem: {
+            toggleListItem: {
                 error: null,
             },
         };
