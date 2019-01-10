@@ -8,6 +8,10 @@ import {
     USER_LISTS_ERROR,
     USER_LISTS_SUCCESS
 } from '../actions/users/getUserLists';
+import {
+    ADD_ITEM_TO_LIST,
+    REMOVE_ITEM_FROM_LIST,
+} from '../actions/listItems/addListItem';
 
 const initialState = {
     getUser: {
@@ -83,6 +87,36 @@ export default function lists(state = initialState, action) {
                     ...state.userLists,
                     username: action.username,
                     lists: action.lists,
+                }
+            }
+        case ADD_ITEM_TO_LIST :
+            return {
+                ...state,
+                userLists: {
+                    ...state.userLists,
+                    lists: state.userLists.lists.map((list) => {
+                        if(list.id !== action.listId) return list;
+                        return {
+                            ...list,
+                            items: list.items.concat([action.itemId]),
+                        }
+                    })
+                }
+            }
+        case REMOVE_ITEM_FROM_LIST :
+            return {
+                ...state,
+                userLists: {
+                    ...state.userLists,
+                    lists: state.userLists.lists.map((list) => {
+                        if(list.id !== action.listId) return list;
+                        return {
+                            ...list,
+                            items: list.items.filter((item) => {
+                                return item !== action.itemId;
+                            }),
+                        }
+                    })
                 }
             }
         default :

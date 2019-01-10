@@ -9,7 +9,10 @@ import {
     USER_LISTS_ERROR,
     USER_LISTS_SUCCESS,
 } from '../actions/users/getUserLists';
-
+import {
+    ADD_ITEM_TO_LIST,
+    REMOVE_ITEM_FROM_LIST,
+} from '../actions/listItems/addListItem';
 
 const initialState = {
     getUser: {
@@ -176,6 +179,62 @@ describe('users reducer', () => {
                 username,
                 lists,
             }
+        };
+        expect(users(initial, action)).toEqual(expected);
+    });
+
+    it('should handle ADD_ITEM_TO_LIST', () => {
+
+        const action = {
+            type: ADD_ITEM_TO_LIST,
+            listId: 'abcd',
+            itemId: 4,
+        };
+        const initial = {
+            ...initialState,
+            userLists: {
+                username: 'testuser',
+                lists: [
+                    { id: 'abcd', name: 'Test List', items: [1,2,6,8] }    
+                ]
+            }
+        };
+        const expected = {
+            ...initialState,
+            userLists: {
+                username: 'testuser',
+                lists: [
+                    { id: 'abcd', name: 'Test List', items: [1,2,6,8,4] }    
+                ]
+            },
+        };
+        expect(users(initial, action)).toEqual(expected);
+    });
+
+    it('should handle REMOVE_ITEM_FROM_LIST', () => {
+
+        const action = {
+            type: REMOVE_ITEM_FROM_LIST,
+            listId: 'abcd',
+            itemId: 6,
+        };
+        const initial = {
+            ...initialState,
+            userLists: {
+                username: 'testuser',
+                lists: [
+                    { id: 'abcd', name: 'Test List', items: [1,2,6,8] }    
+                ]
+            }
+        };
+        const expected = {
+            ...initialState,
+            userLists: {
+                username: 'testuser',
+                lists: [
+                    { id: 'abcd', name: 'Test List', items: [1,2,8] }    
+                ]
+            },
         };
         expect(users(initial, action)).toEqual(expected);
     });
