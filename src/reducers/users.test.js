@@ -195,7 +195,8 @@ describe('users reducer', () => {
             userLists: {
                 username: 'testuser',
                 lists: [
-                    { id: 'abcd', name: 'Test List', items: [1,2,6,8] }    
+                    { id: 'abcd', name: 'Test List', items: [1,2,6,8] },
+                    { id: 'efgh', name: 'Another List', items: [2] },   
                 ]
             }
         };
@@ -204,7 +205,8 @@ describe('users reducer', () => {
             userLists: {
                 username: 'testuser',
                 lists: [
-                    { id: 'abcd', name: 'Test List', items: [1,2,6,8,4] }    
+                    { id: 'abcd', name: 'Test List', items: [1,2,6,8,4] },
+                    { id: 'efgh', name: 'Another List', items: [2] },  
                 ]
             },
         };
@@ -223,7 +225,8 @@ describe('users reducer', () => {
             userLists: {
                 username: 'testuser',
                 lists: [
-                    { id: 'abcd', name: 'Test List', items: [1,2,6,8] }    
+                    { id: 'abcd', name: 'Test List', items: [1,2,6,8] },
+                    { id: 'efgh', name: 'Another List', items: [2] },    
                 ]
             }
         };
@@ -232,7 +235,8 @@ describe('users reducer', () => {
             userLists: {
                 username: 'testuser',
                 lists: [
-                    { id: 'abcd', name: 'Test List', items: [1,2,8] }    
+                    { id: 'abcd', name: 'Test List', items: [1,2,8] },
+                    { id: 'efgh', name: 'Another List', items: [2] },   
                 ]
             },
         };
