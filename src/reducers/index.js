@@ -7,16 +7,16 @@ import tags from './tags';
 import items from './items';
 import lists from './lists';
 import users from './users';
-import listItems from'./listItems';
+import listItems from './listItems';
 
 export default combineReducers({
-    initialData,
-    registerUser,
-    authUser,
-    authedUser,
-    tags,
-    items,
-    lists,
-    users,
-    listItems,
-})
+  initialData,
+  registerUser,
+  authUser,
+  authedUser,
+  tags,
+  items,
+  lists,
+  users,
+  listItems,
+});
