@@ -8,67 +8,67 @@ export const SHOW_NEW_LIST_MODAL = 'SHOW_NEW_LIST_MODAL';
 export const CLOSE_NEW_LIST_MODAL = 'CLOSE_NEW_LIST_MODAL';
 
 const addListProcessing = () => {
-    return {
-        type: ADD_LIST_PROCESSING,
-    }
-}
+  return {
+    type: ADD_LIST_PROCESSING,
+  };
+};
 
 const addListSuccess = () => {
-    return {
-        type: ADD_LIST_SUCCESS,
-    }
-}
+  return {
+    type: ADD_LIST_SUCCESS,
+  };
+};
 
-const addListError = (error) => {
-    return {
-        type: ADD_LIST_ERROR,
-        error,
-    }
-}
+const addListError = error => {
+  return {
+    type: ADD_LIST_ERROR,
+    error,
+  };
+};
 
 export const showNewListModal = () => {
-    return {
-        type: SHOW_NEW_LIST_MODAL,
-    }
-}
+  return {
+    type: SHOW_NEW_LIST_MODAL,
+  };
+};
 
 export const closeNewListModal = () => {
-    return {
-        type: CLOSE_NEW_LIST_MODAL,
-    }
-}
+  return {
+    type: CLOSE_NEW_LIST_MODAL,
+  };
+};
 
 export const removeAddListError = () => {
-    return {
-        type: REMOVE_ADD_LIST_ERROR,
-    }
-}
+  return {
+    type: REMOVE_ADD_LIST_ERROR,
+  };
+};
 
-export const handleAddList = (list) => {
-    return async (dispatch) => {
-        dispatch(addListProcessing());
-        try {
-            const token = localStorage.getItem('authedUser');
-            const response = await fetch(`http://localhost:8080/lists`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
-                },
-                body: JSON.stringify(list)
-            });
-            if (response.status === 200) {
-                const { data } = await response.json();
-                dispatch(addListSuccess());
-                history.push(`/lists/${data.id}`);
-            } else if (response.status === 409) {
-                dispatch(addListError('You already have a list with that name.'));
-            } else {
-                throw new Error();
-            }
-        } catch {
-            dispatch(addListError('Error adding list.'))
-        }
+export const handleAddList = list => {
+  return async dispatch => {
+    dispatch(addListProcessing());
+    try {
+      const token = localStorage.getItem('authedUser');
+      const response = await fetch(`http://localhost:8080/lists`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(list),
+      });
+      if (response.status === 200) {
+        const { data } = await response.json();
+        dispatch(addListSuccess());
+        history.push(`/lists/${data.id}`);
+      } else if (response.status === 409) {
+        dispatch(addListError('You already have a list with that name.'));
+      } else {
+        throw new Error();
+      }
+    } catch {
+      dispatch(addListError('Error adding list.'));
     }
-}
+  };
+};
