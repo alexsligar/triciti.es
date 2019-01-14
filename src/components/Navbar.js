@@ -8,56 +8,51 @@ import NavbarRightAuthed from './NavbarRightAuthed';
 import TagSearch from './tags/TagSearch';
 
 export class Navbar extends Component {
-
-    render() {
-        let right = <NavbarRight />;
-        if (this.props.authedUser) {
-            right = <NavbarRightAuthed />;
-        }
-        const path = this.props.location.pathname;
-        const tagSearchContent = (
-            <Fragment>
-                {path !== '/tags' ?
-                    <Menu.Item>
-                        <Link to='/tags'>
-                            <Icon name='tag' />
-                        </Link>
-                    </Menu.Item>
-                    : null
-                }
-                {path.substring(0,5) !== '/tags' ?
-                    <Menu.Item>
-                        <TagSearch initialValue='' />
-                    </Menu.Item>
-                    : null
-                }                
-            </Fragment>
-        );
-        return (
-            <Menu>
-                <Menu.Item header>
-                    <Link to='/'>
-                        TriCiti.es
-                    </Link>
-                </Menu.Item>
-                {tagSearchContent}
-                {right}
-            </Menu>
-        )
+  render() {
+    let right = <NavbarRight />;
+    if (this.props.authedUser) {
+      right = <NavbarRightAuthed />;
     }
+    const path = this.props.location.pathname;
+    const tagSearchContent = (
+      <Fragment>
+        {path !== '/tags' && (
+          <Menu.Item>
+            <Link to='/tags'>
+              <Icon name='tag' />
+            </Link>
+          </Menu.Item>
+        )}
+        {path.substring(0, 5) !== '/tags' && (
+          <Menu.Item>
+            <TagSearch initialValue='' />
+          </Menu.Item>
+        )}
+      </Fragment>
+    );
+    return (
+      <Menu>
+        <Menu.Item header>
+          <Link to='/'>TriCiti.es</Link>
+        </Menu.Item>
+        {tagSearchContent}
+        {right}
+      </Menu>
+    );
+  }
 }
 
 Navbar.propTypes = {
-    authedUser: PropTypes.object,
-    location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    })
-}
+  authedUser: PropTypes.object,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }),
+};
 
-function mapStateToProps ({ authedUser }) {
-    return {
-        authedUser,
-    }
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser,
+  };
 }
 
 export default withRouter(connect(mapStateToProps)(Navbar));

@@ -10,10 +10,9 @@ import Tags from './tags/Tags';
 import AddItem from './items/AddItem';
 import EditItem from './items/EditItem';
 import ShowItem from './items/ShowItem';
-import ShowList from './lists/ShowList'
+import ShowList from './lists/ShowList';
 
 export class Routes extends Component {
-
   render() {
     let routes = (
       <Switch>
@@ -30,8 +29,8 @@ export class Routes extends Component {
       routes = (
         <Switch>
           <Route exact path='/' component={Homepage} />
-          <Route path='/login' render={() => (<Redirect to='/' />)} />
-          <Route path='/register' render={() => (<Redirect to='/' />)} />
+          <Route path='/login' render={() => <Redirect to='/' />} />
+          <Route path='/register' render={() => <Redirect to='/' />} />
           <Route path='/tags/:tag' component={TagSearchResults} />
           <Route path='/tags' component={Tags} />
           <Route path='/items/add' component={AddItem} />
@@ -39,14 +38,10 @@ export class Routes extends Component {
           <Route path='/items/:id' component={ShowItem} />
           <Route path='/lists/:id' component={ShowList} />
         </Switch>
-      )
+      );
     }
 
-    return (
-      <Fragment>
-        {routes}
-      </Fragment>
-    );
+    return <Fragment>{routes}</Fragment>;
   }
 }
 
@@ -55,7 +50,7 @@ Routes.propTypes = {
 };
 
 const mapStateToProps = ({ authedUser }) => {
-  return { authedUser }
-}
+  return { authedUser };
+};
 
 export default withRouter(connect(mapStateToProps)(Routes));

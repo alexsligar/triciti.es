@@ -41,11 +41,7 @@ export class App extends Component {
       );
     }
 
-    return (
-      <Router history={history}>
-        {content}
-      </Router>
-    );
+    return <Router history={history}>{content}</Router>;
   }
 }
 
@@ -53,15 +49,18 @@ App.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.string,
   handleInitialData: PropTypes.func.isRequired,
-}
+};
 
 const mapStateToProps = ({ initialData }) => {
   return {
     loading: initialData.loading,
     error: initialData.error,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = { handleInitialData };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
