@@ -57,7 +57,7 @@ AddListItem.propTypes = {
     lists: PropTypes.array,
   }),
   handleGetUserLists: PropTypes.func.isRequired,
-  itemId: PropTypes.number.isRequired,
+  itemId: PropTypes.string.isRequired,
   showNewListModal: PropTypes.func.isRequired,
 };
 

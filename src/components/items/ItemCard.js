@@ -34,7 +34,7 @@ export default function ItemCard(props) {
 }
 
 ItemCard.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,

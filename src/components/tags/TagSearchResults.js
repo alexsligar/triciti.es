@@ -45,6 +45,7 @@ export class TagSearchResults extends Component {
               <Grid.Column width={8}>
                 <Header as='h3' textAlign='center'>
                   {this.props.items.length}
+                  <span> </span>
                   Item{this.props.items.length === 1 ? null : 's'} Found
                 </Header>
                 <Card.Group itemsPerRow={3}>

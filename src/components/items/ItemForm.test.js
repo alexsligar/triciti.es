@@ -329,12 +329,12 @@ describe('handleSubmit', () => {
     const handleUpdateItem = jest.fn();
     const wrapper = setup({
       handleUpdateItem,
-      item: { id: 1, name: 'Test Item ' },
+      item: { id: 'abcd', name: 'Test Item ' },
     });
     wrapper.instance().validate = jest.fn().mockReturnValueOnce(false);
     wrapper.instance().handleSubmit({ preventDefault: jest.fn() });
     expect(handleUpdateItem.mock.calls.length).toBe(1);
-    expect(handleUpdateItem.mock.calls[0][0]).toEqual(1);
+    expect(handleUpdateItem.mock.calls[0][0]).toEqual('abcd');
   });
 });
 

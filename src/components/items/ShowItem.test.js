@@ -15,7 +15,7 @@ const defaultProps = {
   loading: false,
   error: null,
   item: {
-    id: 1,
+    id: 'abc',
     name: 'Test Item',
     type: 'place',
     location: 'Up the street',
@@ -28,7 +28,7 @@ const defaultProps = {
   handleGetItem: () => {},
   match: {
     params: {
-      id: '1',
+      id: 'abc',
     },
   },
 };
@@ -85,7 +85,7 @@ describe('connect', () => {
           error: null,
         },
         item: {
-          id: 1,
+          id: 'abc',
           name: 'Test Item',
           type: 'place',
           location: 'Up the street',
@@ -98,7 +98,7 @@ describe('connect', () => {
       },
     };
     const match = {
-      params: { id: '1' },
+      params: { id: 'abc' },
     };
     const store = storeFactory(initialState);
     const wrapper = mount(

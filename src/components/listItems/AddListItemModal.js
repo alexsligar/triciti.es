@@ -44,7 +44,7 @@ export class AddListItemModal extends Component {
 
 AddListItemModal.propTypes = {
   userLists: PropTypes.array.isRequired,
-  itemId: PropTypes.number.isRequired,
+  itemId: PropTypes.string.isRequired,
   toggleListItemError: PropTypes.string,
 };
 

@@ -19,7 +19,7 @@ const defaultProps = {
   itemsError: null,
   itemsLoading: false,
   items: [
-    { id: 1, name: 'Test Item', type: 'Activity', location: 'Kennewick' },
+    { id: 'abcd', name: 'Test Item', type: 'Activity', location: 'Kennewick' },
   ],
   handleTagSearch: () => {},
 };
@@ -54,8 +54,18 @@ describe('render', () => {
   it('should render correct header with multiple items', () => {
     const props = {
       items: [
-        { id: 1, name: 'Test Item 1', type: 'Event', location: 'Kennewick' },
-        { id: 2, name: 'Test Item 2', type: 'Activity', location: 'Pasco' },
+        {
+          id: 'abcd',
+          name: 'Test Item 1',
+          type: 'Event',
+          location: 'Kennewick',
+        },
+        {
+          id: 'efgh',
+          name: 'Test Item 2',
+          type: 'Activity',
+          location: 'Pasco',
+        },
       ],
     };
     const wrapper = setup(props);
@@ -129,7 +139,7 @@ describe('connect', () => {
           error: 'Uh oh..',
         },
         items: [
-          { id: 1, name: 'Test Item', type: 'Place', location: 'Richland' },
+          { id: 'abc', name: 'Test Item', type: 'Place', location: 'Richland' },
         ],
       },
     };

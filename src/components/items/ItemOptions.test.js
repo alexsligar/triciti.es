@@ -9,7 +9,7 @@ import ConfirmDelete from '../universal/ConfirmDelete';
 
 const defaultProps = {
   item: {
-    id: 1,
+    id: 'abcd',
   },
   deleteProcessing: false,
   deleteError: null,
@@ -24,7 +24,7 @@ const setup = (props = {}) => {
 describe('render', () => {
   it('should render component without error', () => {
     const wrapper = setup();
-    const editLink = wrapper.find('Link[to="/items/1/edit"]');
+    const editLink = wrapper.find('Link[to="/items/abcd/edit"]');
     expect(editLink.length).toBe(1);
     const confirmDelete = wrapper.find(ConfirmDelete);
     expect(confirmDelete.length).toBe(1);
@@ -45,7 +45,7 @@ describe('connect', () => {
     const wrapper = mount(
       <Router history={history}>
         <Provider store={store}>
-          <ConnectedItemOptions item={{ id: 1 }} />
+          <ConnectedItemOptions item={{ id: 'abcd' }} />
         </Provider>
       </Router>
     );

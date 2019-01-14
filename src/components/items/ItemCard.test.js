@@ -6,7 +6,7 @@ import ItemCard from './ItemCard';
 import DateString from './DateString';
 
 const defaultProps = {
-  id: 1,
+  id: 'abcd',
   name: 'Test Item',
   type: 'Activity',
   location: '1500 W. 1st Ave., Kennewick, WA 99336',

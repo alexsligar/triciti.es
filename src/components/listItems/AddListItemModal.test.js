@@ -10,10 +10,10 @@ import ToggleListItem from './ToggleListItem';
 
 const defaultProps = {
   toggleListItemError: null,
-  itemId: 2,
+  itemId: 'xyz',
   userLists: [
-    { id: 'abc', name: 'Test List', items: [3] },
-    { id: 'def', name: 'Another List', items: [4, 5, 6] },
+    { id: 'abc', name: 'Test List', items: ['abc'] },
+    { id: 'def', name: 'Another List', items: ['abc', 'def', 'hij'] },
   ],
 };
 const setup = (props = {}) => {
@@ -50,8 +50,8 @@ describe('connect', () => {
         userLists: {
           username: 'testuser',
           lists: [
-            { id: 'abc', name: 'Test List', items: [3] },
-            { id: 'def', name: 'Another List', items: [4, 5, 6] },
+            { id: 'abc', name: 'Test List', items: ['abc'] },
+            { id: 'def', name: 'Another List', items: ['klm', 'def', 'hij'] },
           ],
         },
       },
@@ -59,7 +59,7 @@ describe('connect', () => {
     const store = storeFactory(initialState);
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAddListItemModal itemId={2} />
+        <ConnectedAddListItemModal itemId='hijk' />
       </Provider>
     );
     const componentProps = wrapper.find(AddListItemModal).props();

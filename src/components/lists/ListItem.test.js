@@ -6,8 +6,8 @@ import ItemCard from '../items/ItemCard';
 
 const defaultProps = {
   items: [
-    { id: 4, name: 'Test Item', type: 'Activity', location: 'Somewhere' },
-    { id: 3, name: 'Another Item', type: 'Place', location: 'Elsewhere' },
+    { id: 'abc', name: 'Test Item', type: 'Activity', location: 'Somewhere' },
+    { id: 'efg', name: 'Another Item', type: 'Place', location: 'Elsewhere' },
   ],
 };
 const setup = (props = {}) => {

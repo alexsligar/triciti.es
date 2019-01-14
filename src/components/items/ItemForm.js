@@ -313,7 +313,7 @@ ItemForm.propTypes = {
   tagsError: PropTypes.string,
   tags: PropTypes.array.isRequired,
   item: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string,
     location: PropTypes.string,
     type: PropTypes.string,

@@ -7,7 +7,7 @@ import { storeFactory } from '../../../test/testUtils';
 
 const defaultProps = {
   name: 'Test List',
-  itemId: 2,
+  itemId: 'hijk',
   listId: 'abcd',
   listItemExists: false,
   handleAddListItem: () => {},
@@ -55,7 +55,7 @@ describe('connect', () => {
     const wrapper = mount(
       <Provider store={store}>
         <ConnectedToggleListItem
-          itemId={2}
+          itemId='hijk'
           name='Test List'
           listId='abcd'
           listItemExists={false}

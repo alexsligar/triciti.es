@@ -16,7 +16,7 @@ const defaultProps = {
   },
   handleGetUserLists: () => {},
   showNewListModal: () => {},
-  itemId: 2,
+  itemId: 'efg',
 };
 const setup = (props = {}) => {
   const propsPassed = { ...defaultProps, ...props };
@@ -82,14 +82,14 @@ describe('connect', () => {
         },
         userLists: {
           username: 'testuser',
-          lists: [{ id: 1, name: 'Test List', items: [3] }],
+          lists: [{ id: 'xyz', name: 'Test List', items: ['def'] }],
         },
       },
     };
     const store = storeFactory(initialState);
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAddListItem itemId={2} />
+        <ConnectedAddListItem itemId={'abc'} />
       </Provider>
     );
     const componentProps = wrapper.find(AddListItem).props();

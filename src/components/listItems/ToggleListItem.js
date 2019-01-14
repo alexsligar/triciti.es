@@ -44,7 +44,7 @@ export class ToggleListItem extends Component {
 ToggleListItem.propTypes = {
   name: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,
-  itemId: PropTypes.number.isRequired,
+  itemId: PropTypes.string.isRequired,
   listItemExists: PropTypes.bool.isRequired,
   handleAddListItem: PropTypes.func.isRequired,
   handleRemoveListItem: PropTypes.func.isRequired,

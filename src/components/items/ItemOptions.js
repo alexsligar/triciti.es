@@ -34,7 +34,7 @@ export class ItemOptions extends Component {
 
 ItemOptions.propTypes = {
   item: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
   }),
   deleteProcessing: PropTypes.bool.isRequired,
   deleteError: PropTypes.string,
