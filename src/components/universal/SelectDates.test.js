@@ -94,46 +94,46 @@ describe('callback functions', () => {
 describe('control functions', () => {
   const preventDefault = jest.fn();
 
-  it('openstart_date should set editStartDate to true', () => {
+  it('openStartDate should set editStartDate to true', () => {
     const wrapper = setup();
-    wrapper.instance().openstart_date({ preventDefault });
+    wrapper.instance().openStartDate({ preventDefault });
     expect(wrapper.state().editStartDate).toBe(true);
   });
 
-  it('openend_date should set editEndDate to true', () => {
+  it('openEndDate should set editEndDate to true', () => {
     const wrapper = setup();
-    wrapper.instance().openend_date({ preventDefault });
+    wrapper.instance().openEndDate({ preventDefault });
     expect(wrapper.state().editEndDate).toBe(true);
   });
 
-  it('closestart_date should set editStartDate to false', () => {
+  it('closeStartDate should set editStartDate to false', () => {
     const wrapper = setup();
     wrapper.setState({ editStartDate: true });
-    wrapper.instance().closestart_date({ preventDefault });
+    wrapper.instance().closeStartDate({ preventDefault });
     expect(wrapper.state().editStartDate).toBe(false);
   });
 
-  it('closeend_date should set editEndDate to false', () => {
+  it('closeEndDate should set editEndDate to false', () => {
     const wrapper = setup();
     wrapper.setState({ editEndDate: true });
-    wrapper.instance().closeend_date({ preventDefault });
+    wrapper.instance().closeEndDate({ preventDefault });
     expect(wrapper.state().editEndDate).toBe(false);
   });
 
-  it('clearstart_date should call handleStartDateChange prop', () => {
+  it('clearStartDate should call handleStartDateChange prop', () => {
     const handleStartDateChange = jest.fn();
     const wrapper = setup({ handleStartDateChange });
     const stopPropagation = jest.fn();
-    wrapper.instance().clearstart_date({ stopPropagation });
+    wrapper.instance().clearStartDate({ stopPropagation });
     expect(handleStartDateChange.mock.calls.length).toBe(1);
     expect(stopPropagation.mock.calls.length).toBe(1);
   });
 
-  it('clearend_date should call handleEndDateChange prop', () => {
+  it('clearEndDate should call handleEndDateChange prop', () => {
     const handleEndDateChange = jest.fn();
     const wrapper = setup({ handleEndDateChange });
     const stopPropagation = jest.fn();
-    wrapper.instance().clearend_date({ stopPropagation });
+    wrapper.instance().clearEndDate({ stopPropagation });
     expect(handleEndDateChange.mock.calls.length).toBe(1);
     expect(stopPropagation.mock.calls.length).toBe(1);
   });
