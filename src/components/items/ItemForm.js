@@ -217,7 +217,7 @@ export class ItemForm extends Component {
       >
         {errorMessage && <Message error content={errorMessage} />}
         <Segment textAlign='left'>
-          <Form.Field error={typeof fieldErrors.name !== undefined}>
+          <Form.Field error={typeof fieldErrors.name !== 'undefined'}>
             <label>Name</label>
             <Input
               placeholder='Name'
@@ -231,7 +231,7 @@ export class ItemForm extends Component {
               </Label>
             )}
           </Form.Field>
-          <Form.Field error={typeof fieldErrors.location !== undefined}>
+          <Form.Field error={typeof fieldErrors.location !== 'undefined'}>
             <label>Location</label>
             <Input
               placeholder='Location'
@@ -245,7 +245,7 @@ export class ItemForm extends Component {
               </Label>
             )}
           </Form.Field>
-          <Form.Field error={typeof fieldErrors.type !== undefined}>
+          <Form.Field error={typeof fieldErrors.type !== 'undefined'}>
             <label>Type</label>
             <Select
               fluid
