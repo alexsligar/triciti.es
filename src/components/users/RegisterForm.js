@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Form, Message, Dimmer, Loader, Segment } from 'semantic-ui-react';
-import { handleRegisterUser } from '../../actions/registerUser';
+import { handleRegisterUser } from '../../actions/users/registerUser';
 import { isEmail, isLength, equals } from 'validator';
 
 export class RegisterForm extends Component {

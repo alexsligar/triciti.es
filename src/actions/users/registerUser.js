@@ -1,5 +1,5 @@
-import history from '../history';
-import api from '../api';
+import history from '../../history';
+import api from '../../api';
 
 export const REGISTER_USER_ERROR = 'REGISTER_USER_ERROR';
 export const REGISTER_USER_PROCESSING = 'REGISTER_USER_PROCESSING';

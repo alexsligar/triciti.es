@@ -2,7 +2,7 @@ import {
   REGISTER_USER_ERROR,
   REGISTER_USER_PROCESSING,
   REGISTER_USER_SUCCESS,
-} from '../actions/registerUser';
+} from '../actions/users/registerUser';
 
 const initialState = {
   processing: false,
