@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const LIST_LOADING = 'LIST_LOADING';
 export const LIST_ERROR = 'LIST_ERROR';
 export const LIST_SUCCESS = 'LIST_SUCCESS';
@@ -26,13 +28,7 @@ export const handleGetList = id => {
   return async dispatch => {
     dispatch(listLoading());
     try {
-      const response = await fetch(`http://localhost:8080/lists/${id}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await api(`lists/${id}`);
       if (response.status === 200) {
         const { data } = await response.json();
         dispatch(listSuccess(data));

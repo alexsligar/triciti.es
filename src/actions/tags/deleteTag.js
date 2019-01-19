@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const DELETE_TAG_PROCESSING = 'DELETE_TAG_PROCESSING';
 export const DELETE_TAG_ERROR = 'DELETE_TAG_ERROR';
 export const REMOVE_DELETE_TAG_ERROR = 'REMOVE_DELETE_TAG_ERROR';
@@ -34,17 +36,8 @@ export const handleDeleteTag = tag => {
     dispatch(deleteTagProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/tags`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify({
-          name: tag,
-        }),
-      });
+      const body = JSON.stringify({ name: tag });
+      const response = await api('tags', 'DELETE', token, body);
       if (response.status === 204) {
         dispatch(deleteTagSuccess(tag));
       } else {

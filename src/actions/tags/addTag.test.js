@@ -25,9 +25,9 @@ describe('handleAddTag action creator', () => {
     expect(actions[0]).toEqual({ type: ADD_TAG_PROCESSING });
   });
 
-  it('should dispatch ADD_TAG_SUCCESS when fetch responds with 200 status', async () => {
+  it('should dispatch ADD_TAG_SUCCESS when fetch responds with 201 status', async () => {
     fetch.mockResponseOnce(JSON.stringify({ data: { name: 'test' } }), {
-      status: 200,
+      status: 201,
     });
     await store.dispatch(handleAddTag('test'));
     const actions = store.getActions();

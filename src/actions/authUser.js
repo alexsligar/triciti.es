@@ -1,4 +1,5 @@
 import history from '../history';
+import api from '../api';
 
 export const AUTH_USER_PROCESSING = 'AUTH_USER_PROCESSING';
 export const AUTH_USER_ERROR = 'AUTH_USER_ERROR';
@@ -49,14 +50,8 @@ export const handleAuthUser = credentials => {
   return async dispatch => {
     dispatch(authUserProcessing());
     try {
-      const response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
+      const body = JSON.stringify(credentials);
+      const response = await api('login', 'POST', null, body);
       if (response.status === 200) {
         const dataRes = await response.json();
         const { token } = dataRes.data;

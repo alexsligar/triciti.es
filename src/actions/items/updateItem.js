@@ -1,4 +1,5 @@
 import history from '../../history';
+import api from '../../api';
 
 export const UPDATE_ITEM_PROCESSING = 'UPDATE_ITEM_PROCESSING';
 export const UPDATE_ITEM_ERROR = 'UPDATE_ITEM_ERROR';
@@ -35,15 +36,8 @@ export const handleUpdateItem = (id, item) => {
     dispatch(updateItemProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/items/${id}`, {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify(item),
-      });
+      const body = JSON.stringify(item);
+      const response = await api(`items/${id}`, 'PUT', token, body);
       if (response.status === 200) {
         const { data } = await response.json();
         dispatch(updateItemSuccess());

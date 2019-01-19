@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const USER_LOADING = 'USER_LOADING';
 export const USER_ERROR = 'USER_ERROR';
 export const USER_SUCCESS = 'USER_SUCCESS';
@@ -26,13 +28,7 @@ export const handleGetUser = id => {
   return async dispatch => {
     dispatch(userLoading());
     try {
-      const response = await fetch(`http://localhost:8080/users/${id}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await api(`users/${id}`);
       if (response.status === 200) {
         const { data } = await response.json();
         dispatch(userSuccess(data));

@@ -1,4 +1,5 @@
 import history from '../history';
+import api from '../api';
 
 export const REGISTER_USER_ERROR = 'REGISTER_USER_ERROR';
 export const REGISTER_USER_PROCESSING = 'REGISTER_USER_PROCESSING';
@@ -28,15 +29,9 @@ export const handleRegisterUser = userInput => {
     dispatch(registerUserProcessing());
     try {
       delete userInput.passwordConfirmation;
-      const response = await fetch('http://localhost:8080/create_account', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userInput),
-      });
-      if (response.status === 200) {
+      const body = JSON.stringify(userInput);
+      const response = await api('users', 'POST', null, body);
+      if (response.status === 201) {
         dispatch(registerUserSuccess());
         history.push('/login');
       } else if (response.status === 409) {

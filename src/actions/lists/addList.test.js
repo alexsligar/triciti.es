@@ -31,9 +31,9 @@ describe('handleAddList action creator', () => {
     expect(actions[0]).toEqual({ type: ADD_LIST_PROCESSING });
   });
 
-  it('should dispatch ADD_LIST_SUCCESS when fetch responds with 200 status', async () => {
+  it('should dispatch ADD_LIST_SUCCESS when fetch responds with 201 status', async () => {
     fetch.mockResponseOnce(JSON.stringify({ data: { name: 'Test List' } }), {
-      status: 200,
+      status: 201,
     });
     await store.dispatch(
       handleAddList({ name: 'Test List', description: 'A list I made' })

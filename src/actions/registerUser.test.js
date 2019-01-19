@@ -24,7 +24,7 @@ describe('handleRegisterUser action creator', () => {
   });
 
   it('should dispatch REGISTER_USER_SUCCESS when registration succeeds', async () => {
-    fetch.mockResponseOnce(JSON.stringify({ name: 'test' }), { status: 200 });
+    fetch.mockResponseOnce(JSON.stringify({ name: 'test' }), { status: 201 });
     await store.dispatch(handleRegisterUser({}));
     const actions = store.getActions();
     expect(actions[1]).toEqual({ type: REGISTER_USER_SUCCESS });

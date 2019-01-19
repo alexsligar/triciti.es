@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const ITEM_LOADING = 'ITEM_LOADING';
 export const ITEM_ERROR = 'ITEM_ERROR';
 export const ITEM_SUCCESS = 'ITEM_SUCCESS';
@@ -26,13 +28,7 @@ export const handleGetItem = id => {
   return async dispatch => {
     dispatch(itemLoading());
     try {
-      const response = await fetch(`http://localhost:8080/items/${id}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await api(`items/${id}`);
       if (response.status === 200) {
         const { data } = await response.json();
         dispatch(itemSuccess(data));

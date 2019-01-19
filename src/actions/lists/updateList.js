@@ -1,4 +1,5 @@
 import { handleGetList } from './getList';
+import api from '../../api';
 
 export const UPDATE_LIST_PROCESSING = 'UPDATE_LIST_PROCESSING';
 export const UPDATE_LIST_ERROR = 'UPDATE_LIST_ERROR';
@@ -35,15 +36,8 @@ export const handleUpdateList = (id, list) => {
     dispatch(updateListProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/lists/${id}`, {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify(list),
-      });
+      const body = JSON.stringify(list);
+      const response = await api(`lists/${id}`, 'PUT', token, body);
       if (response.status === 200) {
         dispatch(updateListSuccess());
         const { data } = await response.json();

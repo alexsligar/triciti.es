@@ -1,4 +1,5 @@
 import history from '../../history';
+import api from '../../api';
 
 export const ADD_ITEM_PROCESSING = 'ADD_ITEM_PROCESSING';
 export const ADD_ITEM_ERROR = 'ADD_ITEM_ERROR';
@@ -35,16 +36,8 @@ export const handleAddItem = item => {
     dispatch(addItemProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/items`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify(item),
-      });
-      if (response.status === 200) {
+      const response = await api('items', 'POST', token, JSON.stringify(item));
+      if (response.status === 201) {
         const { data } = await response.json();
         dispatch(addItemSuccess());
         history.push(`/items/${data.id}`);

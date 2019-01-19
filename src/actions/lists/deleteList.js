@@ -1,4 +1,5 @@
 import history from '../../history';
+import api from '../../api';
 
 export const DELETE_LIST_PROCESSING = 'DELETE_LIST_PROCESSING';
 export const DELETE_LIST_ERROR = 'DELETE_LIST_ERROR';
@@ -35,15 +36,7 @@ export const handleDeleteList = id => {
     dispatch(deleteListProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/lists/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
-
+      const response = await api(`lists/${api}`, 'DELETE', token);
       if (response.status === 204) {
         dispatch(deleteListSuccess());
         history.push('/');

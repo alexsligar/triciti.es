@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const TOGGLE_LIST_ITEM_ERROR = 'TOGGLE_LIST_ITEM_ERROR';
 export const TOGGLE_LIST_ITEM_SUCCESS = 'TOGGLE_LIST_ITEM_SUCCESS';
 export const ADD_ITEM_TO_LIST = 'ADD_ITEM_TO_LIST';
@@ -37,18 +39,11 @@ export const handleAddListItem = (listId, itemId) => {
     dispatch(addItemToList(listId, itemId));
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/lists/listitems`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify({
-          list_id: listId,
-          item_id: itemId,
-        }),
+      const body = JSON.stringify({
+        list_id: listId,
+        item_id: itemId,
       });
+      const response = await api('lists/listitems', 'POST', token, body);
       if (response.status === 200) {
         dispatch(toggleListItemSuccess());
       } else {
@@ -68,19 +63,12 @@ export const handleRemoveListItem = (listId, itemId) => {
     dispatch(removeItemFromList(listId, itemId));
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/lists/listitems`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify({
-          list_id: listId,
-          item_id: itemId,
-        }),
+      const body = JSON.stringify({
+        list_id: listId,
+        item_id: itemId,
       });
-      if (response.status === 200) {
+      const response = await api('lists/listitems', 'DELETE', token, body);
+      if (response.status === 201) {
         dispatch(toggleListItemSuccess());
       } else {
         throw new Error();

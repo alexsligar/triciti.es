@@ -1,4 +1,5 @@
 import history from '../../history';
+import api from '../../api';
 
 export const ADD_LIST_PROCESSING = 'ADD_LIST_PROCESSING';
 export const ADD_LIST_ERROR = 'ADD_LIST_ERROR';
@@ -49,16 +50,9 @@ export const handleAddList = list => {
     dispatch(addListProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/lists`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify(list),
-      });
-      if (response.status === 200) {
+      const body = JSON.stringify(list);
+      const response = await api('lists', 'POST', token, body);
+      if (response.status === 201) {
         const { data } = await response.json();
         dispatch(addListSuccess());
         history.push(`/lists/${data.id}`);

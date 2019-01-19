@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const USER_LISTS_LOADING = 'USER_LISTS_LOADING';
 export const USER_LISTS_ERROR = 'USER_LISTS_ERROR';
 export const USER_LISTS_SUCCESS = 'USER_LISTS_SUCCESS';
@@ -27,16 +29,7 @@ export const handleGetUserLists = username => {
   return async dispatch => {
     dispatch(userListsLoading());
     try {
-      const response = await fetch(
-        `http://localhost:8080/users/${username}/lists`,
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await api(`users/${username}/lists`);
       if (response.status === 200) {
         const { data } = await response.json();
         dispatch(userListsSuccess(username, data));

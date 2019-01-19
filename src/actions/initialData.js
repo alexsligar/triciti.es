@@ -1,4 +1,5 @@
 import { setAuthedUser } from './authUser';
+import api from '../api';
 
 export const INITIAL_DATA_LOADING = 'INITIAL_DATA_LOADING';
 export const INITIAL_DATA_SUCCESS = 'INITIAL_DATA_SUCCESS';
@@ -29,14 +30,7 @@ export const handleInitialData = () => {
     const token = localStorage.getItem('authedUser');
     if (token) {
       try {
-        const response = await fetch('http://localhost:8080/users/profile', {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-        });
+        const response = await api('users/profile', 'GET', token);
         if (response.status === 200) {
           const dataResponse = await response.json();
           const user = dataResponse.data;

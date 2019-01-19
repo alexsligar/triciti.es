@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const ADD_TAG_PROCESSING = 'ADD_TAG_PROCESSING';
 export const ADD_TAG_ERROR = 'ADD_TAG_ERROR';
 export const REMOVE_ADD_TAG_ERROR = 'REMOVE_ADD_TAG_ERROR';
@@ -34,18 +36,9 @@ export const handleAddTag = tag => {
     dispatch(addTagProcessing());
     try {
       const token = localStorage.getItem('authedUser');
-      const response = await fetch(`http://localhost:8080/tags`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-        body: JSON.stringify({
-          name: tag,
-        }),
-      });
-      if (response.status === 200) {
+      const body = JSON.stringify({ name: tag });
+      const response = await api('tags', 'POST', token, body);
+      if (response.status === 201) {
         dispatch(addTagSuccess(tag));
       } else {
         throw new Error();

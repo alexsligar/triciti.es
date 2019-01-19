@@ -28,9 +28,9 @@ describe('handleAddItem action creator', () => {
     expect(actions[0]).toEqual({ type: ADD_ITEM_PROCESSING });
   });
 
-  it('should dispatch ADD_ITEM_SUCCESS when fetch responds with 200 status', async () => {
+  it('should dispatch ADD_ITEM_SUCCESS when fetch responds with 201 status', async () => {
     fetch.mockResponseOnce(JSON.stringify({ data: { name: 'Test Item' } }), {
-      status: 200,
+      status: 201,
     });
     await store.dispatch(
       handleAddItem({ name: 'Test Item', type: 'Activity' })

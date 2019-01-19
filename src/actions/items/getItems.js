@@ -1,3 +1,5 @@
+import api from '../../api';
+
 export const ITEMS_ERROR = 'ITEMS_ERROR';
 export const ITEMS_LOADING = 'ITEMS_LOADING';
 export const ITEMS_SUCCESS = 'ITEMS_SUCCESS';
@@ -26,13 +28,7 @@ export const handleTagSearch = tag => {
   return async dispatch => {
     dispatch(itemsLoading());
     try {
-      const response = await fetch(`http://localhost:8080/items/tags/${tag}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await api(`items/tags/${tag}`);
       if (response.status === 200) {
         const { data } = await response.json();
         dispatch(itemsSuccess(data));
