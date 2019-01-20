@@ -137,7 +137,8 @@ const mapStateToProps = ({ tags, authedUser }) => {
     loading: tags.getTags.loading,
     error: tags.getTags.error,
     tags: tags.tags,
-    authedUserAdmin: authedUser && authedUser.user.role === 'admin',
+    authedUserAdmin:
+      authedUser.user !== undefined && authedUser.user.role === 'admin',
   };
 };
 

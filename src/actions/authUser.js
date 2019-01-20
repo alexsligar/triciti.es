@@ -84,7 +84,6 @@ export const handleAuthedUser = token => {
         const user = dataResponse.data;
         dispatch(setAuthedUser(user, token));
         dispatch(authUserSuccess());
-        history.push('/');
       } else {
         dispatch(
           authUserError('Uh oh...something went wrong. Please try again.')
