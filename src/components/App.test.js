@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import App from './App';
 import Navbar from './Navbar';
-import Routes from './Routes';
+import Routes from './routing/Routes';
 
 const setup = (props = {}) => {
   return shallow(<App {...props} />);

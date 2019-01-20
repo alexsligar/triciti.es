@@ -2,15 +2,15 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Homepage from './Homepage';
-import Register from './users/Register';
-import Login from './Login';
-import TagSearchResults from './tags/TagSearchResults';
-import Tags from './tags/Tags';
-import AddItem from './items/AddItem';
-import EditItem from './items/EditItem';
-import ShowItem from './items/ShowItem';
-import ShowList from './lists/ShowList';
+import Homepage from '../Homepage';
+import Register from '../users/Register';
+import Login from '../Login';
+import TagSearchResults from '../tags/TagSearchResults';
+import Tags from '../tags/Tags';
+import AddItem from '../items/AddItem';
+import EditItem from '../items/EditItem';
+import ShowItem from '../items/ShowItem';
+import ShowList from '../lists/ShowList';
 
 export class Routes extends Component {
   render() {

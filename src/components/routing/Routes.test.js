@@ -3,8 +3,8 @@ import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { Switch, Router } from 'react-router-dom';
 import ConnectedRoutes, { Routes } from './Routes';
-import { storeFactory } from '../../test/testUtils';
-import history from '../history';
+import { storeFactory } from '../../../test/testUtils';
+import history from '../../history';
 
 const defaultProps = {
   authedUser: { id: '1', username: '1abc' },

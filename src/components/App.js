@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Router } from 'react-router-dom';
 import history from '../history';
-import Routes from './Routes';
+import Routes from './routing/Routes';
 import Navbar from './Navbar';
 
 export default function App() {
