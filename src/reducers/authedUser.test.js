@@ -3,7 +3,7 @@ import { SET_AUTHED_USER, REMOVE_AUTHED_USER } from '../actions/authUser';
 
 describe('authedUser reducer', () => {
   it('should return null for the initial state', () => {
-    expect(authedUser(undefined, {})).toBe(null);
+    expect(authedUser(undefined, {})).toEqual({});
   });
 
   it('should handle SET_AUTHED_USER', () => {
@@ -25,6 +25,6 @@ describe('authedUser reducer', () => {
     const action = {
       type: REMOVE_AUTHED_USER,
     };
-    expect(authedUser(undefined, action)).toEqual(null);
+    expect(authedUser(undefined, action)).toEqual({});
   });
 });
