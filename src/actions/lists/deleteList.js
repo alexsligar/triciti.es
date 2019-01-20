@@ -32,10 +32,10 @@ export const removeDeleteListError = () => {
 };
 
 export const handleDeleteList = id => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(deleteListProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const response = await api(`lists/${api}`, 'DELETE', token);
       if (response.status === 204) {
         dispatch(deleteListSuccess());

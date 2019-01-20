@@ -90,7 +90,9 @@ describe('connect', () => {
         item: { name: 'Test Item', owners: ['testuser'] },
       },
       authedUser: {
-        username: 'testuser',
+        user: {
+          username: 'testuser',
+        },
       },
     };
     const match = {

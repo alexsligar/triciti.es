@@ -33,10 +33,11 @@ export const removeAuthUserError = () => {
   };
 };
 
-export const setAuthedUser = user => {
+export const setAuthedUser = (user, token) => {
   return {
     type: SET_AUTHED_USER,
     user,
+    token,
   };
 };
 
@@ -70,7 +71,6 @@ export const handleAuthUser = credentials => {
 export const handleAuthedUser = token => {
   return async dispatch => {
     try {
-      localStorage.setItem('authedUser', token);
       const response = await fetch('http://localhost:8080/users/profile', {
         method: 'GET',
         headers: {
@@ -82,7 +82,7 @@ export const handleAuthedUser = token => {
       if (response.status === 200) {
         const dataResponse = await response.json();
         const user = dataResponse.data;
-        dispatch(setAuthedUser(user));
+        dispatch(setAuthedUser(user, token));
         dispatch(authUserSuccess());
         history.push('/');
       } else {
@@ -100,9 +100,8 @@ export const handleAuthedUser = token => {
 
 export const handleLogoutUser = () => {
   return async (dispatch, getState) => {
-    const user = getState().authedUser;
+    const { user, token } = getState().authedUser;
     dispatch(removeAuthedUser());
-    const token = localStorage.getItem('authedUser');
     try {
       const response = await fetch('http://localhost:8080/logout', {
         method: 'GET',
@@ -113,13 +112,12 @@ export const handleLogoutUser = () => {
         },
       });
       if (response.status === 204) {
-        localStorage.removeItem('authedUser');
         history.push('/');
       } else {
         throw new Error();
       }
     } catch (err) {
-      dispatch(setAuthedUser(user));
+      dispatch(setAuthedUser(user, token));
     }
   };
 };

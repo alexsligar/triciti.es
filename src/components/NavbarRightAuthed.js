@@ -43,7 +43,7 @@ NavbarRightAuthed.propTypes = {
 
 function mapStateToProps({ authedUser }) {
   return {
-    authedUserId: authedUser.id,
+    authedUserId: authedUser.user.id,
   };
 }
 

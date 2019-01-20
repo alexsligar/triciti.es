@@ -35,7 +35,7 @@ describe('render', () => {
 
 describe('connect', () => {
   it('should connect to the store with the correct props', () => {
-    const authedUser = { id: '1', username: 'test' };
+    const authedUser = { user: { id: '1', username: 'test' } };
     const initialState = {
       authedUser,
     };
@@ -48,13 +48,13 @@ describe('connect', () => {
       </Router>
     );
     const componentProps = wrapper.find(Routes).props();
-    expect(componentProps.authedUser).toEqual(authedUser);
+    expect(componentProps.authedUser).toEqual(authedUser.user);
   });
 });
 
 describe('redirect routes', () => {
   it('should redirect for certain routes when authedUser is present', () => {
-    const authedUser = { id: '1', username: 'test' };
+    const authedUser = { user: { id: '1', username: 'test' } };
     const initialState = {
       authedUser,
     };

@@ -13,8 +13,12 @@ describe('authedUser reducer', () => {
         id: 1,
         name: 'test',
       },
+      token: 'abc',
     };
-    expect(authedUser(undefined, action)).toEqual(action.user);
+    expect(authedUser(undefined, action)).toEqual({
+      user: action.user,
+      token: action.token,
+    });
   });
 
   it('should handle LOGOUT_AUTHED_USER', () => {

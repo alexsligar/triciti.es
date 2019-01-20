@@ -32,10 +32,10 @@ export const removeDeleteItemError = () => {
 };
 
 export const handleDeleteItem = id => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(deleteItemProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const response = await api(`items/${id}`, 'DELETE', token);
       if (response.status === 204) {
         dispatch(deleteItemSuccess());

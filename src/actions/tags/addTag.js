@@ -32,10 +32,10 @@ export const removeAddTagError = () => {
 };
 
 export const handleAddTag = tag => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(addTagProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify({ name: tag });
       const response = await api('tags', 'POST', token, body);
       if (response.status === 201) {

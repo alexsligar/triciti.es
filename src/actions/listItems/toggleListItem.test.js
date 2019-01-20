@@ -15,7 +15,7 @@ const mockStore = configureMockStore(middlewares);
 describe('handleAddListItem action creator', () => {
   let store;
   beforeEach(() => {
-    store = mockStore();
+    store = mockStore({ authedUser: { token: 'abc' } });
     fetch.resetMocks();
   });
 
@@ -29,8 +29,8 @@ describe('handleAddListItem action creator', () => {
     });
   });
 
-  it('should dispatch TOGGLE_LIST_ITEM_SUCCESS when fetch responds with 200 status', async () => {
-    fetch.mockResponseOnce(JSON.stringify({}), { status: 200 });
+  it('should dispatch TOGGLE_LIST_ITEM_SUCCESS when fetch responds with 201 status', async () => {
+    fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
     await store.dispatch(handleAddListItem('abcd', 'efgh'));
     const actions = store.getActions();
     expect(actions[1]).toEqual({
@@ -73,7 +73,7 @@ describe('handleAddListItem action creator', () => {
 describe('handleRemoveListItem action creator', () => {
   let store;
   beforeEach(() => {
-    store = mockStore();
+    store = mockStore({ authedUser: { token: 'abc' } });
     fetch.resetMocks();
   });
 
@@ -88,7 +88,7 @@ describe('handleRemoveListItem action creator', () => {
   });
 
   it('should dispatch TOGGLE_LIST_ITEM_SUCCESS when fetch responds with 201 status', async () => {
-    fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
+    fetch.mockResponseOnce(JSON.stringify({}), { status: 200 });
     await store.dispatch(handleRemoveListItem('abcd', 'efgh'));
     const actions = store.getActions();
     expect(actions[1]).toEqual({

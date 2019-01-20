@@ -150,7 +150,9 @@ describe('connect', () => {
         tags: [{ title: 'university' }, { title: 'kid-friendly' }],
       },
       authedUser: {
-        role: 'user',
+        user: {
+          role: 'user',
+        },
       },
     };
     const store = storeFactory(initialState);

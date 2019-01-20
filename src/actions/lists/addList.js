@@ -46,10 +46,10 @@ export const removeAddListError = () => {
 };
 
 export const handleAddList = list => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(addListProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify(list);
       const response = await api('lists', 'POST', token, body);
       if (response.status === 201) {

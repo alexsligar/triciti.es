@@ -51,7 +51,7 @@ Navbar.propTypes = {
 
 function mapStateToProps({ authedUser }) {
   return {
-    authedUser,
+    authedUser: authedUser.user,
   };
 }
 

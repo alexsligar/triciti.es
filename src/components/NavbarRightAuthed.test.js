@@ -51,7 +51,7 @@ describe('logout click', () => {
 
 describe('connect', () => {
   it('should connect to the store with the correct props', () => {
-    const authedUser = { id: '1', username: '1abc' };
+    const authedUser = { user: { id: '1', username: '1abc' } };
     const initialState = {
       authedUser,
     };

@@ -81,7 +81,7 @@ const mapStateToProps = ({ items, authedUser }) => {
     loading: items.getItem.loading,
     error: items.getItem.error,
     item: items.item,
-    authedUser,
+    authedUser: authedUser.user,
   };
 };
 

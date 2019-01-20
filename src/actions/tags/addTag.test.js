@@ -15,7 +15,7 @@ const mockStore = configureMockStore(middlewares);
 describe('handleAddTag action creator', () => {
   let store;
   beforeEach(() => {
-    store = mockStore();
+    store = mockStore({ authedUser: { token: 'abc' } });
     fetch.resetMocks();
   });
 

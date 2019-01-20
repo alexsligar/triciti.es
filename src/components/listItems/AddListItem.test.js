@@ -73,7 +73,9 @@ describe('connect', () => {
   it('should have access to the correct props via connect', () => {
     const initialState = {
       authedUser: {
-        username: 'testuser',
+        user: {
+          username: 'testuser',
+        },
       },
       users: {
         getUserLists: {

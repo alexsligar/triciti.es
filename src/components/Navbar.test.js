@@ -61,7 +61,7 @@ describe('render', () => {
 
 describe('connect', () => {
   it('should connect to the store with the correct props', () => {
-    const authedUser = { id: '1', username: '1abc' };
+    const authedUser = { user: { id: '1', username: '1abc' } };
     const initialState = {
       authedUser,
     };
@@ -74,7 +74,7 @@ describe('connect', () => {
       </Router>
     );
     const componentProps = wrapper.find(Navbar).props();
-    expect(componentProps.authedUser).toBe(authedUser);
+    expect(componentProps.authedUser).toBe(authedUser.user);
     expect(componentProps.location.pathname).toBeDefined();
   });
 });

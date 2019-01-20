@@ -117,11 +117,20 @@ describe('connect', () => {
           processing: false,
           error: null,
         },
+        deleteList: {
+          processing: false,
+          error: null,
+        },
         list: {
           id: 'abcd',
           name: 'Test List',
           owner: 'testuser',
           items: [],
+        },
+      },
+      authedUser: {
+        user: {
+          username: 'testuser',
         },
       },
     };
@@ -145,5 +154,6 @@ describe('connect', () => {
     expect(componentProps.handleGetList).toBeInstanceOf(Function);
     expect(componentProps.updateProcessing).toBeDefined();
     expect(componentProps.updateError).toBeDefined();
+    expect(componentProps.authedUser).toBeDefined();
   });
 });

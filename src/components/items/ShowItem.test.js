@@ -94,7 +94,9 @@ describe('connect', () => {
         },
       },
       authedUser: {
-        username: 'testuser',
+        user: {
+          username: 'testuser',
+        },
       },
     };
     const match = {

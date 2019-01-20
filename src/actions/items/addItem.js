@@ -32,10 +32,10 @@ export const removeAddItemError = () => {
 };
 
 export const handleAddItem = item => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(addItemProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const response = await api('items', 'POST', token, JSON.stringify(item));
       if (response.status === 201) {
         const { data } = await response.json();

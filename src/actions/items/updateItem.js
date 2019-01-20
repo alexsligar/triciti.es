@@ -32,10 +32,10 @@ export const removeUpdateItemError = () => {
 };
 
 export const handleUpdateItem = (id, item) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(updateItemProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify(item);
       const response = await api(`items/${id}`, 'PUT', token, body);
       if (response.status === 200) {

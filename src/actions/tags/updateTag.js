@@ -33,10 +33,10 @@ export const removeUpdateTagError = () => {
 };
 
 export const handleUpdateTag = (oldTag, newTag) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(updateTagProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify({ name: newTag });
       const response = await api(`tags/${oldTag}`, 'PUT', token, body);
       if (response.status === 200) {

@@ -63,7 +63,7 @@ AddListItem.propTypes = {
 
 const mapStateToProps = ({ authedUser, users }) => {
   return {
-    authedUser: authedUser.username,
+    authedUser: authedUser.user.username,
     userListsLoading: users.getUserLists.loading,
     userListsError: users.getUserLists.error,
     userLists: users.userLists,

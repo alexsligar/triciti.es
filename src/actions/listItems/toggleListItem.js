@@ -35,16 +35,16 @@ export const removeItemFromList = (listId, itemId) => {
 };
 
 export const handleAddListItem = (listId, itemId) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(addItemToList(listId, itemId));
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify({
         list_id: listId,
         item_id: itemId,
       });
       const response = await api('lists/listitems', 'POST', token, body);
-      if (response.status === 200) {
+      if (response.status === 201) {
         dispatch(toggleListItemSuccess());
       } else {
         throw new Error();
@@ -59,16 +59,16 @@ export const handleAddListItem = (listId, itemId) => {
 };
 
 export const handleRemoveListItem = (listId, itemId) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(removeItemFromList(listId, itemId));
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify({
         list_id: listId,
         item_id: itemId,
       });
       const response = await api('lists/listitems', 'DELETE', token, body);
-      if (response.status === 201) {
+      if (response.status === 200) {
         dispatch(toggleListItemSuccess());
       } else {
         throw new Error();

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import initialData from './initialData';
 import registerUser from './registerUser';
 import authUser from './authUser';
 import authedUser from './authedUser';
@@ -10,7 +9,6 @@ import users from './users';
 import listItems from './listItems';
 
 export default combineReducers({
-  initialData,
   registerUser,
   authUser,
   authedUser,

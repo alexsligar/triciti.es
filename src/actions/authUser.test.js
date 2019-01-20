@@ -30,21 +30,17 @@ describe('handleAuthUser action creator', () => {
     expect(actions[0]).toEqual({ type: AUTH_USER_PROCESSING });
   });
 
-  it('should dispatch expected actions and save token when auth succeeds', async () => {
+  it('should dispatch expected actions', async () => {
     const token = sign({ id: '1a' }, 'abcd');
     const user = { id: 1, username: 'test' };
     fetch.mockResponses(
       [JSON.stringify({ data: { token } }), { status: 200 }],
       [JSON.stringify({ data: user }), { status: 200 }]
     );
-    const mock = jest.fn();
-    Storage.prototype.setItem = mock;
     await store.dispatch(handleAuthUser({}));
     const actions = store.getActions();
-    expect(actions[1]).toEqual({ type: SET_AUTHED_USER, user });
+    expect(actions[1]).toEqual({ type: SET_AUTHED_USER, user, token });
     expect(actions[2]).toEqual({ type: AUTH_USER_SUCCESS });
-    expect(mock.mock.calls[0][0]).toBe('authedUser');
-    expect(mock.mock.calls[0][1]).toEqual(token);
   });
 
   it('should dispatch AUTH_USER_ERROR with specific message when auth fails due to credentials', async () => {
@@ -112,15 +108,13 @@ describe('handleLogoutUser action creator', () => {
   const user = { id: 1, username: 'test' };
   let store;
   beforeEach(async () => {
-    store = mockStore({ authedUser: user });
+    store = mockStore({ authedUser: { user, token: 'abc' } });
     fetch.resetMocks();
   });
 
   it('should dispatch REMOVE_AUTHED_USER', async () => {
-    const spy = jest.spyOn(Storage.prototype, 'removeItem');
     fetch.mockResponseOnce({}, { status: 204 });
     await store.dispatch(handleLogoutUser());
-    expect(spy).toHaveBeenCalledWith('authedUser');
     const actions = store.getActions();
     expect(actions[0]).toEqual({ type: REMOVE_AUTHED_USER });
   });
@@ -129,6 +123,6 @@ describe('handleLogoutUser action creator', () => {
     fetch.mockResponseOnce({}, { status: 401 });
     await store.dispatch(handleLogoutUser());
     const actions = store.getActions();
-    expect(actions[1]).toEqual({ type: SET_AUTHED_USER, user });
+    expect(actions[1]).toEqual({ type: SET_AUTHED_USER, user, token: 'abc' });
   });
 });

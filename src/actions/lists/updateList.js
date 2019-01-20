@@ -32,10 +32,10 @@ export const removeUpdateListError = () => {
 };
 
 export const handleUpdateList = (id, list) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(updateListProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify(list);
       const response = await api(`lists/${id}`, 'PUT', token, body);
       if (response.status === 200) {

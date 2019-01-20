@@ -50,7 +50,7 @@ Routes.propTypes = {
 };
 
 const mapStateToProps = ({ authedUser }) => {
-  return { authedUser };
+  return { authedUser: authedUser.user };
 };
 
 export default withRouter(connect(mapStateToProps)(Routes));

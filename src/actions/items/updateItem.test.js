@@ -15,7 +15,7 @@ const mockStore = configureMockStore(middlewares);
 describe('handleUpdateItem action creator', () => {
   let store;
   beforeEach(() => {
-    store = mockStore();
+    store = mockStore({ authedUser: { token: 'abc' } });
     fetch.resetMocks();
   });
 

@@ -32,10 +32,10 @@ export const removeDeleteTagError = () => {
 };
 
 export const handleDeleteTag = tag => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch(deleteTagProcessing());
     try {
-      const token = localStorage.getItem('authedUser');
+      const { token } = getState().authedUser;
       const body = JSON.stringify({ name: tag });
       const response = await api('tags', 'DELETE', token, body);
       if (response.status === 204) {

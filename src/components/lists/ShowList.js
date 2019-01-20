@@ -78,7 +78,7 @@ const mapStateToProps = ({ lists, authedUser }) => {
     list: lists.list,
     updateProcessing: lists.updateList.processing,
     updateError: lists.updateList.error,
-    authedUser,
+    authedUser: authedUser.user,
   };
 };
 
