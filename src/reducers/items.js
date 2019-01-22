@@ -3,38 +3,37 @@ import {
   ITEMS_LOADING,
   ITEMS_SUCCESS,
 } from '../actions/items/getItems';
-
 import {
   ITEM_LOADING,
   ITEM_ERROR,
   ITEM_SUCCESS,
 } from '../actions/items/getItem';
-
 import {
   ADD_ITEM_PROCESSING,
   ADD_ITEM_ERROR,
   ADD_ITEM_SUCCESS,
   REMOVE_ADD_ITEM_ERROR,
 } from '../actions/items/addItem';
-
 import {
   UPDATE_ITEM_PROCESSING,
   UPDATE_ITEM_ERROR,
   UPDATE_ITEM_SUCCESS,
   REMOVE_UPDATE_ITEM_ERROR,
 } from '../actions/items/updateItem';
-
 import {
   DELETE_ITEM_PROCESSING,
   DELETE_ITEM_ERROR,
   REMOVE_DELETE_ITEM_ERROR,
   DELETE_ITEM_SUCCESS,
 } from '../actions/items/deleteItem';
-
 import {
   ADD_ITEM_TO_LIST,
   REMOVE_ITEM_FROM_LIST,
 } from '../actions/listItems/toggleListItem';
+import {
+  ADD_STAR_TO_ITEM,
+  REMOVE_STAR_FROM_ITEM,
+} from '../actions/starredItems/toggleStarredItem';
 
 const initialState = {
   getItem: {
@@ -131,6 +130,22 @@ export default function registerUser(state = initialState, action) {
         item: {
           ...state.item,
           list_number: state.item.list_number - 1,
+        },
+      };
+    case ADD_STAR_TO_ITEM:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          star_number: state.item.star_number + 1,
+        },
+      };
+    case REMOVE_STAR_FROM_ITEM:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          star_number: state.item.star_number - 1,
         },
       };
     case ADD_ITEM_PROCESSING:

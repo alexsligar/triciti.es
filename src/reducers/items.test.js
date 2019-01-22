@@ -31,6 +31,10 @@ import {
   ADD_ITEM_TO_LIST,
   REMOVE_ITEM_FROM_LIST,
 } from '../actions/listItems/toggleListItem';
+import {
+  ADD_STAR_TO_ITEM,
+  REMOVE_STAR_FROM_ITEM,
+} from '../actions/starredItems/toggleStarredItem';
 
 const initialState = {
   getItem: {
@@ -229,6 +233,44 @@ describe('items reducer', () => {
       ...initialState,
       item: {
         list_number: 1,
+      },
+    };
+    expect(items(initial, action)).toEqual(expected);
+  });
+
+  it('should handle ADD_STAR_TO_ITEM', () => {
+    const action = {
+      type: ADD_STAR_TO_ITEM,
+    };
+    const initial = {
+      ...initialState,
+      item: {
+        star_number: 2,
+      },
+    };
+    const expected = {
+      ...initialState,
+      item: {
+        star_number: 3,
+      },
+    };
+    expect(items(initial, action)).toEqual(expected);
+  });
+
+  it('should handle REMOVE_STAR_FROM_ITEM', () => {
+    const action = {
+      type: REMOVE_STAR_FROM_ITEM,
+    };
+    const initial = {
+      ...initialState,
+      item: {
+        star_number: 2,
+      },
+    };
+    const expected = {
+      ...initialState,
+      item: {
+        star_number: 1,
       },
     };
     expect(items(initial, action)).toEqual(expected);
