@@ -137,7 +137,7 @@ export default function registerUser(state = initialState, action) {
         ...state,
         item: {
           ...state.item,
-          star_number: state.item.star_number + 1,
+          starred_number: state.item.starred_number + 1,
         },
       };
     case REMOVE_STAR_FROM_ITEM:
@@ -145,7 +145,7 @@ export default function registerUser(state = initialState, action) {
         ...state,
         item: {
           ...state.item,
-          star_number: state.item.star_number - 1,
+          starred_number: state.item.starred_number - 1,
         },
       };
     case ADD_ITEM_PROCESSING:

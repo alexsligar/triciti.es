@@ -245,13 +245,13 @@ describe('items reducer', () => {
     const initial = {
       ...initialState,
       item: {
-        star_number: 2,
+        starred_number: 2,
       },
     };
     const expected = {
       ...initialState,
       item: {
-        star_number: 3,
+        starred_number: 3,
       },
     };
     expect(items(initial, action)).toEqual(expected);
@@ -264,13 +264,13 @@ describe('items reducer', () => {
     const initial = {
       ...initialState,
       item: {
-        star_number: 2,
+        starred_number: 2,
       },
     };
     const expected = {
       ...initialState,
       item: {
-        star_number: 1,
+        starred_number: 1,
       },
     };
     expect(items(initial, action)).toEqual(expected);

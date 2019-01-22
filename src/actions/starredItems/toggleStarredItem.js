@@ -34,23 +34,22 @@ const removeStarFromItem = (itemId, userId) => {
   };
 };
 
-export const handleAddStarredItem = (itemId, userId) => {
+export const handleAddStarredItem = itemId => {
   return async (dispatch, getState) => {
-    dispatch(addStarToItem(itemId, userId));
+    const { token, user } = getState().authedUser;
+    dispatch(addStarToItem(itemId, user.id));
     try {
-      const { token } = getState().authedUser;
       const body = JSON.stringify({
         item_id: itemId,
-        user_id: userId,
       });
-      const response = await api('/starreditems', 'POST', token, body);
+      const response = await api('starred_items', 'POST', token, body);
       if (response.status === 201) {
         dispatch(toggleStarredItemSuccess());
       } else {
         throw new Error();
       }
     } catch {
-      dispatch(removeStarFromItem(itemId, userId));
+      dispatch(removeStarFromItem(itemId, user.id));
       dispatch(
         toggleStarredItemError('Failed to star item. Please try again.')
       );
@@ -58,23 +57,22 @@ export const handleAddStarredItem = (itemId, userId) => {
   };
 };
 
-export const handleRemoveStarredItem = (itemId, userId) => {
+export const handleRemoveStarredItem = itemId => {
   return async (dispatch, getState) => {
-    dispatch(removeStarFromItem(itemId, userId));
+    const { token, user } = getState().authedUser;
+    dispatch(removeStarFromItem(itemId, user.id));
     try {
-      const { token } = getState().authedUser;
       const body = JSON.stringify({
         item_id: itemId,
-        user_id: userId,
       });
-      const response = await api('starreditems', 'DELETE', token, body);
+      const response = await api('starred_items', 'DELETE', token, body);
       if (response.status === 204) {
         dispatch(toggleStarredItemSuccess());
       } else {
         throw new Error();
       }
     } catch (err) {
-      dispatch(addStarToItem(itemId, userId));
+      dispatch(addStarToItem(itemId, user.id));
       dispatch(
         toggleStarredItemError(
           'Failed to remove star from item. Please try again.'
