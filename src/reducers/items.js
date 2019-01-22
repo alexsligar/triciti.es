@@ -31,6 +31,11 @@ import {
   DELETE_ITEM_SUCCESS,
 } from '../actions/items/deleteItem';
 
+import {
+  ADD_ITEM_TO_LIST,
+  REMOVE_ITEM_FROM_LIST,
+} from '../actions/listItems/toggleListItem';
+
 const initialState = {
   getItem: {
     loading: true,
@@ -111,6 +116,22 @@ export default function registerUser(state = initialState, action) {
           error: null,
         },
         item: action.item,
+      };
+    case ADD_ITEM_TO_LIST:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          list_number: state.item.list_number + 1,
+        },
+      };
+    case REMOVE_ITEM_FROM_LIST:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          list_number: state.item.list_number - 1,
+        },
       };
     case ADD_ITEM_PROCESSING:
       return {

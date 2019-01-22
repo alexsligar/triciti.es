@@ -21,6 +21,7 @@ const defaultProps = {
     location: 'Up the street',
     owners: ['testuser'],
     tags: ['test'],
+    list_number: 2,
   },
   authedUser: {
     username: 'testuser',
@@ -91,6 +92,7 @@ describe('connect', () => {
           location: 'Up the street',
           owners: ['testuser'],
           tags: ['test'],
+          list_number: 2,
         },
       },
       authedUser: {

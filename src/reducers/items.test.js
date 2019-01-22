@@ -27,6 +27,10 @@ import {
   REMOVE_DELETE_ITEM_ERROR,
   DELETE_ITEM_SUCCESS,
 } from '../actions/items/deleteItem';
+import {
+  ADD_ITEM_TO_LIST,
+  REMOVE_ITEM_FROM_LIST,
+} from '../actions/listItems/toggleListItem';
 
 const initialState = {
   getItem: {
@@ -188,6 +192,44 @@ describe('items reducer', () => {
         loading: false,
       },
       item: itemExample,
+    };
+    expect(items(initial, action)).toEqual(expected);
+  });
+
+  it('should handle ADD_ITEM_TO_LIST', () => {
+    const action = {
+      type: ADD_ITEM_TO_LIST,
+    };
+    const initial = {
+      ...initialState,
+      item: {
+        list_number: 2,
+      },
+    };
+    const expected = {
+      ...initialState,
+      item: {
+        list_number: 3,
+      },
+    };
+    expect(items(initial, action)).toEqual(expected);
+  });
+
+  it('should handle REMOVE_ITEM_FROM_LIST', () => {
+    const action = {
+      type: REMOVE_ITEM_FROM_LIST,
+    };
+    const initial = {
+      ...initialState,
+      item: {
+        list_number: 2,
+      },
+    };
+    const expected = {
+      ...initialState,
+      item: {
+        list_number: 1,
+      },
     };
     expect(items(initial, action)).toEqual(expected);
   });

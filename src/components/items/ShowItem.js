@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Dimmer, Loader, Message } from 'semantic-ui-react';
+import { Container, Grid, Dimmer, Loader, Message } from 'semantic-ui-react';
 import { handleGetItem } from '../../actions/items/getItem';
 import ItemHeader from './ItemHeader';
 import ItemOptions from './ItemOptions';
@@ -31,14 +31,20 @@ export class ShowItem extends Component {
       );
     } else {
       content = (
-        <Container textAlign='center'>
-          <ItemHeader item={item} />
-          {authedUser && item.owners.includes(authedUser.username) && (
-            <ItemOptions item={item} />
+        <Grid textAlign='center'>
+          <Grid.Row>
+            <ItemHeader item={item} />
+            {authedUser && item.owners.includes(authedUser.username) && (
+              <ItemOptions item={item} />
+            )}
+          </Grid.Row>
+          {authedUser && (
+            <Grid.Row>
+              <AddListItem item={item} />
+            </Grid.Row>
           )}
           <ItemDetails item={item} />
-          {authedUser && <AddListItem itemId={item.id} />}
-        </Container>
+        </Grid>
       );
     }
 

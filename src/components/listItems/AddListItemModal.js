@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Modal, Button, Icon, List, Message } from 'semantic-ui-react';
+import { Modal, Button, List, Message } from 'semantic-ui-react';
 import ToggleListItem from './ToggleListItem';
 
 export class AddListItemModal extends Component {
   render() {
-    const { userLists, itemId, toggleListItemError } = this.props;
+    const { userLists, item, toggleListItemError } = this.props;
     return (
       <Modal
         trigger={
-          <Button icon>
-            <Icon name='plus' /> Add to a List
-          </Button>
+          <Button
+            color='blue'
+            content='Add to List'
+            icon='plus'
+            label={{
+              basic: true,
+              color: 'blue',
+              pointing: 'left',
+              content: item.list_number,
+            }}
+          />
         }
         size='tiny'
       >
@@ -29,9 +37,9 @@ export class AddListItemModal extends Component {
                 <ToggleListItem
                   key={list.id}
                   name={list.name}
-                  itemId={itemId}
+                  itemId={item.id}
                   listId={list.id}
-                  listItemExists={list.items.includes(itemId)}
+                  listItemExists={list.items.includes(item.id)}
                 />
               );
             })}
@@ -44,7 +52,7 @@ export class AddListItemModal extends Component {
 
 AddListItemModal.propTypes = {
   userLists: PropTypes.array.isRequired,
-  itemId: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
   toggleListItemError: PropTypes.string,
 };
 

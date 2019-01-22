@@ -16,7 +16,10 @@ const defaultProps = {
   },
   handleGetUserLists: () => {},
   showNewListModal: () => {},
-  itemId: 'efg',
+  item: {
+    id: 'efg',
+    list_number: 1,
+  },
 };
 const setup = (props = {}) => {
   const propsPassed = { ...defaultProps, ...props };
@@ -55,7 +58,7 @@ describe('render', () => {
     const wrapper = setup();
     const addListItemModal = wrapper.find(AddListItemModal);
     expect(addListItemModal.length).toBe(1);
-    expect(addListItemModal.props().itemId).toBe(defaultProps.itemId);
+    expect(addListItemModal.props().item).toBe(defaultProps.item);
   });
 });
 
@@ -91,7 +94,7 @@ describe('connect', () => {
     const store = storeFactory(initialState);
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAddListItem itemId={'abc'} />
+        <ConnectedAddListItem item={defaultProps.item} />
       </Provider>
     );
     const componentProps = wrapper.find(AddListItem).props();
@@ -101,6 +104,6 @@ describe('connect', () => {
     expect(componentProps.userLists).toBeDefined();
     expect(componentProps.handleGetUserLists).toBeInstanceOf(Function);
     expect(componentProps.showNewListModal).toBeInstanceOf(Function);
-    expect(componentProps.itemId).toBeDefined();
+    expect(componentProps.item).toBeDefined();
   });
 });

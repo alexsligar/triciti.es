@@ -10,7 +10,10 @@ import ToggleListItem from './ToggleListItem';
 
 const defaultProps = {
   toggleListItemError: null,
-  itemId: 'xyz',
+  item: {
+    id: 'xyz',
+    list_number: 2,
+  },
   userLists: [
     { id: 'abc', name: 'Test List', items: ['abc'] },
     { id: 'def', name: 'Another List', items: ['abc', 'def', 'hij'] },
@@ -59,12 +62,12 @@ describe('connect', () => {
     const store = storeFactory(initialState);
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedAddListItemModal itemId='hijk' />
+        <ConnectedAddListItemModal item={defaultProps.item} />
       </Provider>
     );
     const componentProps = wrapper.find(AddListItemModal).props();
     expect(componentProps.toggleListItemError).toBeDefined();
     expect(componentProps.userLists).toBeDefined();
-    expect(componentProps.itemId).toBeDefined();
+    expect(componentProps.item).toBeDefined();
   });
 });

@@ -42,7 +42,7 @@ export class AddListItem extends Component {
         </Segment>
       );
     } else {
-      content = <AddListItemModal itemId={this.props.itemId} />;
+      content = <AddListItemModal item={this.props.item} />;
     }
     return content;
   }
@@ -57,7 +57,7 @@ AddListItem.propTypes = {
     lists: PropTypes.array,
   }),
   handleGetUserLists: PropTypes.func.isRequired,
-  itemId: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
   showNewListModal: PropTypes.func.isRequired,
 };
 
