@@ -1,5 +1,6 @@
 import history from '../../history';
 import api from '../../api';
+import { handleAuthUser } from '../authUser';
 
 export const REGISTER_USER_ERROR = 'REGISTER_USER_ERROR';
 export const REGISTER_USER_PROCESSING = 'REGISTER_USER_PROCESSING';
@@ -33,7 +34,13 @@ export const handleRegisterUser = userInput => {
       const response = await api('users', 'POST', null, body);
       if (response.status === 201) {
         dispatch(registerUserSuccess());
-        history.push('/login');
+        dispatch(
+          handleAuthUser({
+            username: userInput.username,
+            password: userInput.password,
+          })
+        );
+        history.push('/');
       } else if (response.status === 409) {
         const decResponse = await response.json();
         dispatch(registerUserError(decResponse.message));

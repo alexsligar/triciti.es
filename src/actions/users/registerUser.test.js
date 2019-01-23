@@ -6,6 +6,7 @@ import {
   REGISTER_USER_ERROR,
   handleRegisterUser,
 } from './registerUser';
+import { AUTH_USER_PROCESSING } from '../authUser';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -28,6 +29,7 @@ describe('handleRegisterUser action creator', () => {
     await store.dispatch(handleRegisterUser({}));
     const actions = store.getActions();
     expect(actions[1]).toEqual({ type: REGISTER_USER_SUCCESS });
+    expect(actions[2]).toEqual({ type: AUTH_USER_PROCESSING });
   });
 
   it('should dispatch REGISTER_USER_ERROR when account taken', async () => {
