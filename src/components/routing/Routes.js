@@ -9,6 +9,7 @@ import AddItem from '../items/AddItem';
 import EditItem from '../items/EditItem';
 import ShowItem from '../items/ShowItem';
 import ShowList from '../lists/ShowList';
+import NoMatch from '../universal/NoMatch';
 import userIsNotAuthenticated from './userIsNotAuthenticated';
 import userIsAuthenticated from './userIsAuthenticated';
 
@@ -24,6 +25,7 @@ export default function Routes() {
       <Route path='/items/:id/edit' component={userIsAuthenticated(EditItem)} />
       <Route path='/items/:id' component={ShowItem} />
       <Route path='/lists/:id' component={ShowList} />
+      <Route component={NoMatch} />
     </Switch>
   );
 }
