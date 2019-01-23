@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import { Header } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import ConnectedAddListItem, { AddListItem } from './AddListItem';
 import { storeFactory } from '../../../test/testUtils';
 import AddListItemModal from './AddListItemModal';
@@ -27,31 +27,29 @@ const setup = (props = {}) => {
 };
 
 describe('render', () => {
-  it('should render a loading Segment when userListsLoading prop is true', () => {
+  it('should render a loading Button when userListsLoading prop is true', () => {
     const wrapper = setup({ userListsLoading: true });
-    const loadingSegment = wrapper.find('Segment[loading=true]');
-    expect(loadingSegment.length).toBe(1);
+    const loadingButton = wrapper.find('Button[loading=true]');
+    expect(loadingButton.length).toBe(1);
   });
 
-  it('should render a loading Segment when userLists doesnt match authedUser', () => {
+  it('should render a loading Button when userLists doesnt match authedUser', () => {
     const wrapper = setup({ authedUser: 'bob' });
-    const loadingSegment = wrapper.find('Segment[loading=true]');
-    expect(loadingSegment.length).toBe(1);
+    const loadingButton = wrapper.find('Button[loading=true]');
+    expect(loadingButton.length).toBe(1);
   });
 
-  it('should render an error Message when userListsError is not null', () => {
+  it('should render an error Button when userListsError is not null', () => {
     const wrapper = setup({ userListsError: 'Uh oh' });
-    const message = wrapper.find('Message[error]');
-    expect(message.length).toBe(1);
-    expect(message.props().content).toBe('Uh oh');
+    const button = wrapper.find('Button[disabled]');
+    expect(button.length).toBe(1);
+    expect(button.props().content).toBe('Uh oh');
   });
 
-  it('should render a Segment if the user doesnt have any lists', () => {
+  it('should render a Button if the user doesnt have any lists', () => {
     const wrapper = setup({ userLists: { username: 'testuser', lists: [] } });
-    const header = wrapper.find(Header);
-    expect(header.dive().text()).toBe(
-      "<Icon />You don't have any lists to add this item to."
-    );
+    const button = wrapper.find(Button);
+    expect(button.dive().text()).toBe('<Icon />No Lists. Add a List');
   });
 
   it('should render an AddListItemModal if the authedUser has lists', () => {

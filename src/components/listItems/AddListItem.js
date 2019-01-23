@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Segment, Message, Header, Button, Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { handleGetUserLists } from '../../actions/users/getUserLists';
 import AddListItemModal from './AddListItemModal';
 import { showNewListModal } from '../../actions/lists/addList';
@@ -24,22 +24,15 @@ export class AddListItem extends Component {
       (userListsError === null &&
         (userLists.username === null || userLists.username !== authedUser))
     ) {
-      content = <Segment loading>Loading</Segment>;
+      content = <Button loading>Loading</Button>;
     } else if (userListsError) {
-      content = <Message error content={userListsError} />;
+      content = <Button color='red' disabled content={userListsError} />;
     } else if (userLists.lists.length === 0) {
       content = (
-        <Segment>
-          <Header icon>
-            <Icon name='list' />
-            You don&apos;t have any lists to add this item to.
-          </Header>
-          <div>
-            <Button primary onClick={this.props.showNewListModal}>
-              Add a New List
-            </Button>
-          </div>
-        </Segment>
+        <Button color='black' icon onClick={this.props.showNewListModal}>
+          <Icon name='plus' />
+          No Lists. Add a List
+        </Button>
       );
     } else {
       content = <AddListItemModal item={this.props.item} />;

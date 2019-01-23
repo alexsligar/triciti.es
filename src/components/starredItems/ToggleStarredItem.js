@@ -39,7 +39,11 @@ export class ToggleStarredItem extends Component {
     ) {
       content = <Button loading>Loading</Button>;
     } else if (userStarredItemsError) {
-      content = <Button disabled>{userStarredItemsError}</Button>;
+      content = (
+        <Button disabled color='red'>
+          {userStarredItemsError}
+        </Button>
+      );
     } else {
       const starred = userStarredItems.items.some(
         starredItem => starredItem.id === item.id
