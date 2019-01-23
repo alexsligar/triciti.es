@@ -7,6 +7,7 @@ import ItemHeader from './ItemHeader';
 import ItemOptions from './ItemOptions';
 import ItemDetails from './ItemDetails';
 import AddListItem from '../listItems/AddListItem';
+import ToggleStarredItem from '../starredItems/ToggleStarredItem';
 
 export class ShowItem extends Component {
   componentDidMount() {
@@ -40,6 +41,7 @@ export class ShowItem extends Component {
           </Grid.Row>
           {authedUser && (
             <Grid.Row>
+              <ToggleStarredItem item={item} />
               <AddListItem item={item} />
             </Grid.Row>
           )}

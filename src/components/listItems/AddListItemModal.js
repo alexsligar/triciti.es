@@ -11,12 +11,12 @@ export class AddListItemModal extends Component {
       <Modal
         trigger={
           <Button
-            color='blue'
+            color='black'
             content='Add to List'
             icon='plus'
             label={{
               basic: true,
-              color: 'blue',
+              color: 'black',
               pointing: 'left',
               content: item.list_number,
             }}
