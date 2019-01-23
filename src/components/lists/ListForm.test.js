@@ -138,22 +138,10 @@ describe('form validations', () => {
   it('should validate description', () => {
     const descriptionInput = wrapper.find('[name="description"]');
     descriptionInput.simulate('change', {
-      target: { name: 'description', value: '' },
-    });
-    expect(wrapper.state().fieldErrors.description).toBe(
-      'Description is required'
-    );
-    descriptionInput.simulate('change', {
-      target: { name: 'description', value: 'abcde' },
-    });
-    expect(wrapper.state().fieldErrors.description).toBe(
-      'Description must be between 10 and 250 characters'
-    );
-    descriptionInput.simulate('change', {
       target: { name: 'description', value: 'abcde'.repeat(51) },
     });
     expect(wrapper.state().fieldErrors.description).toBe(
-      'Description must be between 10 and 250 characters'
+      'Description must be 250 characters or less'
     );
     descriptionInput.simulate('change', {
       target: { name: 'description', value: 'This is my list' },

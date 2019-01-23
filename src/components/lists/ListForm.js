@@ -48,9 +48,8 @@ export class ListForm extends Component {
         return 'Name must be between 4 and 60 characters';
     },
     description: val => {
-      if (!val) return 'Description is required';
-      if (!isLength(val, { min: 10, max: 250 }))
-        return 'Description must be between 10 and 250 characters';
+      if (val && !isLength(val, { max: 250 }))
+        return 'Description must be 250 characters or less';
     },
   };
 
