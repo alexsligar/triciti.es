@@ -241,39 +241,75 @@ describe('items reducer', () => {
   it('should handle ADD_STAR_TO_ITEM', () => {
     const action = {
       type: ADD_STAR_TO_ITEM,
+      item: { id: 'abcd' },
     };
     const initial = {
       ...initialState,
       item: {
+        id: 'abcd',
         starred_number: 2,
       },
     };
     const expected = {
       ...initialState,
       item: {
+        id: 'abcd',
         starred_number: 3,
       },
     };
     expect(items(initial, action)).toEqual(expected);
   });
 
-  it('should handle REMOVE_STAR_FROM_ITEM', () => {
+  it('should return state when ADD_STAR_TO_ITEM id mismatches', () => {
     const action = {
-      type: REMOVE_STAR_FROM_ITEM,
+      type: ADD_STAR_TO_ITEM,
+      item: { id: 'efgh' },
     };
     const initial = {
       ...initialState,
       item: {
+        id: 'abcd',
+        starred_number: 2,
+      },
+    };
+    expect(items(initial, action)).toEqual(initial);
+  });
+
+  it('should handle REMOVE_STAR_FROM_ITEM', () => {
+    const action = {
+      type: REMOVE_STAR_FROM_ITEM,
+      itemId: 'abcd',
+    };
+    const initial = {
+      ...initialState,
+      item: {
+        id: 'abcd',
         starred_number: 2,
       },
     };
     const expected = {
       ...initialState,
       item: {
+        id: 'abcd',
         starred_number: 1,
       },
     };
     expect(items(initial, action)).toEqual(expected);
+  });
+
+  it('should return state when REMOVE_STAR_FROM_ITEM id mismatches', () => {
+    const action = {
+      type: REMOVE_STAR_FROM_ITEM,
+      itemId: 'efgh',
+    };
+    const initial = {
+      ...initialState,
+      item: {
+        id: 'abcd',
+        starred_number: 2,
+      },
+    };
+    expect(items(initial, action)).toEqual(initial);
   });
 
   it('should handle ADD_ITEM_PROCESSING', () => {

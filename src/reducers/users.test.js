@@ -13,6 +13,15 @@ import {
   ADD_ITEM_TO_LIST,
   REMOVE_ITEM_FROM_LIST,
 } from '../actions/listItems/toggleListItem';
+import {
+  USER_STARRED_ITEMS_LOADING,
+  USER_STARRED_ITEMS_ERROR,
+  USER_STARRED_ITEMS_SUCCESS,
+} from '../actions/users/getUserStarredItems';
+import {
+  ADD_STAR_TO_ITEM,
+  REMOVE_STAR_FROM_ITEM,
+} from '../actions/starredItems/toggleStarredItem';
 
 const initialState = {
   getUser: {
@@ -23,10 +32,18 @@ const initialState = {
     loading: false,
     error: null,
   },
+  getUserStarredItems: {
+    loading: false,
+    error: null,
+  },
   user: {},
   userLists: {
     username: null,
     lists: [],
+  },
+  userStarredItems: {
+    username: null,
+    items: [],
   },
 };
 
@@ -234,5 +251,173 @@ describe('users reducer', () => {
       },
     };
     expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should handle USER_STARRED_ITEMS_LOADING', () => {
+    const action = {
+      type: USER_STARRED_ITEMS_LOADING,
+    };
+    const initial = {
+      ...initialState,
+      getUserStarredItems: {
+        loading: false,
+        error: 'Uh oh',
+      },
+    };
+    const expected = {
+      ...initialState,
+      getUserStarredItems: {
+        loading: true,
+        error: 'Uh oh',
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should handle USER_STARRED_ITEMS_ERROR', () => {
+    const action = {
+      type: USER_STARRED_ITEMS_ERROR,
+      error: 'test',
+    };
+    const initial = {
+      ...initialState,
+      getUserStarredItems: {
+        loading: true,
+        error: null,
+      },
+    };
+    const expected = {
+      ...initialState,
+      getUserStarredItems: {
+        loading: false,
+        error: action.error,
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should handle USER_STARRED_ITEMS_SUCCESS', () => {
+    const username = 'testuser';
+    const items = [{ id: 'abcd', name: 'Test Item', location: 'Somewhere' }];
+    const action = {
+      type: USER_STARRED_ITEMS_SUCCESS,
+      username,
+      items,
+    };
+    const initial = {
+      ...initialState,
+      getUserStarredItems: {
+        ...initialState.getUserStarredItems,
+        loading: true,
+        error: 'Uh oh',
+      },
+    };
+    const expected = {
+      ...initialState,
+      getUserStarredItems: {
+        ...initialState.getUserStarredItems,
+        loading: false,
+        error: null,
+      },
+      userStarredItems: {
+        username,
+        items,
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should handle ADD_STAR_TO_ITEM', () => {
+    const action = {
+      type: ADD_STAR_TO_ITEM,
+      item: { id: 'hijk', name: 'Test Item' },
+      username: 'testuser',
+    };
+    const initial = {
+      ...initialState,
+      userStarredItems: {
+        username: 'testuser',
+        items: [
+          { id: 'abcd', name: 'Test List' },
+          { id: 'efgh', name: 'Another List' },
+        ],
+      },
+    };
+    const expected = {
+      ...initialState,
+      userStarredItems: {
+        username: 'testuser',
+        items: [
+          { id: 'abcd', name: 'Test List' },
+          { id: 'efgh', name: 'Another List' },
+          { id: 'hijk', name: 'Test Item' },
+        ],
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should return state ADD_STAR_TO_ITEM username mismatches', () => {
+    const action = {
+      type: ADD_STAR_TO_ITEM,
+      item: { id: 'hijk', name: 'Test Item' },
+      username: 'otheruser',
+    };
+    const initial = {
+      ...initialState,
+      userStarredItems: {
+        username: 'testuser',
+        items: [
+          { id: 'abcd', name: 'Test List' },
+          { id: 'efgh', name: 'Another List' },
+        ],
+      },
+    };
+    expect(users(initial, action)).toEqual(initial);
+  });
+
+  it('should handle REMOVE_STAR_FROM_ITEM', () => {
+    const action = {
+      type: REMOVE_STAR_FROM_ITEM,
+      username: 'testuser',
+      itemId: 'abcd',
+    };
+    const initial = {
+      ...initialState,
+      userStarredItems: {
+        username: 'testuser',
+        items: [
+          { id: 'abcd', name: 'Test List' },
+          { id: 'efgh', name: 'Another List' },
+        ],
+      },
+    };
+    const expected = {
+      ...initialState,
+      userStarredItems: {
+        username: 'testuser',
+        items: [{ id: 'efgh', name: 'Another List' }],
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should return state when REMOVE_STAR_FROM_ITEM username mismatches', () => {
+    const action = {
+      type: REMOVE_STAR_FROM_ITEM,
+      username: 'otheruser',
+      itemId: 'abcd',
+    };
+    const initial = {
+      ...initialState,
+      userStarredItems: {
+        username: 'testuser',
+        items: [
+          { id: 'abcd', name: 'Test List' },
+          { id: 'efgh', name: 'Another List' },
+        ],
+      },
+    };
+    expect(users(initial, action)).toEqual(initial);
   });
 });

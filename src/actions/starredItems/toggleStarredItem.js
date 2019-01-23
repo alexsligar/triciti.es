@@ -18,29 +18,29 @@ const toggleStarredItemSuccess = () => {
   };
 };
 
-const addStarToItem = (itemId, userId) => {
+const addStarToItem = (item, username) => {
   return {
     type: ADD_STAR_TO_ITEM,
-    itemId,
-    userId,
+    item,
+    username,
   };
 };
 
-const removeStarFromItem = (itemId, userId) => {
+const removeStarFromItem = (itemId, username) => {
   return {
     type: REMOVE_STAR_FROM_ITEM,
     itemId,
-    userId,
+    username,
   };
 };
 
-export const handleAddStarredItem = itemId => {
+export const handleAddStarredItem = item => {
   return async (dispatch, getState) => {
     const { token, user } = getState().authedUser;
-    dispatch(addStarToItem(itemId, user.id));
+    dispatch(addStarToItem(item, user.username));
     try {
       const body = JSON.stringify({
-        item_id: itemId,
+        item_id: item.id,
       });
       const response = await api('starred_items', 'POST', token, body);
       if (response.status === 201) {
@@ -49,7 +49,7 @@ export const handleAddStarredItem = itemId => {
         throw new Error();
       }
     } catch {
-      dispatch(removeStarFromItem(itemId, user.id));
+      dispatch(removeStarFromItem(item.id, user.username));
       dispatch(
         toggleStarredItemError('Failed to star item. Please try again.')
       );
@@ -57,13 +57,13 @@ export const handleAddStarredItem = itemId => {
   };
 };
 
-export const handleRemoveStarredItem = itemId => {
+export const handleRemoveStarredItem = item => {
   return async (dispatch, getState) => {
     const { token, user } = getState().authedUser;
-    dispatch(removeStarFromItem(itemId, user.id));
+    dispatch(removeStarFromItem(item.id, user.username));
     try {
       const body = JSON.stringify({
-        item_id: itemId,
+        item_id: item.id,
       });
       const response = await api('starred_items', 'DELETE', token, body);
       if (response.status === 204) {
@@ -72,7 +72,7 @@ export const handleRemoveStarredItem = itemId => {
         throw new Error();
       }
     } catch (err) {
-      dispatch(addStarToItem(itemId, user.id));
+      dispatch(addStarToItem(item, user.username));
       dispatch(
         toggleStarredItemError(
           'Failed to remove star from item. Please try again.'

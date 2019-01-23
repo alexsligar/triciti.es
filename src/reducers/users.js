@@ -9,9 +9,18 @@ import {
   USER_LISTS_SUCCESS,
 } from '../actions/users/getUserLists';
 import {
+  USER_STARRED_ITEMS_LOADING,
+  USER_STARRED_ITEMS_ERROR,
+  USER_STARRED_ITEMS_SUCCESS,
+} from '../actions/users/getUserStarredItems';
+import {
   ADD_ITEM_TO_LIST,
   REMOVE_ITEM_FROM_LIST,
 } from '../actions/listItems/toggleListItem';
+import {
+  ADD_STAR_TO_ITEM,
+  REMOVE_STAR_FROM_ITEM,
+} from '../actions/starredItems/toggleStarredItem';
 
 const initialState = {
   getUser: {
@@ -22,10 +31,18 @@ const initialState = {
     loading: false,
     error: null,
   },
+  getUserStarredItems: {
+    loading: false,
+    error: null,
+  },
   user: {},
   userLists: {
     username: null,
     lists: [],
+  },
+  userStarredItems: {
+    username: null,
+    items: [],
   },
 };
 
@@ -119,6 +136,63 @@ export default function lists(state = initialState, action) {
           }),
         },
       };
+    case USER_STARRED_ITEMS_LOADING:
+      return {
+        ...state,
+        getUserStarredItems: {
+          ...state.getUserStarredItems,
+          loading: true,
+        },
+      };
+    case USER_STARRED_ITEMS_ERROR:
+      return {
+        ...state,
+        getUserStarredItems: {
+          ...state.getUserStarredItems,
+          loading: false,
+          error: action.error,
+        },
+      };
+    case USER_STARRED_ITEMS_SUCCESS:
+      return {
+        ...state,
+        getUserStarredItems: {
+          ...state.getUserStarredItems,
+          loading: false,
+          error: null,
+        },
+        userStarredItems: {
+          ...state.userStarredItems,
+          username: action.username,
+          items: action.items,
+        },
+      };
+    case ADD_STAR_TO_ITEM:
+      if (action.username === state.userStarredItems.username) {
+        return {
+          ...state,
+          userStarredItems: {
+            ...state.userStarredItems,
+            items: state.userStarredItems.items.concat(action.item),
+          },
+        };
+      } else {
+        return state;
+      }
+    case REMOVE_STAR_FROM_ITEM:
+      if (action.username === state.userStarredItems.username) {
+        return {
+          ...state,
+          userStarredItems: {
+            ...state.userStarredItems,
+            items: state.userStarredItems.items.filter(
+              item => item.id !== action.itemId
+            ),
+          },
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }

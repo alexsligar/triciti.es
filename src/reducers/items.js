@@ -133,21 +133,29 @@ export default function registerUser(state = initialState, action) {
         },
       };
     case ADD_STAR_TO_ITEM:
-      return {
-        ...state,
-        item: {
-          ...state.item,
-          starred_number: state.item.starred_number + 1,
-        },
-      };
+      if (action.item.id === state.item.id) {
+        return {
+          ...state,
+          item: {
+            ...state.item,
+            starred_number: state.item.starred_number + 1,
+          },
+        };
+      } else {
+        return state;
+      }
     case REMOVE_STAR_FROM_ITEM:
-      return {
-        ...state,
-        item: {
-          ...state.item,
-          starred_number: state.item.starred_number - 1,
-        },
-      };
+      if (action.itemId === state.item.id) {
+        return {
+          ...state,
+          item: {
+            ...state.item,
+            starred_number: state.item.starred_number - 1,
+          },
+        };
+      } else {
+        return state;
+      }
     case ADD_ITEM_PROCESSING:
       return {
         ...state,
