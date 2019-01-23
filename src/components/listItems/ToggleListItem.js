@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { List, Checkbox } from 'semantic-ui-react';
+import { List, Checkbox, Icon } from 'semantic-ui-react';
 import {
   handleAddListItem,
   handleRemoveListItem,
@@ -24,7 +25,7 @@ export class ToggleListItem extends Component {
   };
 
   render() {
-    const { name, listItemExists } = this.props;
+    const { name, listId, listItemExists } = this.props;
 
     return (
       <List.Item>
@@ -35,6 +36,10 @@ export class ToggleListItem extends Component {
             checked={listItemExists}
             onChange={this.handleToggleListItem}
           />
+          <span> </span>
+          <Link to={'/lists/' + listId}>
+            <Icon name='eye' />
+          </Link>
         </List.Content>
       </List.Item>
     );

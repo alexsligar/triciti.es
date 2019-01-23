@@ -1,7 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import { List, Checkbox } from 'semantic-ui-react';
+import history from '../../history';
 import ConnectedToggleListItem, { ToggleListItem } from './ToggleListItem';
 import { storeFactory } from '../../../test/testUtils';
 
@@ -53,14 +55,16 @@ describe('connect', () => {
   it('should have access to the correct props via connect', () => {
     const store = storeFactory({});
     const wrapper = mount(
-      <Provider store={store}>
-        <ConnectedToggleListItem
-          itemId='hijk'
-          name='Test List'
-          listId='abcd'
-          listItemExists={false}
-        />
-      </Provider>
+      <Router history={history}>
+        <Provider store={store}>
+          <ConnectedToggleListItem
+            itemId='hijk'
+            name='Test List'
+            listId='abcd'
+            listItemExists={false}
+          />
+        </Provider>
+      </Router>
     );
     const componentProps = wrapper.find(ToggleListItem).props();
     expect(componentProps.itemId).toBeDefined();
