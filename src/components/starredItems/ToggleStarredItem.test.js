@@ -15,12 +15,9 @@ const defaultProps = {
     id: 'abcd',
     starred_number: 3,
   },
-  userStarredItems: {
-    username: 'testuser',
-    items: [],
-  },
-  userStarredItemsLoading: false,
-  userStarredItemsError: null,
+  starred: false,
+  loading: false,
+  error: null,
   handleAddStarredItem: () => {},
   handleRemoveStarredItem: () => {},
   handleGetUserStarredItems: () => {},
@@ -32,41 +29,33 @@ const setup = (props = {}) => {
 };
 
 describe('render', () => {
-  it('should render a loading button when userStarredItemsLoading is true', () => {
-    const wrapper = setup({ userStarredItemsLoading: true });
+  it('should render a loading button when loading is true', () => {
+    const wrapper = setup({ loading: true });
     const button = wrapper.find(Button);
     expect(button.length).toBe(1);
     expect(button.props().loading).toBe(true);
   });
 
-  it('should render a loading button when userStarredItems.username is undefined', () => {
-    const wrapper = setup({ userStarredItems: { username: null } });
-    const button = wrapper.find(Button);
-    expect(button.length).toBe(1);
-    expect(button.props().loading).toBe(true);
-  });
-
-  it('should render a loading button when userStarredItems.username doesnt match', () => {
-    const wrapper = setup({ userStarredItems: { username: 'otheruser' } });
-    const button = wrapper.find(Button);
-    expect(button.length).toBe(1);
-    expect(button.props().loading).toBe(true);
-  });
-
-  it('should render a error button when userStarredItemsError is not null', () => {
-    const wrapper = setup({ userStarredItemsError: 'Uh oh' });
+  it('should render a error button when error is not null', () => {
+    const wrapper = setup({ error: 'Uh oh' });
     const button = wrapper.find(Button);
     expect(button.length).toBe(1);
     expect(button.dive().text()).toBe('Uh oh');
   });
 
   it('should render a star Icon if loaded and not in error', () => {
-    const wrapper = setup({
-      userStarredItems: { username: 'testuser', items: [{ id: 'abcd' }] },
-    });
+    const wrapper = setup();
     const icon = wrapper.find(Icon);
     expect(icon.length).toBe(1);
     expect(icon.props().name).toBe('star');
+  });
+
+  it('should render a yellow star Icon if starred is true', () => {
+    const wrapper = setup({ starred: true });
+    const icon = wrapper.find(Icon);
+    expect(icon.length).toBe(1);
+    expect(icon.props().name).toBe('star');
+    expect(icon.props().color).toBe('yellow');
   });
 
   it('should call handleStarClick when the button is clicked', () => {
@@ -135,9 +124,9 @@ describe('connect', () => {
     const componentProps = wrapper.find(ToggleStarredItem).props();
     expect(componentProps.item).toBeDefined();
     expect(componentProps.authedUser).toBeDefined();
-    expect(componentProps.userStarredItems).toBeDefined();
-    expect(componentProps.userStarredItemsLoading).toBeDefined();
-    expect(componentProps.userStarredItemsError).toBeDefined();
+    expect(componentProps.loading).toBeDefined();
+    expect(componentProps.error).toBeDefined();
+    expect(componentProps.starred).toBeDefined();
     expect(componentProps.handleAddStarredItem).toBeInstanceOf(Function);
     expect(componentProps.handleRemoveStarredItem).toBeInstanceOf(Function);
     expect(componentProps.handleGetUserStarredItems).toBeInstanceOf(Function);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import {
   handleAddStarredItem,
@@ -10,7 +11,8 @@ import { handleGetUserStarredItems } from '../../actions/users/getUserStarredIte
 
 export class ToggleStarredItem extends Component {
   componentDidMount() {
-    this.props.handleGetUserStarredItems(this.props.authedUser.username);
+    const { authedUser, handleGetUserStarredItems } = this.props;
+    handleGetUserStarredItems(authedUser.username);
   }
 
   handleStarClick = starred => {
@@ -23,31 +25,17 @@ export class ToggleStarredItem extends Component {
   };
 
   render() {
-    const {
-      item,
-      userStarredItems,
-      userStarredItemsLoading,
-      userStarredItemsError,
-      authedUser,
-    } = this.props;
+    const { item, starred, loading, error } = this.props;
     let content;
-    if (
-      userStarredItemsLoading ||
-      (userStarredItemsError === null &&
-        (userStarredItems.username === null ||
-          userStarredItems.username !== authedUser.username))
-    ) {
+    if (loading) {
       content = <Button loading>Loading</Button>;
-    } else if (userStarredItemsError) {
+    } else if (error) {
       content = (
         <Button disabled color='red'>
-          {userStarredItemsError}
+          {error}
         </Button>
       );
     } else {
-      const starred = userStarredItems.items.some(
-        starredItem => starredItem.id === item.id
-      );
       content = (
         <Button
           as='div'
@@ -73,19 +61,39 @@ export class ToggleStarredItem extends Component {
 ToggleStarredItem.propTypes = {
   item: PropTypes.object.isRequired,
   authedUser: PropTypes.object.isRequired,
-  userStarredItems: PropTypes.object.isRequired,
-  userStarredItemsError: PropTypes.string,
-  userStarredItemsLoading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  starred: PropTypes.bool.isRequired,
   handleGetUserStarredItems: PropTypes.func.isRequired,
   handleAddStarredItem: PropTypes.func.isRequired,
   handleRemoveStarredItem: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ users, authedUser }) => {
+const getLoading = (users, authedUser) => {
+  const { username } = users.userStarredItems;
+  const { loading, error } = users.getUserStarredItems;
+  return (
+    loading ||
+    (error === null &&
+      (username === null || authedUser.user.username !== username))
+  );
+};
+
+const getStarredItems = users => users.userStarredItems.items;
+const getItemId = (state, props) => props.item.id;
+
+const getStarred = createSelector(
+  [getStarredItems, getItemId],
+  (starredItems, itemId) => {
+    return starredItems.some(starredItem => starredItem.id === itemId);
+  }
+);
+
+const mapStateToProps = ({ users, authedUser }, props) => {
   return {
-    userStarredItems: users.userStarredItems,
-    userStarredItemsLoading: users.getUserStarredItems.loading,
-    userStarredItemsError: users.getUserStarredItems.error,
+    loading: getLoading(users, authedUser),
+    error: users.getUserStarredItems.error,
+    starred: getStarred(users, props),
     authedUser: authedUser.user,
   };
 };
