@@ -71,11 +71,14 @@ describe('connect', () => {
     const store = storeFactory(initialState);
     const wrapper = mount(
       <Provider store={store}>
-        <ConnectedUserInfo {...defaultProps} />
+        <ConnectedUserInfo username='testuser' />
       </Provider>
     );
     const componentProps = wrapper.find(UserInfo).props();
     expect(componentProps.username).toBeDefined();
     expect(componentProps.loading).toBeDefined();
+    expect(componentProps.error).toBeDefined();
+    expect(componentProps.user).toBeDefined();
+    expect(componentProps.handleGetUser).toBeInstanceOf(Function);
   });
 });
