@@ -3,12 +3,12 @@ import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
-import history from '../history';
+import history from '../../history';
 import ConnectedNavbar, { Navbar } from './Navbar';
-import TagSearch from './tags/TagSearch';
+import TagSearch from '../tags/TagSearch';
 import NavbarRight from './NavbarRight';
 import NavbarRightAuthed from './NavbarRightAuthed';
-import { storeFactory } from '../../test/testUtils';
+import { storeFactory } from '../../../test/testUtils';
 
 const defaultProps = {
   authedUser: null,

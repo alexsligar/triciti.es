@@ -2,13 +2,13 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import history from '../history';
+import history from '../../history';
 import { Menu } from 'semantic-ui-react';
 import ConnectedNavbarRightAuthed, {
   NavbarRightAuthed,
 } from './NavbarRightAuthed';
-import { storeFactory } from '../../test/testUtils';
-import ListModal from './lists/ListModal';
+import { storeFactory } from '../../../test/testUtils';
+import ListModal from '../lists/ListModal';
 
 const defaultProps = {
   authedUserId: '1abc',

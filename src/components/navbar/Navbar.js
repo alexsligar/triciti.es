@@ -5,7 +5,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon } from 'semantic-ui-react';
 import NavbarRight from './NavbarRight';
 import NavbarRightAuthed from './NavbarRightAuthed';
-import TagSearch from './tags/TagSearch';
+import TagSearch from '../tags/TagSearch';
 
 export class Navbar extends Component {
   render() {
