@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, Message, Dimmer, Loader, Segment } from 'semantic-ui-react';
+import {
+  Form,
+  Message,
+  Dimmer,
+  Loader,
+  Segment,
+  Label,
+  Input,
+  TextArea,
+} from 'semantic-ui-react';
 import { handleRegisterUser } from '../../actions/users/registerUser';
 import { isEmail, isLength, equals } from 'validator';
 
@@ -93,7 +102,6 @@ export class RegisterForm extends Component {
     } = this.state.fields;
 
     const { fieldErrors } = this.state;
-    const errorFields = Object.keys(fieldErrors).filter(k => fieldErrors[k]);
 
     return (
       <Dimmer.Dimmable active={this.props.registerUserProcessing.toString()}>
@@ -102,69 +110,100 @@ export class RegisterForm extends Component {
         ) : null}
         <Form onSubmit={this.handleSubmit} error={this.state.formErrors}>
           <Segment textAlign='left'>
-            <Form.Input
-              fluid
-              label='Name'
-              placeholder='Name'
-              name='name'
-              value={name}
-              error={fieldErrors.name}
-              onChange={this.handleInputChange}
-            />
-            <Form.Input
-              fluid
-              label='Username'
-              placeholder='Username'
-              name='username'
-              value={username}
-              error={fieldErrors.username}
-              onChange={this.handleInputChange}
-            />
-            <Form.Input
-              fluid
-              label='Email'
-              placeholder='Email'
-              name='email'
-              value={email}
-              error={fieldErrors.email}
-              onChange={this.handleInputChange}
-            />
-            <Form.Input
-              fluid
-              label='Password'
-              placeholder='Password'
-              type='password'
-              name='password'
-              value={password}
-              error={fieldErrors.password}
-              onChange={this.handleInputChange}
-            />
-            <Form.Input
-              fluid
-              label='Confirm Password'
-              placeholder='Confirm Password'
-              type='password'
-              name='passwordConfirmation'
-              value={passwordConfirmation}
-              error={fieldErrors.passwordConfirmation}
-              onChange={this.handleInputChange}
-            />
-            <Form.TextArea
-              fluid='true'
-              label='Bio'
-              placeholder='Bio'
-              name='bio'
-              value={bio}
-              error={fieldErrors.bio}
-              onChange={this.handleInputChange}
-            />
-            <Message error>
-              <ul>
-                {errorFields.map((err, index) => (
-                  <li key={index}>{fieldErrors[err]}</li>
-                ))}
-              </ul>
-            </Message>
+            <Form.Field error={typeof fieldErrors.name !== 'undefined'}>
+              <label>Name</label>
+              <Input
+                placeholder='Name'
+                fluid
+                value={name}
+                name='name'
+                onChange={this.handleInputChange}
+              />
+              {fieldErrors.name && (
+                <Label basic color='red' pointing>
+                  {fieldErrors.name}
+                </Label>
+              )}
+            </Form.Field>
+            <Form.Field error={typeof fieldErrors.username !== 'undefined'}>
+              <label>Username</label>
+              <Input
+                placeholder='Username'
+                fluid
+                value={username}
+                name='username'
+                onChange={this.handleInputChange}
+              />
+              {fieldErrors.username && (
+                <Label basic color='red' pointing>
+                  {fieldErrors.username}
+                </Label>
+              )}
+            </Form.Field>
+            <Form.Field error={typeof fieldErrors.email !== 'undefined'}>
+              <label>Email</label>
+              <Input
+                placeholder='Email'
+                fluid
+                value={email}
+                name='email'
+                onChange={this.handleInputChange}
+              />
+              {fieldErrors.email && (
+                <Label basic color='red' pointing>
+                  {fieldErrors.email}
+                </Label>
+              )}
+            </Form.Field>
+            <Form.Field error={typeof fieldErrors.password !== 'undefined'}>
+              <label>Password</label>
+              <Input
+                placeholder='Password'
+                fluid
+                type='password'
+                value={password}
+                name='password'
+                onChange={this.handleInputChange}
+              />
+              {fieldErrors.password && (
+                <Label basic color='red' pointing>
+                  {fieldErrors.password}
+                </Label>
+              )}
+            </Form.Field>
+            <Form.Field
+              error={typeof fieldErrors.passwordConfirmation !== 'undefined'}
+            >
+              <label>Confirm Password</label>
+              <Input
+                placeholder='Confirm Password'
+                fluid
+                type='password'
+                value={passwordConfirmation}
+                name='passwordConfirmation'
+                onChange={this.handleInputChange}
+              />
+              {fieldErrors.passwordConfirmation && (
+                <Label basic color='red' pointing>
+                  {fieldErrors.passwordConfirmation}
+                </Label>
+              )}
+            </Form.Field>
+            <Form.Field error={typeof fieldErrors.bio !== 'undefined'}>
+              <label>Bio</label>
+              <TextArea
+                placeholder='Bio'
+                fluid='true'
+                value={bio}
+                name='bio'
+                onChange={this.handleInputChange}
+              />
+              {fieldErrors.bio && (
+                <Label basic color='red' pointing>
+                  {fieldErrors.bio}
+                </Label>
+              )}
+            </Form.Field>
             <Form.Button fluid disabled={this.validate()}>
               Submit
             </Form.Button>

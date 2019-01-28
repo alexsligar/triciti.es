@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Form, FormButton, Dimmer, Message } from 'semantic-ui-react';
+import { Form, FormButton, Dimmer, Message, Label } from 'semantic-ui-react';
 import { Provider } from 'react-redux';
 import ConnectedRegisterForm, { RegisterForm } from './RegisterForm';
 import { storeFactory } from '../../../test/testUtils';
@@ -34,11 +34,8 @@ describe('render', () => {
       usernameInput.simulate('change', {
         target: { name: 'username', value: 'a' },
       });
-      const li = wrapper
-        .find(Message)
-        .last()
-        .find('li');
-      expect(li.text()).toBe(wrapper.state().fieldErrors.username);
+      const label = wrapper.find(Label);
+      expect(label.dive().text()).toBe(wrapper.state().fieldErrors.username);
     });
   });
 
