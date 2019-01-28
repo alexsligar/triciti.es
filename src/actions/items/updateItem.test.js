@@ -64,7 +64,7 @@ describe('handleUpdateItem action creator', () => {
     });
   });
 
-  it('should dispatch UPDATE_TAG_ERROR when fetch fails', async () => {
+  it('should dispatch UPDATE_ITEM_ERROR when fetch fails', async () => {
     fetch.mockRejectOnce();
     await store.dispatch(
       handleUpdateItem(1, { name: 'Test Item', type: 'Activity' })
