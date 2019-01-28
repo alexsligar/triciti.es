@@ -9,6 +9,7 @@ import ConnectedNavbarRightAuthed, {
 } from './NavbarRightAuthed';
 import { storeFactory } from '../../../test/testUtils';
 import ListModal from '../lists/ListModal';
+import StarredItemsModal from './StarredItemsModal';
 
 const defaultProps = {
   authedUser: { username: '1abc' },
@@ -25,6 +26,8 @@ describe('render', () => {
     const wrapper = setup();
     const menu = wrapper.find(Menu.Menu);
     expect(menu.length).toBe(1);
+    const starredItemsModal = wrapper.find(StarredItemsModal);
+    expect(starredItemsModal.length).toBe(1);
     const itemsAddLink = wrapper.find('Link[to="/items/add"]');
     expect(itemsAddLink.length).toBe(1);
     const listAddModal = wrapper.find(ListModal);

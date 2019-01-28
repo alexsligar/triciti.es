@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Segment, Message } from 'semantic-ui-react';
+import { Segment, Message, Card } from 'semantic-ui-react';
 import { handleGetUserStarredItems } from '../../actions/users/getUserStarredItems';
 import ItemCard from '../items/ItemCard';
 
@@ -19,7 +19,13 @@ export class UserStarredItems extends Component {
     } else if (error) {
       content = <Message error content={error} />;
     } else {
-      content = items.map(item => <ItemCard key={item.id} {...item} />);
+      content = (
+        <Card.Group itemsPerRow={3}>
+          {items.map(item => (
+            <ItemCard key={item.id} {...item} />
+          ))}
+        </Card.Group>
+      );
     }
     return content;
   }

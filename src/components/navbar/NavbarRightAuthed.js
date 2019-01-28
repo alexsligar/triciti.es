@@ -5,11 +5,15 @@ import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Button } from 'semantic-ui-react';
 import ListModal from '../lists/ListModal';
 import { handleLogoutUser } from '../../actions/authUser';
+import StarredItemsModal from './StarredItemsModal';
 
 export class NavbarRightAuthed extends Component {
   render() {
     return (
       <Menu.Menu position='right'>
+        <Menu.Item>
+          <StarredItemsModal />
+        </Menu.Item>
         <Menu.Item>
           <Link to='/items/add'>
             <Icon name='pencil' />
