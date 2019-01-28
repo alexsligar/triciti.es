@@ -11,7 +11,7 @@ import { storeFactory } from '../../../test/testUtils';
 import ListModal from '../lists/ListModal';
 
 const defaultProps = {
-  authedUserId: '1abc',
+  authedUser: { username: '1abc' },
   handleLogoutUser: () => {},
 };
 const setup = (props = {}) => {
@@ -64,7 +64,7 @@ describe('connect', () => {
       </Router>
     );
     const componentProps = wrapper.find(NavbarRightAuthed).props();
-    expect(componentProps.authedUserId).toBe('1');
+    expect(componentProps.authedUser).toBe(initialState.authedUser.user);
     expect(componentProps.handleLogoutUser).toBeInstanceOf(Function);
   });
 });
