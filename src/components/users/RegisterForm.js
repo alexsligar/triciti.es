@@ -12,7 +12,7 @@ import {
   TextArea,
 } from 'semantic-ui-react';
 import { handleRegisterUser } from '../../actions/users/registerUser';
-import { isEmail, isLength, equals } from 'validator';
+import userValidations from '../../validations/users';
 
 export class RegisterForm extends Component {
   state = {
@@ -28,47 +28,13 @@ export class RegisterForm extends Component {
     formErrors: false,
   };
 
-  validations = {
-    name: val => {
-      if (!val) return 'Name is required';
-      if (!isLength(val, { min: 2, max: 30 }))
-        return 'Name must be between 2 and 30 characters';
-    },
-    username: val => {
-      if (!val) return 'Username required';
-      if (!val.match(/^[A-Za-z0-9_.]+$/))
-        return 'Username must only contain letters, numbers, underscores and periods';
-      if (!isLength(val, { min: 3, max: 30 }))
-        return 'Username must be between 3 and 30 characters';
-    },
-    email: val => {
-      if (!val) return 'Email required';
-      if (!isEmail(val)) return 'Invalid email';
-    },
-    password: val => {
-      if (!val) return 'Password required';
-      if (!isLength(val, { min: 8, max: 30 }))
-        return 'Password must be between 8 and 30 characters';
-      if (!val.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,31}$/))
-        return 'Password must contain uppercase, lowercase, and number';
-    },
-    passwordConfirmation: val => {
-      if (!equals(val, this.state.fields.password))
-        return 'Password confirmation must match password';
-    },
-    bio: val => {
-      if (!isLength(val, { max: 255 }))
-        return 'Bio must be 255 characters or less';
-    },
-  };
-
   handleInputChange = e => {
     const { value, name } = e.target;
 
     const fields = Object.assign({}, this.state.fields);
     const fieldErrors = Object.assign({}, this.state.fieldErrors);
     fields[name] = value;
-    fieldErrors[name] = this.validations[name](value);
+    fieldErrors[name] = userValidations[name](fields);
 
     const errors = Object.keys(fieldErrors).filter(k => fieldErrors[k]);
     const formErrors = errors.length ? true : false;
@@ -80,7 +46,7 @@ export class RegisterForm extends Component {
     const { fields } = this.state;
     const keys = Object.keys(fields);
     for (var i = 0; i < keys.length; i++) {
-      if (this.validations[keys[i]](fields[keys[i]])) return true;
+      if (userValidations[keys[i]](fields)) return true;
     }
     return false;
   };

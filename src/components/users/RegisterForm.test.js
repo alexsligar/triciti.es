@@ -73,126 +73,26 @@ describe('render', () => {
       expect(message.prop('content')).toBe(error);
     });
   });
-});
 
-describe('form validations', () => {
-  let wrapper;
-  beforeEach(() => {
+  it('should show error Labels for each field when in error', () => {
     const props = {
       registerUserProcessing: false,
       registerUserError: null,
       handleRegisterUser: () => {},
     };
-    wrapper = setup(props);
-  });
-
-  it('should validate name', () => {
-    const nameInput = wrapper.find('[name="name"]');
-    nameInput.simulate('change', { target: { name: 'name', value: '' } });
-    expect(wrapper.state().fieldErrors.name).toBe('Name is required');
-    nameInput.simulate('change', { target: { name: 'name', value: 'a' } });
-    expect(wrapper.state().fieldErrors.name).toBe(
-      'Name must be between 2 and 30 characters'
-    );
-    nameInput.simulate('change', {
-      target: { name: 'name', value: 'abcdefghijklmnopqrstuvwxyzabcde' },
+    const wrapper = setup(props);
+    wrapper.setState({
+      fieldErrors: {
+        name: 'a',
+        username: 'a',
+        email: 'a',
+        bio: 'a',
+        password: 'a',
+        passwordConfirmation: 'a',
+      },
     });
-    expect(wrapper.state().fieldErrors.name).toBe(
-      'Name must be between 2 and 30 characters'
-    );
-  });
-
-  it('should validate username', () => {
-    const usernameInput = wrapper.find('[name="username"]');
-    usernameInput.simulate('change', {
-      target: { name: 'username', value: '' },
-    });
-    expect(wrapper.state().fieldErrors.username).toBe('Username required');
-    usernameInput.simulate('change', {
-      target: { name: 'username', value: 'abc$23' },
-    });
-    expect(wrapper.state().fieldErrors.username).toBe(
-      'Username must only contain letters, numbers, underscores and periods'
-    );
-    usernameInput.simulate('change', {
-      target: { name: 'username', value: 'ab' },
-    });
-    expect(wrapper.state().fieldErrors.username).toBe(
-      'Username must be between 3 and 30 characters'
-    );
-    usernameInput.simulate('change', {
-      target: { name: 'username', value: 'abcdefghijklmnopqrstuvwxyzabcde' },
-    });
-    expect(wrapper.state().fieldErrors.username).toBe(
-      'Username must be between 3 and 30 characters'
-    );
-  });
-
-  it('should validate email', () => {
-    const emailInput = wrapper.find('[name="email"]');
-    emailInput.simulate('change', { target: { name: 'email', value: '' } });
-    expect(wrapper.state().fieldErrors.email).toBe('Email required');
-    emailInput.simulate('change', { target: { name: 'email', value: 'test' } });
-    expect(wrapper.state().fieldErrors.email).toBe('Invalid email');
-  });
-
-  it('should validate password', () => {
-    const passwordInput = wrapper.find('[name="password"]');
-    passwordInput.simulate('change', {
-      target: { name: 'password', value: '' },
-    });
-    expect(wrapper.state().fieldErrors.password).toBe('Password required');
-    passwordInput.simulate('change', {
-      target: { name: 'password', value: 'tesT123' },
-    });
-    expect(wrapper.state().fieldErrors.password).toBe(
-      'Password must be between 8 and 30 characters'
-    );
-    passwordInput.simulate('change', {
-      target: { name: 'password', value: 'aBcdefghijklmnopqrstuvwxyzabcd5' },
-    });
-    expect(wrapper.state().fieldErrors.password).toBe(
-      'Password must be between 8 and 30 characters'
-    );
-    passwordInput.simulate('change', {
-      target: { name: 'password', value: 'test1234' },
-    });
-    expect(wrapper.state().fieldErrors.password).toBe(
-      'Password must contain uppercase, lowercase, and number'
-    );
-    passwordInput.simulate('change', {
-      target: { name: 'password', value: 'TEST1234' },
-    });
-    expect(wrapper.state().fieldErrors.password).toBe(
-      'Password must contain uppercase, lowercase, and number'
-    );
-    passwordInput.simulate('change', {
-      target: { name: 'password', value: 'testTEST' },
-    });
-    expect(wrapper.state().fieldErrors.password).toBe(
-      'Password must contain uppercase, lowercase, and number'
-    );
-  });
-
-  it('should validate password confirmation', () => {
-    const passwordConfirmationInput = wrapper.find(
-      '[name="passwordConfirmation"]'
-    );
-    passwordConfirmationInput.simulate('change', {
-      target: { name: 'passwordConfirmation', value: 'a' },
-    });
-    expect(wrapper.state().fieldErrors.passwordConfirmation).toBe(
-      'Password confirmation must match password'
-    );
-  });
-
-  it('should validate bio', () => {
-    const bioInput = wrapper.find('[name="bio"]');
-    const bio = 'abcdefghijklmonpqrstuvwxyz'.repeat(10);
-    bioInput.simulate('change', { target: { name: 'bio', value: bio } });
-    expect(wrapper.state().fieldErrors.bio).toBe(
-      'Bio must be 255 characters or less'
-    );
+    const labels = wrapper.find('Label[basic]');
+    expect(labels.length).toBe(6);
   });
 });
 
