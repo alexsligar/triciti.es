@@ -21,6 +21,11 @@ import {
   ADD_STAR_TO_ITEM,
   REMOVE_STAR_FROM_ITEM,
 } from '../actions/starredItems/toggleStarredItem';
+import {
+  UPDATE_USER_PROCESSING,
+  UPDATE_USER_ERROR,
+  UPDATE_USER_SUCCESS,
+} from '../actions/users/updateUser';
 
 const initialState = {
   getUser: {
@@ -33,6 +38,10 @@ const initialState = {
   },
   getUserStarredItems: {
     loading: false,
+    error: null,
+  },
+  updateUser: {
+    processing: false,
     error: null,
   },
   user: {},
@@ -193,6 +202,32 @@ export default function lists(state = initialState, action) {
       } else {
         return state;
       }
+    case UPDATE_USER_PROCESSING:
+      return {
+        ...state,
+        updateUser: {
+          ...state.updateUser,
+          processing: true,
+        },
+      };
+    case UPDATE_USER_ERROR:
+      return {
+        ...state,
+        updateUser: {
+          ...state.updateUser,
+          processing: false,
+          error: action.error,
+        },
+      };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        updateUser: {
+          ...state.updateUser,
+          processing: false,
+          error: null,
+        },
+      };
     default:
       return state;
   }

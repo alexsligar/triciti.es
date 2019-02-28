@@ -22,6 +22,11 @@ import {
   ADD_STAR_TO_ITEM,
   REMOVE_STAR_FROM_ITEM,
 } from '../actions/starredItems/toggleStarredItem';
+import {
+  UPDATE_USER_PROCESSING,
+  UPDATE_USER_ERROR,
+  UPDATE_USER_SUCCESS,
+} from '../actions/users/updateUser';
 
 const initialState = {
   getUser: {
@@ -34,6 +39,10 @@ const initialState = {
   },
   getUserStarredItems: {
     loading: false,
+    error: null,
+  },
+  updateUser: {
+    processing: false,
     error: null,
   },
   user: {},
@@ -419,5 +428,73 @@ describe('users reducer', () => {
       },
     };
     expect(users(initial, action)).toEqual(initial);
+  });
+
+  it('should handle UPDATE_USER_PROCESSING', () => {
+    const action = {
+      type: UPDATE_USER_PROCESSING,
+    };
+    const initial = {
+      ...initialState,
+      updateUser: {
+        ...initialState.updateUser,
+        processing: false,
+        error: 'Uh oh',
+      },
+    };
+    const expected = {
+      ...initialState,
+      updateUser: {
+        ...initialState.updateUser,
+        processing: true,
+        error: 'Uh oh',
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should handle UPDATE_USER_ERROR', () => {
+    const action = {
+      type: UPDATE_USER_ERROR,
+      error: 'Uh oh',
+    };
+    const initial = {
+      ...initialState,
+      updateUser: {
+        ...initialState.updateUser,
+        processing: true,
+        error: null,
+      },
+    };
+    const expected = {
+      ...initialState,
+      updateUser: {
+        ...initialState.updateUser,
+        processing: false,
+        error: action.error,
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
+  });
+
+  it('should handle UPDATE_USER_SUCCESS', () => {
+    const action = {
+      type: UPDATE_USER_SUCCESS,
+    };
+    const initial = {
+      ...initialState,
+      updateUser: {
+        processing: true,
+        error: 'Uh oh',
+      },
+    };
+    const expected = {
+      ...initialState,
+      updateUser: {
+        processing: false,
+        error: null,
+      },
+    };
+    expect(users(initial, action)).toEqual(expected);
   });
 });
