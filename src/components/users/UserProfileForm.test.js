@@ -45,7 +45,7 @@ describe('render', () => {
     wrapper.setState({ updateSuccess: true });
     const message = wrapper.find(Message);
     expect(message.length).toBe(1);
-    expect(message.props().success).toBe(true)
+    expect(message.props().success).toBe(true);
     expect(message.props().content).toBe('Profile successfully updated.');
   });
 
